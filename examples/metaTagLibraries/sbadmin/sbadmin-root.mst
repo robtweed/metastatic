@@ -1,0 +1,66 @@
+<template slot="*head" :title="^title">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>:title</title>
+  <link rel="stylesheet" href="/js/components/sbadmin/css/styles.min.css">
+  <script async src="/js/feather.min.js" onload="feather.replace()"></script>
+  <script async src="/js/bootstrap.bundle.min.js"></script>
+</template>
+
+<template>
+  <nav class="topnav navbar navbar-expand shadow navbar-mgw bg-mgw" onload="rootInit()">
+    <slot name="topbar" />
+  </nav>
+
+  <div id="layoutSidenav">
+    <div id="layoutSidenav_nav">
+      <nav class="sidenav shadow-right sidenav-light navbar-nav-scroll" id="sidenavAccordion">
+        <slot name="sidebar" />
+      </nav>
+    </div>
+    <div id="layoutSidenav_content">
+      <main>
+        <div class="container-fluid px-4">
+          <slot name="content" />
+        </div>
+      </main>
+      <footer class="py-4 bg-light mt-auto">
+        <div class="container-fluid px-4">
+          <div class="d-flex align-items-center justify-content-between small">
+            <slot name="footer" />
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+</template>
+
+<script type="build">
+document.body.classList.add('nav-fixed');
+</script>
+
+<script>
+function rootInit() {
+  window.onpopstate = function(event) {
+    let hash = document.location.hash.slice(1);
+    if (hash !== '') {
+      let aTag = document.getElementById(hash);
+      if (aTag) {
+        aTag.blur();
+        switchPage({target: aTag}, hash.split('menu-item-')[1]);
+      }
+    }
+  }
+
+  let hash = window.location.hash.slice(1);
+  if (hash !== '') {
+    let aTag = document.getElementById(hash);
+    if (aTag) {
+      aTag.blur();
+      switchPage({target: aTag}, hash.split('menu-item-')[1]);
+    }
+  }
+}
+</script>
+

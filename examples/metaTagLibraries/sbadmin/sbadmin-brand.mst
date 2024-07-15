@@ -1,0 +1,4 @@
+<template :text="^text" :src="^src">
+  <span style="color: #000000; font-weight: bold;">:text</span>
+  <img src=":src" style="position: absolute; top: 0%; right: 0%; height: 52px; z-index: 0; opacity: 0.2" /> 
+</template>

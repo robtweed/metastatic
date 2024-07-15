@@ -1,0 +1,14 @@
+<template>
+  <span class="me-2 ms-lg-2 me-lg-0">
+    <button class="btn btn-icon btn-transparent-dark order-1 order-lg-0 me-2 ms-lg-2 me-lg-0" href="#!" onclick="toggle(event)">
+      <i data-feather="menu"></i>
+    </button>
+  </span>
+</template>
+
+<script>
+function toggle(e) {
+  e.preventDefault();
+  document.body.classList.toggle('sidenav-toggled');
+}
+</script>

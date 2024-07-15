@@ -1,0 +1,3 @@
+<template slot="pagecontent" :text="^text">
+  <div>:text</div>
+</template>

@@ -1,0 +1,58 @@
+<template slot="menu" :text="^text" :iconname="^iconName" :active="^active" :uid="<uid" :d-none="=>':iconname'===''&& 'd-none'" :icon="^iconName|alert-circle">
+  <a class="nav-link sidebar-menu-item :active" id="menu-item-:uid" href="#" onclick="switchPage(event, ':uid')">
+    <div class="nav-link-icon :d-none">
+      <i data-feather=":icon"></i>
+    </div>
+    <span>:text</span>
+  </a>
+</template>
+
+<template slot="content" :active="^active" :show="=>':active'==='active'&& 'show'" :uid="<uid">
+  <div class="content-page collapse multi-collapse :show" id="content-page-:uid">
+    <slot name="contentpage" />
+  </div>
+</template>
+
+<script>
+
+function shouldSidebarHide() {
+  let w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+  if (w < 992) {
+    return true;
+  }
+  return false;
+}
+
+function hideSideNav() {
+  document.body.classList.remove('sidenav-toggled');
+}
+
+function showSideNav() {
+  document.body.classList.add('sidenav-toggled');
+}
+
+function switchPage(e, id) {
+
+  let divTags = document.getElementsByClassName('content-page');
+  for (let divTag of divTags) {
+    divTag.classList.remove('show');
+  }
+  document.getElementById('content-page-' + id).classList.add('show');
+
+  let aTags = document.getElementsByClassName('sidebar-menu-item');
+  for (let aTag of aTags) {
+    aTag.classList.remove('active');
+  }
+  let aTag = e.target;
+  if (aTag.localName !== 'a') {
+    aTag = aTag.parentNode;
+    if (aTag.localName !== 'a') aTag = aTag.parentNode;
+  }
+  aTag.classList.add('active');
+  if (shouldSidebarHide()) {
+    hideSideNav();
+  }
+}
+
+
+</script>

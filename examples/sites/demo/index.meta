@@ -1,0 +1,68 @@
+<sbadmin-root title="Demo Using MetaStatic">
+
+  <sbadmin-header>
+    <sbadmin-sidebar-toggle />
+    <sbadmin-brand text="MetaStatic" src="./images/mgwlogo2.png" />
+  </sbadmin-header>
+
+  <sbadmin-sidebar-menu>
+
+    <sbadmin-sidebar-menu-item text="About MetaStatic" iconname="info" active>
+        <sbadmin-carousel>
+          <sbadmin-carousel-item active>
+            <sbadmin-card-content slot="carouselitem" width="77%" title="About MetaStatic" text="markdown:demo.about_1.txt" />
+          </sbadmin-carousel-item>
+          <sbadmin-carousel-item>
+            <sbadmin-card-content slot="carouselitem" width="77%" title="Why Use MetaStatic?" text="markdown:demo.about_2.txt" />
+          </sbadmin-carousel-item>
+          <sbadmin-carousel-item>
+            <sbadmin-card-content slot="carouselitem" width="77%" title="Contact And Follow Us" text="markdown:mgw.about_3.txt" />
+          </sbadmin-carousel-item>
+        </sbadmin-carousel>
+    </sbadmin-sidebar-menu-item>
+
+    <sbadmin-sidebar-heading text="Text Heading" />
+
+    <sbadmin-sidebar-nested-menu text="Group 1" iconName="twitter">
+
+      <sbadmin-sidebar-menu-item text="Option 3" iconName="aperture">
+        <sbadmin-card-content title="Option Three" text="markdown:mgw.option3.txt" />
+      </sbadmin-sidebar-menu-item>
+
+      <sbadmin-sidebar-menu-item text="Option 4" iconName="award">
+        <sbadmin-card-content title="Option Four" text="markdown:mgw.option4.txt" />
+      </sbadmin-sidebar-menu-item>
+
+      <sbadmin-sidebar-nested-menu text="Inner Group" iconName="codepen">
+
+        <sbadmin-sidebar-menu-item text="Inner Option 1" iconName="crop">
+          <sbadmin-card-content title="Inner 1" text="markdown:mgw.option3.txt" />
+        </sbadmin-sidebar-menu-item>
+
+        <sbadmin-sidebar-menu-item text="Inner Option 2" iconName="crosshair">
+          <sbadmin-card-content title="Inner 2" text="markdown:mgw.option3.txt" />
+        </sbadmin-sidebar-menu-item>
+
+      </sbadmin-sidebar-nested-menu>
+
+      <sbadmin-sidebar-menu-item text="Option 5" iconName="bell">
+        <sbadmin-card-content title="Option Five" text="markdown:mgw.option5.txt" />
+      </sbadmin-sidebar-menu-item>
+
+    </sbadmin-sidebar-nested-menu>
+
+    <sbadmin-sidebar-menu-item text="Tabs" iconName="columns">
+      <sbadmin-tabs slot="contentpage">
+        <sbadmin-tab active title="Tab 1" text="Here we go" />
+        <sbadmin-tab title="Tab 2" text="markdown:mgw.about_1.txt" />
+        <sbadmin-tab title="Tab 3" text="This is tab 3" />
+      </sbadmin-tabs>
+    </sbadmin-sidebar-menu-item>
+
+  </sbadmin-sidebar-menu>
+
+  <sbadmin-copyright text="MGateway Ltd" size="8pt" />
+
+</sbadmin-root>
+
+

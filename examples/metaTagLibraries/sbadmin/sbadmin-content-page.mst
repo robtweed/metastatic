@@ -1,0 +1,3 @@
+<template slot="content" :pagename="^pagename" :show="^show">
+  <div class="content-page collapse multi-collapse :show" id="content-page-:pagename" />
+</template>
