@@ -1,0 +1,23 @@
+<template slot="*head" :title="^title" :tcolor="^titlecolor|red" :promptcolor="^promptcolor|blue">
+  <title>:title</title>
+  <style>
+    h1 {
+      color: :tcolor;
+    }
+    h3 {
+      color: :promptcolor;
+      text-decoration: underline;
+    }
+    h3:hover {
+      cursor: pointer;
+    }
+  </style>
+</template>
+
+<template :title="^title">
+  <h1>:title</h1>
+  <hr />
+  <h3>
+    <slot name="content" />
+  </h3>
+</template>

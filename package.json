@@ -1,8 +1,11 @@
 {
   "name": "metastatic",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Static Site Generator using Meta Tags",
-  "main": "/src/metastatic.mjs",
+  "main": "./src/metastatic.mjs",
+  "exports": {
+    ".": "./src/metastatic.mjs"
+  },
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,7 +19,8 @@
   "dependencies": {
     "jsdom": "latest",
     "collapse-whitespace": "latest",
-    "js-beautify": "latest"
+    "js-beautify": "latest",
+    "marked": "latest"
   },
   "bugs": {
     "url": "https://github.com/robtweed/metastatic/issues"

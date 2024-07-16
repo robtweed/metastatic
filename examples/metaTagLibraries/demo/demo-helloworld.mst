@@ -1,0 +1,9 @@
+<template slot="content" :name="^name">
+  <div onclick="hello(':name')">Click Me!</div>
+</template>
+
+<script>
+function hello(name) {
+  alert('Hello ' + name);
+}
+</script>
