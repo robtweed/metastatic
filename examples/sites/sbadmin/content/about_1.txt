@@ -1,0 +1,3 @@
+We're a UK-based software development company.  Since 1993, we've been developing tools, interfaces and frameworks for both the front-end and back-end of the Web Technology stack.
+
+We also specialise in software tools, interfaces and frameworks to allow the ultra high-performance Global Storage databases (eg [InterSystems IRIS](https://intersystems.com/data-platform) and the Open Source [YottaDB](https://yottadb.com) database) to operate at the back-end Web Applications.

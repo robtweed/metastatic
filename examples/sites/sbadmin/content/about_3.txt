@@ -1,0 +1,12 @@
+Rob:
+
+<i data-feather="mail"></i> : [rtweed@mgateway.com](mailto:rtweed@mgateway.com)  
+**X** : [@rtweed](https://x.com/rtweed)  
+<i data-feather="github"></i> : [Github: @robtweed](https://github.com/robtweed) 
+
+Chris:  
+
+<i data-feather="mail"></i> : [cmunt@mgateway.com](mailto:chris.munt@mgateway.com)  
+**X** : [@chrisemunt](https://x.com/chrisemunt)  
+<i data-feather="github"></i> : [Github: @chrisemunt](https://github.com/chrisemunt) 
+

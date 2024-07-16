@@ -1,0 +1,13 @@
+All of MGateway's products are the work of Rob Tweed and Chris Munt.
+
+Rob specialises in:
+
+- front-end JavaScript tools and frameworks
+- back-end JavaScript tools and frameworks for Node.js and Bun.js
+- back-end application development tools for Global Storage databases
+
+Chris specialises in:
+
+- high-performance interfacing products for Node.js and Bun.js
+- database technologies, particularly Relational
+- language interfaces for Global Storage databases

@@ -83,7 +83,7 @@ And just to add insult to injury, Web Sites developed using JavaScript framework
 
 For Web Sites that require maintenance of a lot of content that can change over time, the usual solution is to use a Content Management System (CMS).  This requires specific technical skills and a potentially steep learning curve,  and often the cost of a license for the CMS and/or associated database.  The latter database may also need technical maintenance (eg backup, restore etc), again requiring specific technical expertise.
 
-As a result, many Web Site maintainers turn to off-the-shelf packaged solutions such as Wordpress, Wix, Squarespace etc, most of which incur licensing or subscription costs and/or remote/cloud hosting, and potentially constraining the look and feel of the Web Site.  Migrating between such services can also be problematic, so vendor lock-in is a real risk of such a solution.
+As a result, many Web Site maintainers turn to commercial packaged solutions such as Wordpress, Wix, Squarespace etc, most of which incur licensing or subscription costs and/or remote/cloud hosting, and potentially constraining the look and feel of the Web Site.  Migrating between such services can also be problematic, so vendor lock-in is a real risk of such a solution.
 
 ## CSS/JavaScript Templates
 
@@ -235,26 +235,175 @@ Meta Tags can be used by a Web Site maintainer instead of standard HTML tags.
 
 Just like HTML Tags, Meta Tags are designed to be capable of being nested inside each other, allowing the construction of high-level building blocks for easy Web Site maintenance.
 
+## Meta Tag Contents
+
 Meta Tags can contain:
 
-- one or more *Templates*
-- optionally a *script* tag that contains any JavaScript that is needed by the Meta Tag to control its run-time behaviour
+- one or more *Templates* (defined using the &lt;template> tag)
+- optionally a &lt;script> tag that contains any JavaScript that is needed by the Meta Tag to control its run-time behaviour
 
-## Templates
+## Meta Tags versus WebComponents
 
-A Template is defined using a *&lt;template>* tag, which wraps a set of HTML tags and/or other Meta Tags that *MetaStatic*'s build module will use to replace the actual Meta Tag.
+Those of you familiar with WebComponents will have noticed that MetaStatic's Meta Tags borrow some of the syntax used in WebComponents:
 
-A Template can contain one or more *&lt;slot>* tags.  Slots are used to define the insertion points for other (child) Meta Tags that will be nested within the Meta Tag.
+- Meta Tags must include at least one hyphen
+- Meta Tags make use of the &lt;template> and &lt;slot tags
 
-Each Template can specify the default Slot of the parent Meta Tag to which it should be appended, but this can be over-ridden.
+However, MetaStatic's Meta Tags are **not** WebComponents: they aren't sent to the browser for instantiation and invocation.  Instead, MetaStatic's build module substitutes them for the low-level HTML tags defined in each Meta Tag's template(s), and the browser only receives and render those generated HTML tags.
 
-A Template can define variables based on the attributes used in the Meta Tag.  Those variables can be used within the Template's HTML contents and are substituted at build time.  As a result, the behaviour of an instance of a Meta Tag's can be controlled by the Web Site maintainer via the Meta Tag's attributes.
+## Meta Tag Naming Convention
+
+Meta Tag names:
+
+- must be hyphenated
+- must also be all in lower case.
+- the first part the hyphenated name represents the tag library name to which they belong - think of it as a namespace.
+
+MetaStatic's build module will expect to find all the Meta Tag definitions for a given library in a directory specific to that library.
+
+The second (and optionally subsequent) hyphentated part of the Meta Tag's name is up to you.
+
+### Examples
+
+- Demo Application Tag Library:
+
+  - demo-background
+  - demo-helloworld
+
+- SB Admin Tag Library:
+
+  - sbadmin-root
+  - sbadmin-sidebar-menu
+  - sbadmin-sidebar-menu-item
+
+## Meta Tag Definition Files and Directories
+
+Each Meta Tag definition is held in its own text file that should have a file extension of *.mst* (shorthand for **m**eta**s**tatic **t**emplate)
+
+The Meta Tag definition files for each Tag Library must reside in a directory specific to that library.  For example:
+
+- the SB Admin Tag Library (namespace: *sbadmin*) directory might be *~/metatstatic/tagLibraries/sbadmin/*
+- each Meta Tag within this directory would start with *sbadmin-* and have a file extension of *.mst*, eg:
+
+  - sbadmin-root.mst
+  - sbadmin-sidebar-menu.mst 
+
+
+## Meta Tag Templates
+
+### Template Basics
+
+A Meta Tag must contain at least one template, but can contain as many as needed.
+
+A Template is defined using a *&lt;template>* tag, which wraps a set of HTML tags and/or other Meta Tags that *MetaStatic*'s build module will use to substitute for the actual Meta Tag.
+
+### Slots
+
+A Template can contain one or more *&lt;slot>* tags.  Slots are used to define the insertion points for other (child) Meta Tags that are expected to be nested within the Meta Tag.
+
+Each Template can specify the default Slot of the parent Meta Tag to which it should be appended, but this can be over-ridden if required.
+
+#### Simple Example of Slots
+
+Suppose we have a *&lt;demo-title>* Meta Tag that is defined as follows:
+
+```html
+<template slot="main" :title="^title">
+  <h1>:title</h1>
+  <hr />
+  <h3>
+    <slot name="content" />
+  </h3>
+</template>
+```
+
+Instances of the &lt;demo-title> tag would be inserted into a slot named *main* that was provided by one of its parent ancestry Meta Tags.  Let's imagine we have a *&lt;demo-main> Meta Tag that provides this slot.
+
+The *&lt;slot name="content" />* tag represents where any child Meta Tags would be expected to be inserted: these child tags must specify this slot within their *&lt;template>* tag.  So, for example, we might have a *&lt;demo-text>* Meta Tag:
+
+```html
+<template slot="content" :text="^text">
+  <div>:text</div>
+</template>
+```
+
+We could then use these as follows:
+
+```html
+<demo-main>
+  <demo-title title="My Demo">
+    <demo-text text="Hello World" />
+  </demo-title>
+</demo-main>
+```
+
+The result (inside whatever &lt;demo-main> produced) would be:
+
+```html
+  <h1>My Demo</h1>
+  <hr />
+  <h3>
+    <div>Hello World</div>
+  </h3>
+```
+
+
+### Template Variables
+
+#### Basics
+
+A Template can define variables based on the attributes that will be applied to the Meta Tag.  Those variables can be used within the Template's HTML contents (within attribute and textContent values) and are substituted at build time.  As a result, the appearance and/or behaviour of an instance of a Meta Tag's can be controlled by the Web Site maintainer via the Meta Tag's attributes.
+
+Variables are defined as attributes of the &lt;template> tag, and must be prefixed with a colon (:) character.  The value specifies where the value is to be picked up and/or how it is to be assigned by MetaStatic's build module.
+
+#### Value Conventions
+
+- A value with a caret (^) character as its prefix denotes that the value is to come from the corresponding attribute in the instance of the Meta Tag.
+
+- A value with a less-that (<) character as its prefix denotes that the value is a reserved one provided by MetaStatic's build module.  There is currently just one such value you can use:
+
+  - *<uid*  This is a unique identification value that is automatically assigned by the build module for each Meta Tag being processed.  This is useful for constructing unique id attributes within the template's HTML whenever you use multiple instances of the same Meta Tag.
+
+#### Example
+
+
+For example, let's imagine a simple demo-div Meta Tag:
+
+```html
+<template slot="content" :flag="^flag" :text="^text">
+  <div class="disp-:flag">Hello :text!</div>
+</template>
+```
+
+This could be used as follows:
+
+```html
+<demo-div text="World" flag="on" />
+```
+
+and MetaStatic's build module would convert this to:
+
+```html
+<div class="disp-on">Hello World!</div>
+```
+
+whilst:
+
+```html
+<demo-div text="Again" flag="off" />
+```
+
+would be converted to:
+
+```html
+<div class="disp-off">Hello Again!</div>
+```
 
 
 ----
 # License
 
- Copyright (c) 2023 MGateway Ltd,                           
+ Copyright (c) 2024 MGateway Ltd,                           
  Redhill, Surrey UK.                                                      
  All rights reserved.                                                     
                                                                            

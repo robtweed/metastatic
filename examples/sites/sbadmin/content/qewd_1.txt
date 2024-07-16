@@ -1,0 +1,7 @@
+QEWD is an Open Source Node-js-based framework for rapid and easy development of database-linked back-ends for both interactive and REST-based web applications.
+
+QEWD is designed to operate with Global Storage databases (eg [InterSystems IRIS](https://intersystems.com/data-platform) and the Open Source [YottaDB](https://yottadb.com) database).  This is achieved using a very high performance in-process interface ([mg-dbx](https://github.com/chrisemunt/mg-dbx)) and QEWD's unique queue and child process architecture that allows for very high scalability.
+
+QEWD can operate as either a single monolithic application or as a set of inter-operating MicroServices.
+
+Furthermore you can deploy and run QEWD either natively with Node.js, or using our pre-packaged, ready-to-run Docker version (which comes bundled with a pre-configured copy of the YottaDB database and whose only dependence is Docker).
