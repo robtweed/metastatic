@@ -1,5 +1,5 @@
-<template slot="contentpage" :id="<uid" :interval="^interval|false">
-  <div class="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval=":interval" id="carousel-:id">
+<template slot="contentpage" :id="<uid">
+  <div class="carousel carousel-dark slide" id="carousel-:id">
     <div class="carousel-inner">
       <slot name="carouselcontent" />
     </div>

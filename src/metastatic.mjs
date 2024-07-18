@@ -24,7 +24,7 @@
  |  limitations under the License.                                           |
  ----------------------------------------------------------------------------
 
- 15 July 2024
+ 17 July 2024
 
  */
 
@@ -129,7 +129,7 @@ class MetaStatic {
 
           if (!child.localName.includes('-')) {
             if (child.hasAttribute('slot')) {
-              /*
+              // bring back!
               let slotName = child.getAttribute('slot');
               if (parentSlots[slotName]) {
                 addToSlot.push({
@@ -138,7 +138,7 @@ class MetaStatic {
                 });
               }
               child.removeAttribute('slot');
-              */
+
             }
             else {
               if (parentSlots['*']) {
@@ -180,7 +180,7 @@ class MetaStatic {
 
           if (child.localName.includes('-')) {
 
-            console.log('fetch source for ' + child.localName);
+            console.log('fetching source for ' + child.localName);
 
             let path = _this.tagLibraryPath + child.localName.split('-')[0] + '/' + child.localName + '.' + _this.metaTagFileExtension;
             let xml = await readFile(path, _this.encoding);
@@ -279,6 +279,19 @@ class MetaStatic {
               params['<uid'] = +templateUid;
               //console.log({params});
 
+              let sortArr = Object.keys(params);
+              sortArr.sort((a, b) => b.length - a.length);
+              let sortedParams = [];
+              for (let key of sortArr) {
+                let val = params[key].toString();
+                if (val.startsWith('<')) {
+                  val = params[val];
+                }
+                sortedParams.push({
+                  name: key,
+                  value: val
+                });
+              }
 
               // now map these parameter values into template attributes
 
@@ -286,9 +299,9 @@ class MetaStatic {
               for (let tag of tags) {
                 // substitute attribute values
                 for (let attr of tag.attributes) {
-                  let value = attr.value;
-                  for (let name in params) {
-                    value = value.replace(name, params[name]);
+                  let value = attr.value;         
+                  for (let param of sortedParams) {
+                    value = value.replace(param.name, param.value);
                   }
                   tag.setAttribute(attr.name, value);
                 }
@@ -299,9 +312,16 @@ class MetaStatic {
                 if (cnodes.length === 1 && cnodes[0].nodeType === 3) {
                   let textContent = tag.textContent;
                   let changed = false;
+                  for (let param of sortedParams) {
+                    let name = param.name;
+                    let val = param.value;
+                    //value = value.replace(param.name, param.value);
+                  /*
                   for (let name in params) {
+                  */
                     if (textContent && textContent.includes(name)) {
-                      textContent = textContent.replace(name, params[name]);
+                      //textContent = textContent.replaceAll(name, params[name]);
+                      textContent = textContent.replaceAll(name, val);
                       if (textContent.startsWith('markdown:')) {
                         let filename = textContent.split('markdown:')[1];
                         let app = filename.split('.')[0];
@@ -389,8 +409,8 @@ class MetaStatic {
                   document.getElementsByTagName(slot.slice(1))[0].appendChild(templateEl.content);
                 }
                 else {
-                  console.log('slot = ' + slot);
-                  console.log({parentSlots});
+                  //console.log('slot = ' + slot);
+                  //console.log({parentSlots});
                   if (parentSlots[slot]) {
                     parentSlots[slot].element.appendChild(templateEl.content);
                   }

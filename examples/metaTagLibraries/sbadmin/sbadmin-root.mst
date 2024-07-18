@@ -1,15 +1,40 @@
-<template slot="*head" :title="^title">
+<template slot="*head" :title="^title" :cssurl="^cssurl|https://sb-admin-pro.startbootstrap.com/css/styles.css" :featherurl="^featherurl|https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" :bsurl="^brurl|https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" :topbarcolor="^topbarcolor|#bdddf6" :topbaropacity="^topbaropacity|0.9" :menubgcolor="^menubgcolor|#fff" :menutextcolor="^menutextcolor|#212832" :contentbgcolor="^contentbgcolor|#f2f6fc" :contenttextcolor="^contenttextcolor|#69707a" :footerbgcolor="^footerbgcolor|rgb(242, 246, 252)" :footertextcolor="^footertextcolor|#69707a" 
+:topbargradient="^topbargradient" >
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <title>:title</title>
-  <link rel="stylesheet" href="/js/components/sbadmin/css/styles.min.css">
-  <script async src="/js/feather.min.js" onload="feather.replace()"></script>
-  <script async src="/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href=":cssurl">
+  <script async src=":featherurl" onload="feather.replace()"></script>
+  <script async src=":bsurl"></script>
+  <style>
+.navbar-nav-scroll {
+  max-height: var(--bs-scroll-height, 100vh);
+  overflow-y: auto;
+}
+.bg-mgw {
+  opacity: :topbaropacity;
+  background-color: :topbarcolor;
+  background-image: :topbargradient;
+}
+.sidenav-light {
+    background-color: :menubgcolor;
+    color: :menutextcolor;
+}
+main {
+  background-color: :contentbgcolor;
+  color: :contenttextcolor;
+}
+.bg-light {
+  background-color: :footerbgcolor !important;
+  color: :footertextcolor;
+}
+
+  </style>
 </template>
 
 <template>
-  <nav class="topnav navbar navbar-expand shadow navbar-mgw bg-mgw" onload="rootInit()">
+  <nav class="topnav navbar navbar-expand shadow navbar-mgw bg-mgw">
     <slot name="topbar" />
   </nav>
 
@@ -40,27 +65,4 @@
 document.body.classList.add('nav-fixed');
 </script>
 
-<script>
-function rootInit() {
-  window.onpopstate = function(event) {
-    let hash = document.location.hash.slice(1);
-    if (hash !== '') {
-      let aTag = document.getElementById(hash);
-      if (aTag) {
-        aTag.blur();
-        switchPage({target: aTag}, hash.split('menu-item-')[1]);
-      }
-    }
-  }
-
-  let hash = window.location.hash.slice(1);
-  if (hash !== '') {
-    let aTag = document.getElementById(hash);
-    if (aTag) {
-      aTag.blur();
-      switchPage({target: aTag}, hash.split('menu-item-')[1]);
-    }
-  }
-}
-</script>
 
