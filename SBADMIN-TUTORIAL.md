@@ -104,9 +104,9 @@ If so, you're ready to begin exploring MetaStatic!
 
 ## Background
 
-You'll find the SB Admin Tag Library in your */examples/MetaTagLibraries/sbadmin* directory.
+You'll find the SB Admin Tag Library in your */examples/metaTagLibraries/sbadmin* directory.
 
-You can also see the [source files here](./examples/MetaTagLibraries/sbadmin).
+You can also see the [source files here](./examples/metaTagLibraries/sbadmin).
 
 The SB Admin User Interface (UI) is designed around a set of panels:
 
@@ -144,9 +144,9 @@ A Web Developer/Maintainer will use these as tags, eg:
 
 Every MetaStatic Tag Library will have a top-level tag within which all other Tags are nested.  What it's called is up to you.  In our case we've named this tag *sbadmin-root*.
 
-You'll find it in your system at */examples/MetaTagLibraries/sbadmin/sbadmin-root.mst*.
+You'll find it in your system at */examples/metaTagLibraries/sbadmin/sbadmin-root.mst*.
 
-You can also inspect its [source code here](./examples/MetaTagLibraries/sbadmin/sbadmin-root.mst).
+You can also inspect its [source code here](./examples/metaTagLibraries/sbadmin/sbadmin-root.mst).
 
 We'll come back to explain its contents and how/why it works in detail later.
 
