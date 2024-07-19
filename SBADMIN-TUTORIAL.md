@@ -199,7 +199,9 @@ Specifying *tutorial* as a command line parameter will tell the builder to find 
 bun build.mjs tutorial index.meta
 ```
 
-You should see the generated HTML returned in the terminal, but that same HTML should now be in a file named *index.html* in your */examples/sites/tutorial* directory.  
+The first time you run this, Bun will automatically install all its dependencies.
+
+You should then see the generated HTML returned in the terminal, but that same HTML should now be in a file named *index.html* in your */examples/sites/tutorial* directory.  
 
 Try fetching it in a browser (making use of the Bun Web Server we started earlier):
 
@@ -309,8 +311,22 @@ The first thing to notice is that it contains two &lt;template> tags and a &lt;s
 Let's start with the very first line which is the first &lt;template> tag:
 
 ```html
-<template slot="*head" :title="^title" :cssurl="^cssurl|https://sb-admin-pro.startbootstrap.com/css/styles.css" :featherurl="^featherurl|https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" :bsurl="^brurl|https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" :topbarcolor="^topbarcolor|#bdddf6" :topbaropacity="^topbaropacity|0.9" :menubgcolor="^menubgcolor|#fff" :menutextcolor="^menutextcolor|#212832" :contentbgcolor="^contentbgcolor|#f2f6fc" :contenttextcolor="^contenttextcolor|#69707a" :footerbgcolor="^footerbgcolor|rgb(242, 246, 252)" :footertextcolor="^footertextcolor|#69707a" 
-:topbargradient="^topbargradient" >
+<template 
+  slot="*head" 
+  :title="^title"
+  :cssurl="^cssurl|https://sb-admin-pro.startbootstrap.com/css/styles.css" 
+  :featherurl="^featherurl|https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" 
+  :bsurl="^brurl|https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+  :topbarcolor="^topbarcolor|#bdddf6"
+  :topbaropacity="^topbaropacity|0.9" 
+  :menubgcolor="^menubgcolor|#fff" 
+  :menutextcolor="^menutextcolor|#212832" 
+  :contentbgcolor="^contentbgcolor|#f2f6fc" 
+  :contenttextcolor="^contenttextcolor|#69707a" 
+  :footerbgcolor="^footerbgcolor|rgb(242, 246, 252)" 
+  :footertextcolor="^footertextcolor|#69707a" 
+  :topbargradient="^topbargradient" 
+>
 ```
 
 There's clearly a lot going on here!  But let's break it down and you'll find it's all actually remarkably simple.
@@ -319,7 +335,7 @@ Let's go through the attributes one by one:
 
 ### slot
 
-This attribute tells MetaStatic's Builder where to insert the markup that's within the &lt;template> tag.  The value in this case is *head.  That asterisk (*) prefix denotes that this refers to an actual HTML tag within the target page, in this case the initially empty &lt;head> tag.
+This attribute tells MetaStatic's Builder where to insert the markup that's within the &lt;template> tag.  The value in this case is *\*head*.  That asterisk (\*) prefix denotes that this refers to an actual HTML tag within the target page, in this case the initially empty &lt;head> tag.
 
 It also highlights an important aspect of MetaStatic's Builder: its starting point is an empty HTML page:
 
@@ -445,6 +461,7 @@ This allows you to optionally specify a vertical colour gradient for the top bar
   background-color: :topbarcolor;
   background-image: :topbargradient;
 }
+```
 
 is substituted with:
 
@@ -463,6 +480,8 @@ Here's an example of a gradient value:
 ```code
 :topbargradient="linear-gradient(to top, #707595 0%, #0e1025 100%)"
 ```
+
+Note that if you specify a *background-image* value, any *background-color* property is ignored: the *background-image* takes precedence.
 
 ### Other Attributes
 
