@@ -51,7 +51,7 @@ git clone https://github.com/robtweed/metastatic
 
 ## Switch to the Repository's */examples* directory
 
-cd metastatic/examples
+cd cd metastatic/examples
 
 
 ## Start the Included Bun.js Web Server
@@ -295,5 +295,190 @@ It might not look like it yet, but this *sbadmin-root* tag has already generated
 - a footer panel for site information, copyright notices etc
 - a main content panel
 
-So in our next step we'll look at how you use and populate each of the four panel areas it's created for you.
+So in a while we'll look at how you use and populate each of the four panel areas it's created for you.  But first, let's take a deep dive into that *sbadmin-root* Meta Tag definition, as it demonstrates almost all of the key features of MetaStatic.
+
+
+## Key Features of the *sbadmin-root* Meta Tag
+
+We're going to take an in-depth look at the *sbadmin-root* Meta Tag.  You'll find it in your system in the */examples/metaTagLibraries/sbadmin directory: it's the file named *sbadmin-root.mst*.
+
+Alternatively view the [source code for it here](./examples/metaTagLibraries/sbadmin/sbadmin-root.mst).
+
+The first thing to notice is that it contains two &lt;template> tags and a &lt;script> tag.
+
+Let's start with the very first line which is the first &lt;template> tag:
+
+```html
+<template slot="*head" :title="^title" :cssurl="^cssurl|https://sb-admin-pro.startbootstrap.com/css/styles.css" :featherurl="^featherurl|https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" :bsurl="^brurl|https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" :topbarcolor="^topbarcolor|#bdddf6" :topbaropacity="^topbaropacity|0.9" :menubgcolor="^menubgcolor|#fff" :menutextcolor="^menutextcolor|#212832" :contentbgcolor="^contentbgcolor|#f2f6fc" :contenttextcolor="^contenttextcolor|#69707a" :footerbgcolor="^footerbgcolor|rgb(242, 246, 252)" :footertextcolor="^footertextcolor|#69707a" 
+:topbargradient="^topbargradient" >
+```
+
+There's clearly a lot going on here!  But let's break it down and you'll find it's all actually remarkably simple.
+
+Let's go through the attributes one by one:
+
+### slot
+
+This attribute tells MetaStatic's Builder where to insert the markup that's within the &lt;template> tag.  The value in this case is *head.  That asterisk (*) prefix denotes that this refers to an actual HTML tag within the target page, in this case the initially empty &lt;head> tag.
+
+It also highlights an important aspect of MetaStatic's Builder: its starting point is an empty HTML page:
+
+```html
+<html>
+  <head></head>
+  <body></body>
+</html>
+```
+
+So the first or "root" Meta Tag that you specify in your *index.meta* Web Site description will be inserted by default into the &lt;body> tag, unless you tell it otherwise.  So in this case, the first &lt;template> tag is defining what we want to go into our &lt;head> section.
+
+Note that MetaStatic will use the first instance of a tag that's referenced in a *slot* attribute (ie if the value is prefixed with an asterisk).  Of course, here there's only one &lt;head> tag, so that's OK!
+
+### :title
+
+We've seen how this is used: it populates the &lt;title> tag within the &lt;head> section.  But how did that actually work?
+
+You'll see that in the &lt;template> tag, the name of the attribute is prefixed by a colon character (:).  This tells MetaStatic's Builder to create a substitution variable named *:title*.
+
+Note: substitution variable names **MUST** be all in lower case.
+
+
+The value of this *:title* attribute is specified as *^title*.  
+
+That caret character (^) prefix tells MetaStatic's Builder to use the actual value in the &lt;sbadmin-root> tag that was used in the *index.meta* file: in this case *MetaStatic Demo*, ie as a result of this:
+
+```html
+<sbadmin-root title="MetaStatic Demo" />
+```
+
+If we take a look at the &lt;title> tag in the *template*, you'll see that the textContent of the &lt;title> tag should be substituted by whatever is the value of the *:title* variable:
+
+```html
+  <title>:title</title>
+```
+
+The variable *:title* could, in fact, be used as many times as needed within the *template*'s contents.  In the case of this *template*, however, we're only using it once - within the &lt;title> tag.
+
+### :cssurl
+
+This allows you to optionally specify an alternative URL for the main CSS stylesheet.  If you look at its value in the template:
+
+```code
+:cssurl="^cssurl|https://sb-admin-pro.startbootstrap.com/css/styles.css"
+```
+
+you'll see that it has two parts separated by a vertical bar character (|).  The first part tells tells MetaStatic's Builder to use the actual value in the &lt;sbadmin-root> tag that was used in the *index.meta* file - if it can find one.  We haven't specified a value however: all we specified was:
+
+```html
+<sbadmin-root title="MetaStatic Demo" />
+```
+
+So the second part after the vertical bar character defines a default value to use if the actual tag didn't define a value.  So in this case, the *:cssurl* value will be *https://sb-admin-pro.startbootstrap.com/css/styles.css*.
+
+If we take a look further down inside the template markup we'll find this:
+
+```html
+  <link rel="stylesheet" href=":cssurl">
+```
+
+and in our generated *index.html* file this was substituted with that default value:
+
+```html
+    <link rel="stylesheet" href="https://sb-admin-pro.startbootstrap.com/css/styles.css">
+```
+
+The ability to define optional attributes with default values is a very powerful and useful feature, yet very simple to use, both by a developer of a Meta Tag and a user of that Meta Tag.
+
+Why might you want to use it in this case?  One reason might be if you wanted to use a local copy of the CSS file rather than one fetched from a CDN.  Alternatively you may want to use your own customised version.
+
+### :featherurl
+
+This defines the URL to use for the Feather icon library.  Just like the *:cssurl* attribute, it defines a default URL in the template (*https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js*) that you can optionally override.
+
+It's used in this line within the template:
+
+```html
+  <script async src=":featherurl" onload="feather.replace()"></script>
+```
+
+### :bsurl
+
+This defines the URL to use for the Bootstrap v5 JavaScript library.  Just like the *:cssurl* attribute, it defines a default URL in the template (*https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js*) that you can optionally override.
+
+It's used in this line within the template:
+
+```html
+  <script async src=":bsurl"></script>
+```
+
+### :topbarcolor
+
+This allows you to optionally modify the background colour of the top bar.  A default value of *#bdddf6* is applied if no value is specified, and is used to substitute these lines within the custom &lt;style> tag within the head section:
+
+```css
+.bg-mgw {
+  opacity: :topbaropacity;
+  background-color: :topbarcolor;
+  background-image: :topbargradient;
+}
+```
+
+### :topbaropacity
+
+This allows you to optionally modify the opacity of the top bar.  A default value of *0.9* is applied if no value is specified, and is used to substitute these lines within the custom &lt;style> tag within the head section:
+
+```css
+.bg-mgw {
+  opacity: :topbaropacity;
+  background-color: :topbarcolor;
+  background-image: :topbargradient;
+}
+```
+
+### :topbargradient
+
+This allows you to optionally specify a vertical colour gradient for the top bar.  By default, no gradient is defined, in which case the substituted value will be an empty string, ie:
+
+```css
+.bg-mgw {
+  opacity: :topbaropacity;
+  background-color: :topbarcolor;
+  background-image: :topbargradient;
+}
+
+is substituted with:
+
+```css
+      .bg-mgw {
+        opacity: 0.9;
+        background-color: #bdddf6;
+        background-image: ;
+      }
+```
+
+so no gradient will be applied.
+
+Here's an example of a gradient value:
+
+```code
+:topbargradient="linear-gradient(to top, #707595 0%, #0e1025 100%)"
+```
+
+### Other Attributes
+
+All the other substitution variable attributes within the &lt;template> tag are hopefully now self explanatory: they all use the same kind of logic and syntax as described above:
+
+- :menubgcolor="^menubgcolor|#fff" 
+- :menutextcolor="^menutextcolor|#212832"
+- :contentbgcolor="^contentbgcolor|#f2f6fc" 
+- :contenttextcolor="^contenttextcolor|#69707a" 
+- :footerbgcolor="^footerbgcolor|rgb(242, 246, 252)" 
+- :footertextcolor="^footertextcolor|#69707a" 
+
+These optional attributes are all used to substitute CSS property values within the &lt;style> tag at build time with either a value supplied by the Web Designer or a default value.
+
+
+---
+# To be continued...
+
 
