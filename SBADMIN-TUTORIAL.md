@@ -51,7 +51,7 @@ git clone https://github.com/robtweed/metastatic
 
 ## Switch to the Repository's */examples* directory
 
-cd cd metastatic/examples
+cd metastatic/examples
 
 
 ## Start the Included Bun.js Web Server
