@@ -1,1 +1,0 @@
-The best place to start is the [QEWD Repository on Github](https://github.com/robtweed/qewd).

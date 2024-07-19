@@ -6,13 +6,13 @@ Typical use:
 
   node build.mjs demo
 
-  node build.mjs sbadmin
+  node build.mjs tutorial
 
 - Bun.js
 
   bun build.mjs demo
 
-  bun build.mjs sbadmin
+  bun build.mjs tutorial
 
 
 By default, the builder will look for an input file named index.meta
@@ -27,8 +27,7 @@ let metaStatic = new MetaStatic({
   inputPath: './sites/',
   outputPath: './sites/',
   contentPath: {
-    demo: './sites/demo/content',
-    mgw: './sites/mgateway/content'
+    tutorial: './sites/tutorial/content'
   }
 });
 

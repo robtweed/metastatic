@@ -1,0 +1,36 @@
+<html>
+
+  <head>
+    <title>MetaStatic Demo</title>
+    <style>
+      h1 {
+        color: red;
+      }
+
+      h3 {
+        color: green;
+        text-decoration: underline;
+      }
+
+      h3:hover {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body onload="init()">
+    <h1>MetaStatic Demo</h1>
+    <hr>
+    <h3>
+      <div onclick="hello('Rob')">Click Me!</div>
+    </h3>
+    <script>
+      function init() {}
+
+      function hello(name) {
+        alert('Hello ' + name);
+      }
+    </script>
+  </body>
+
+</html>

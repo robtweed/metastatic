@@ -1,7 +1,0 @@
-QEWD is available free of charge as an Apache 2-licensed Open Source product.
-
-Note, however, that QEWD **does not** include free technical support from us, though you can ask questions and search for possible solutions in our [forum](https://groups.google.com/g/enterprise-web-developer-community).
-
-Contact Rob if you want to discuss paying for technical support and maintenance for QEWD:  
-
-<i data-feather="mail"></i>  [rtweed@mgateway.com](mailto:rtweed@mgateway.com) 

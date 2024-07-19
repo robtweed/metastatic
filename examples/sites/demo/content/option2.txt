@@ -1,5 +1,0 @@
-This is the Option 2 card.
-
-This is a *second* paragraph
-
-And a third
