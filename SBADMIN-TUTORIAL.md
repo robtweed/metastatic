@@ -308,6 +308,8 @@ Alternatively view the [source code for it here](./examples/metaTagLibraries/sba
 
 The first thing to notice is that it contains two &lt;template> tags and a &lt;script> tag.
 
+### First Template
+
 Let's start with the very first line which is the first &lt;template> tag:
 
 ```html
@@ -318,6 +320,7 @@ Let's start with the very first line which is the first &lt;template> tag:
   :featherurl="^featherurl|https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" 
   :bsurl="^brurl|https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
   :topbarcolor="^topbarcolor|#bdddf6"
+  :topbartextcolor="^topbartextcolor"
   :topbaropacity="^topbaropacity|0.9" 
   :menubgcolor="^menubgcolor|#fff" 
   :menutextcolor="^menutextcolor|#212832" 
@@ -333,7 +336,7 @@ There's clearly a lot going on here!  But let's break it down and you'll find it
 
 Let's go through the attributes one by one:
 
-### slot
+#### slot
 
 This attribute tells MetaStatic's Builder where to insert the markup that's within the &lt;template> tag.  The value in this case is *\*head*.  That asterisk (\*) prefix denotes that this refers to an actual HTML tag within the target page, in this case the initially empty &lt;head> tag.
 
@@ -350,7 +353,7 @@ So the first or "root" Meta Tag that you specify in your *index.meta* Web Site d
 
 Note that MetaStatic will use the first instance of a tag that's referenced in a *slot* attribute (ie if the value is prefixed with an asterisk).  Of course, here there's only one &lt;head> tag, so that's OK!
 
-### :title
+#### :title
 
 We've seen how this is used: it populates the &lt;title> tag within the &lt;head> section.  But how did that actually work?
 
@@ -375,7 +378,7 @@ If we take a look at the &lt;title> tag in the *template*, you'll see that the t
 
 The variable *:title* could, in fact, be used as many times as needed within the *template*'s contents.  In the case of this *template*, however, we're only using it once - within the &lt;title> tag.
 
-### :cssurl
+#### :cssurl
 
 This allows you to optionally specify an alternative URL for the main CSS stylesheet.  If you look at its value in the template:
 
@@ -407,7 +410,7 @@ The ability to define optional attributes with default values is a very powerful
 
 Why might you want to use it in this case?  One reason might be if you wanted to use a local copy of the CSS file rather than one fetched from a CDN.  Alternatively you may want to use your own customised version.
 
-### :featherurl
+#### :featherurl
 
 This defines the URL to use for the Feather icon library.  Just like the *:cssurl* attribute, it defines a default URL in the template (*https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js*) that you can optionally override.
 
@@ -417,7 +420,7 @@ It's used in this line within the template:
   <script async src=":featherurl" onload="feather.replace()"></script>
 ```
 
-### :bsurl
+#### :bsurl
 
 This defines the URL to use for the Bootstrap v5 JavaScript library.  Just like the *:cssurl* attribute, it defines a default URL in the template (*https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js*) that you can optionally override.
 
@@ -427,7 +430,7 @@ It's used in this line within the template:
   <script async src=":bsurl"></script>
 ```
 
-### :topbarcolor
+#### :topbarcolor
 
 This allows you to optionally modify the background colour of the top bar.  A default value of *#bdddf6* is applied if no value is specified, and is used to substitute these lines within the custom &lt;style> tag within the head section:
 
@@ -436,10 +439,16 @@ This allows you to optionally modify the background colour of the top bar.  A de
   opacity: :topbaropacity;
   background-color: :topbarcolor;
   background-image: :topbargradient;
+  color: :topbartextcolor;
 }
 ```
 
-### :topbaropacity
+#### :topbartextcolor
+
+This allows you to optionally modify the colour of any text you define within the top bar.  No default is specified.  As a result, if you don't explicitly specify this attribute, the underlying default style provided by the SB Admin UI will be inherited instead: a light grey colour.
+
+
+#### :topbaropacity
 
 This allows you to optionally modify the opacity of the top bar.  A default value of *0.9* is applied if no value is specified, and is used to substitute these lines within the custom &lt;style> tag within the head section:
 
@@ -448,10 +457,11 @@ This allows you to optionally modify the opacity of the top bar.  A default valu
   opacity: :topbaropacity;
   background-color: :topbarcolor;
   background-image: :topbargradient;
+  color: :topbartextcolor;
 }
 ```
 
-### :topbargradient
+#### :topbargradient
 
 This allows you to optionally specify a vertical colour gradient for the top bar.  By default, no gradient is defined, in which case the substituted value will be an empty string, ie:
 
@@ -483,7 +493,7 @@ Here's an example of a gradient value:
 
 Note that if you specify a *background-image* value, any *background-color* property is ignored: the *background-image* takes precedence.
 
-### Other Attributes
+#### Other Attributes
 
 All the other substitution variable attributes within the &lt;template> tag are hopefully now self explanatory: they all use the same kind of logic and syntax as described above:
 
@@ -496,8 +506,150 @@ All the other substitution variable attributes within the &lt;template> tag are 
 
 These optional attributes are all used to substitute CSS property values within the &lt;style> tag at build time with either a value supplied by the Web Designer or a default value.
 
+----
 
----
+### Second Template
+
+The *sbadmin-root* Meta Tag's second template is much simpler and defines the specifically-styled markup that constitutes the basic SB Admin UI scaffolding.  This markup belongs within the generate Web Page's &lt;body> tag which, by default, is where MetaStatic's Builder will insert it.  Hence, the second Template starts with only a simple &lt;template> tag:
+
+```html
+<template>
+  <nav class="topnav navbar navbar-expand shadow navbar-mgw bg-mgw">
+
+  ...etc
+
+</template>
+``` 
+
+The key thing to notice within this Template are the four *slots*:
+
+- topbar:
+
+```html
+  <nav class="topnav navbar navbar-expand shadow navbar-mgw bg-mgw">
+    <slot name="topbar" />
+  </nav>
+```
+
+- sidebar:
+
+```html
+      <nav class="sidenav shadow-right sidenav-light navbar-nav-scroll" id="sidenavAccordion">
+        <slot name="sidebar" />
+      </nav>
+```
+- content:
+
+```html
+      <main>
+        <div class="container-fluid px-4">
+          <slot name="content" />
+        </div>
+      </main>
+```
+
+- footer:
+
+```html
+      <footer class="py-4 bg-light mt-auto">
+        <div class="container-fluid px-4">
+          <div class="d-flex align-items-center justify-content-between small">
+            <slot name="footer" />
+          </div>
+        </div>
+      </footer>
+```
+
+These provide the insertion points for any content/markup you want to add to these parts of the SB Admin UI.
+
+Typically what you will use for such insertion is other *sbadmin* Meta Tags that are designed for use within each particular slot.  You'll see how to use them later on in this tutorial.
+
+### Script Tag
+
+Meta Tags can optionally contain one or two script tags.  There are two types you can specify:
+
+- a standard HTML &lt;script> tag that defines JavaScript that is needed for event handlers etc within the Meta Tag's content.  
+
+  The contents of such a &lt;script> tag is added to a &lt;script> tag that MetaStatic's Builder will have already added at the end of the &lt;body> section.
+
+  MetaStatic's Builder keeps a note of all such inserted Meta Tag &lt;script> tags, and if any more instances of the Meta Tag are processed, their &lt;script> tags are ignored.  In other words, MetaStatic will ensure that there is only ever one instance of the JavaScript code for each Meta Tag you use in your Web Site.
+
+- a &lt;script> tag with a *type* attribute whose value is *build*, which is what the *sbadmin-root* Meta Tag includes:
+
+```html
+<script type="build">
+document.body.classList.add('nav-fixed');
+</script>
+```
+
+  Such scripts allow you to optionally define custom code that you want MetaStatic's Builder to execute at the end of its standard processing of the Meta Tag.  In this case we're adding a class to the generate'd Web Page's &lt;body> tag: something MetaStatic's Builder's own logic doesn't automatically make possible.
+
+  You'll therefore see in the generated Web Page HTML:
+
+```html
+  <body onload="init()" class="nav-fixed">
+```
+
+  If you want to provide your own custom *build* script in a Meta Tag, the main thing you need to know is that the generated Web Page DOM is held in the *document* object.  MetaStatic's Builder makes use of the
+[jsdom](https://www.npmjs.com/package/jsdom) package which emulates the in-browser DOM APIs, so you can manipulate the generated Web Page's DOM using the standard DOM API methods and properties.
+
+----
+
+## Populating The SB Admin Slots
+
+OK, let's get back to using the *sbadmin* Meta Tags.
+
+Currently we've just created a Web Page that displays the SB Admin UI's basic appearance with its four panels, but without any content.
+
+Let's do something very crude and simple and put some text into each one.  To do this, we'll just add four &lt;div> tags, one for each of the named slots provided by the *sbadmin-root* Meta Tag.
+
+So, open up the *./sites/tutorial/index.meta* file in a text editor and change it to:
+
+```html
+<sbadmin-root title="MetaStatic Demo">
+  <div slot="topbar">Top Bar Content Goes Here</div>
+  <div slot="sidebar">Menu Content Goes Here</div>
+  <div slot="content">Main Content Goes Here</div>
+  <div slot="footer">Footer Content Goes Here</div>
+</sbadmin-root>
+```
+
+Note how we've specified the slot to use for each &lt;div> tag by using a *slot* attribute.  The slot names must, of course, correspond to those used in the *sbadmin-root* Meta Tag.
+
+Now simply re-run MetaStatic's Builder.  Remember to do this from within your *./examples* directory
+
+```code
+cd ~/mstutorial/metastatic/examples    // if necessary, then:
+bun build.mjs tutorial
+```
+
+You'll find that the *index.html* file in the *./examples/sites/tutorial* directory has been over-written.
+
+Try loading it into a browser (make sure you still have the Bun Web Server running!) using the same URL as before, eg:
+
+```code
+http://localhost:3000/tutorial/index.html
+```
+
+You should now see the text we specified occupying each of the respective SB Admin UI panels.
+
+Next, while we're at it, let's try changing the top bar styling.  For example, re-edit the *index.meta* file as shown here:
+
+```html
+<sbadmin-root title="MetaStatic Demo" topbarcolor="blue" topbartextcolor="white">
+  <div slot="topbar">Top Bar Content Goes Here</div>
+  <div slot="sidebar">Menu Content Goes Here</div>
+  <div slot="content">Main Content Goes Here</div>
+  <div slot="footer">Footer Content Goes Here</div>
+</sbadmin-root>
+```
+
+Re-run MetaStatic's Builder and refresh the newly built version of the *index.html* in your browser.  The top bar should now be blue and the text white.
+
+You can try playing about with the other optional *sbadmin-root* attributes described in the previous section above to re-style the other panels.
+
+
+----
 # To be continued...
 
 

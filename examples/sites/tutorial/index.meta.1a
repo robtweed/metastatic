@@ -1,4 +1,4 @@
-<sbadmin-root title="MetaStatic Demo">
+<sbadmin-root title="MetaStatic Demo" topbarcolor="blue" topbartextcolor="white">
   <div slot="topbar">Top Bar Content Goes Here</div>
   <div slot="sidebar">Menu Content Goes Here</div>
   <div slot="content">Main Content Goes Here</div>

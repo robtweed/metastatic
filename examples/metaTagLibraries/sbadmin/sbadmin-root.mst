@@ -1,4 +1,4 @@
-<template slot="*head" :title="^title" :cssurl="^cssurl|https://sb-admin-pro.startbootstrap.com/css/styles.css" :featherurl="^featherurl|https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" :bsurl="^brurl|https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" :topbarcolor="^topbarcolor|#bdddf6" :topbaropacity="^topbaropacity|0.9" :menubgcolor="^menubgcolor|#fff" :menutextcolor="^menutextcolor|#212832" :contentbgcolor="^contentbgcolor|#f2f6fc" :contenttextcolor="^contenttextcolor|#69707a" :footerbgcolor="^footerbgcolor|rgb(242, 246, 252)" :footertextcolor="^footertextcolor|#69707a" 
+<template slot="*head" :title="^title" :cssurl="^cssurl|https://sb-admin-pro.startbootstrap.com/css/styles.css" :featherurl="^featherurl|https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" :bsurl="^brurl|https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" :topbarcolor="^topbarcolor|#bdddf6" :topbartextcolor="^topbartextcolor" :topbaropacity="^topbaropacity|0.9" :menubgcolor="^menubgcolor|#fff" :menutextcolor="^menutextcolor|#212832" :contentbgcolor="^contentbgcolor|#f2f6fc" :contenttextcolor="^contenttextcolor|#69707a" :footerbgcolor="^footerbgcolor|rgb(242, 246, 252)" :footertextcolor="^footertextcolor|#69707a" 
 :topbargradient="^topbargradient" >
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -16,6 +16,7 @@
   opacity: :topbaropacity;
   background-color: :topbarcolor;
   background-image: :topbargradient;
+  color: :topbartextcolor;
 }
 .sidenav-light {
     background-color: :menubgcolor;
