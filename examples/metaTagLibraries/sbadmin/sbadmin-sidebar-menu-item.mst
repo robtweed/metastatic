@@ -1,7 +1,7 @@
-<template slot="menu" :text="^text" :iconname="^iconName" :active="^active" :uid="<uid" :d-none="=>':iconname'===''&& 'd-none'" :icon="^iconName|alert-circle">
+<template slot="menu" :text="^text" :iconname="^iconName" :active="^active" :uid="<uid" :d-none="=>':iconname'===''&& 'd-none'" :icon="^iconName|triangle-exclamation">
   <a class="nav-link sidebar-menu-item :active" id="menu-item-:uid" href="#" onclick="switchPage(event, ':uid')">
-    <div class="nav-link-icon :d-none">
-      <i data-feather=":icon"></i>
+    <div class="sb-nav-link-icon :d-none">
+      <i class="fas fa-:icon"></i>
     </div>
     <span>:text</span>
   </a>

@@ -1,11 +1,27 @@
-<template slot="*head" :title="^title" :cssurl="^cssurl|https://sb-admin-pro.startbootstrap.com/css/styles.css" :featherurl="^featherurl|https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" :bsurl="^brurl|https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" :topbarcolor="^topbarcolor|#bdddf6" :topbartextcolor="^topbartextcolor" :topbaropacity="^topbaropacity|0.9" :menubgcolor="^menubgcolor|#fff" :menutextcolor="^menutextcolor|#212832" :contentbgcolor="^contentbgcolor|#f2f6fc" :contenttextcolor="^contenttextcolor|#69707a" :footerbgcolor="^footerbgcolor|rgb(242, 246, 252)" :footertextcolor="^footertextcolor|#69707a" 
-:topbargradient="^topbargradient" >
+<template 
+ slot="*head"
+ :title="^title|MetaStatic"
+ :cssurl="^cssurl|https://startbootstrap.github.io/startbootstrap-sb-admin/css/styles.css"
+ :faurl="^faurl|https://use.fontawesome.com/releases/v6.3.0/js/all.js"
+ :bsurl="^brurl|https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+ :topbarcolor="^topbarcolor|#bdddf6"
+ :topbartextcolor="^topbartextcolor"
+ :topbaropacity="^topbaropacity|0.9"
+ :menubgcolor="^menubgcolor|#fff"
+ :menutextcolor="^menutextcolor|#212832"
+ :contentbgcolor="^contentbgcolor|#f2f6fc"
+ :contenttextcolor="^contenttextcolor|#69707a"
+ :footerbgcolor="^footerbgcolor|rgb(242, 246, 252)"
+ :footertextcolor="^footertextcolor|#69707a"
+ :topbargradient="^topbargradient"
+ :menuwidth="^menuwidth|225px"
+ >
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <title>:title</title>
   <link rel="stylesheet" href=":cssurl">
-  <script async src=":featherurl" onload="feather.replace()"></script>
+  <script async src=":faurl" crossorigin="anonymous"></script>
   <script async src=":bsurl"></script>
   <style>
 .navbar-nav-scroll {
@@ -22,7 +38,7 @@
     background-color: :menubgcolor;
     color: :menutextcolor;
 }
-main {
+body {
   background-color: :contentbgcolor;
   color: :contenttextcolor;
 }
@@ -31,17 +47,67 @@ main {
   color: :footertextcolor;
 }
 
+.shadow-right {
+    box-shadow: .15rem 0 1.75rem 0 rgba(33,40,50,0.15)!important;
+}
+
+.sb-nav-fixed #layoutSidenav #layoutSidenav_nav {
+  width: :menuwidth;
+}
+
+.sb-nav-fixed #layoutSidenav #layoutSidenav_content {
+    padding-left: :menuwidth;
+}
+
+#layoutSidenav #layoutSidenav_nav {
+  flex-basis: :menuwidth;
+  flex-shrink: 0;
+  transition: transform 0.15s ease-in-out;
+  z-index: 1038;
+  transform: translateX(-:menuwidth);
+}
+
+#layoutSidenav #layoutSidenav_content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+  flex-grow: 1;
+  min-height: calc(100vh - 56px);
+  margin-left: -:menuwidthpx;
+}
+
+@media (min-width: 992px) {
+  #layoutSidenav #layoutSidenav_nav {
+    transform: translateX(0);
+  }
+  #layoutSidenav #layoutSidenav_content {
+    margin-left: 0;
+    transition: margin 0.15s ease-in-out;
+  }
+  .sb-sidenav-toggled #layoutSidenav #layoutSidenav_nav {
+    transform: translateX(-:menuwidth);
+  }
+  .sb-sidenav-toggled #layoutSidenav #layoutSidenav_content {
+    margin-left: -:menuwidth;
+  }
+  .sb-sidenav-toggled #layoutSidenav #layoutSidenav_content:before {
+    display: none;
+  }
+}
+
   </style>
 </template>
 
 <template>
-  <nav class="topnav navbar navbar-expand shadow navbar-mgw bg-mgw">
+  <nav class="sb-topnav navbar navbar-light navbar-expand shadow navbar-mgw bg-mgw">
     <slot name="topbar" />
   </nav>
 
   <div id="layoutSidenav">
     <div id="layoutSidenav_nav">
-      <nav class="sidenav shadow-right sidenav-light navbar-nav-scroll" id="sidenavAccordion">
+      <nav class="sb-sidenav shadow-right accordion sb-sidenav-light navbar-nav-scroll" id="sidenavAccordion">
         <slot name="sidebar" />
       </nav>
     </div>
@@ -63,7 +129,7 @@ main {
 </template>
 
 <script type="build">
-document.body.classList.add('nav-fixed');
+document.body.classList.add('sb-nav-fixed');
 </script>
 
 

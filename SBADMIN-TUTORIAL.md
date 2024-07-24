@@ -4,7 +4,7 @@
 
 # Introduction
 
-The MetatStatic Repository includes a Tag Library that provides a partial implementation of the [SB Admin](https://startbootstrap.com/previews/sb-admin-pro) User Interface.  What's included is sufficient to demonstrate:
+The MetatStatic Repository includes a Tag Library that provides a partial implementation of the Open Source [SB Admin](https://github.com/StartBootstrap/startbootstrap-sb-admin) User Interface.  What's included is sufficient to demonstrate:
 
 - how a technical developer can build out such a Meta Tag Library
 - how a Web Site maintainer can build and maintain a site using such a Tag Library
@@ -82,7 +82,20 @@ This will start the Web Server and it will listen on port 3000.  If you're alrea
 bun bunws.js 8080
 ```
 
-Note: the first time you invoke this command, Bun will automatically install all of the Web Server's dependencies.
+Note: the first time you invoke this command, Bun should automatically install all of the Web Server's dependencies.  If it doesn't, and if it reports an error, eg:
+
+```code
+error: Cannot find package "mg-bun-router" from "/home/ubuntu/metastatic-tutorial/bun/metastatic/examples/bunws.js"
+```
+
+Then try manually installing the missing package:
+
+```code
+bun install mg-bun-router
+```
+
+You should then be able to start the Web Server.
+
 
 ## Test the Web Server
 
@@ -125,19 +138,19 @@ The *namespace* we've used for the SB Admin Tag Library is *sbadmin*, so you'll 
 
 - sbadmin-root
 - sbadmin-header
-- sbadmin-menu
+- sbadmin-sidebar-menu
 
 Each Meta Tag is defined in its own file which has a file extension of *.mst*, eg:
 
 - sbadmin-root.mst
 - sbadmin-header.mst
-- sbadmin-menu.mst
+- sbadmin-sidebar-menu.mst
 
 A Web Developer/Maintainer will use these as tags, eg:
 
 - &lt;sbadmin-root>
 - &lt;sbadmin-header>
-- &lt;sbadmin-menu>
+- &lt;sbadmin-sidebar-menu>
 
 
 ## The Root Meta Tag
@@ -155,8 +168,8 @@ For now, suffice to say that this Meta Tag:
 - creates the correct HTML &lt;head> tag contents for your Web Site:
   - loading the required Bootstrap-compatible CSS resources;
   - loading the Bootstrap JavaScript resources
-  - loading the Open Source Feather icon resources
-  - adding some specific customisable styles
+  - loading the free Font Awesome icon resources
+  - adding some specific customisable styles that override the standard *StartBootstrap* ones
 - defines and creates the basic UI layout in the &lt;body> tag
 
 
@@ -211,11 +224,15 @@ http://localhost:3000/tutorial/index.html
 
 You should see an empty version of the SB Admin UI!
 
+![Initial SB Admin UI](./images/sbadmin-1.png)
+
+
 Clearly this isn't very useful as yet, but it's worth taking a look at what's been generated and why.
 
 If you inspect the contents of the generated *index.html* file, you'll see that it includes everything that was needed to render this UI:
 
 ```html
+<!DOCTYPE html>
 <html>
 
   <head>
@@ -223,8 +240,8 @@ If you inspect the contents of the generated *index.html* file, you'll see that 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>MetaStatic Demo</title>
-    <link rel="stylesheet" href="https://sb-admin-pro.startbootstrap.com/css/styles.css">
-    <script async="async" src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" onload="feather.replace()"></script>
+    <link rel="stylesheet" href="https://startbootstrap.github.io/startbootstrap-sb-admin/css/styles.css">
+    <script async="async" src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
       .navbar-nav-scroll {
@@ -236,6 +253,7 @@ If you inspect the contents of the generated *index.html* file, you'll see that 
         opacity: 0.9;
         background-color: #bdddf6;
         background-image: ;
+        color: ;
       }
 
       .sidenav-light {
@@ -243,7 +261,7 @@ If you inspect the contents of the generated *index.html* file, you'll see that 
         color: #212832;
       }
 
-      main {
+      body {
         background-color: #f2f6fc;
         color: #69707a;
       }
@@ -252,15 +270,69 @@ If you inspect the contents of the generated *index.html* file, you'll see that 
         background-color: rgb(242, 246, 252) !important;
         color: #69707a;
       }
+
+      .shadow-right {
+        box-shadow: .15rem 0 1.75rem 0 rgba(33, 40, 50, 0.15) !important;
+      }
+
+      .sb-nav-fixed #layoutSidenav #layoutSidenav_nav {
+        width: 300px;
+      }
+
+      .sb-nav-fixed #layoutSidenav #layoutSidenav_content {
+        padding-left: 300px;
+      }
+
+      #layoutSidenav #layoutSidenav_nav {
+        flex-basis: 300px;
+        flex-shrink: 0;
+        transition: transform 0.15s ease-in-out;
+        z-index: 1038;
+        transform: translateX(-300px);
+      }
+
+      #layoutSidenav #layoutSidenav_content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-width: 0;
+        flex-grow: 1;
+        min-height: calc(100vh - 56px);
+        margin-left: -300pxpx;
+      }
+
+      @media (min-width: 992px) {
+        #layoutSidenav #layoutSidenav_nav {
+          transform: translateX(0);
+        }
+
+        #layoutSidenav #layoutSidenav_content {
+          margin-left: 0;
+          transition: margin 0.15s ease-in-out;
+        }
+
+        .sb-sidenav-toggled #layoutSidenav #layoutSidenav_nav {
+          transform: translateX(-300px);
+        }
+
+        .sb-sidenav-toggled #layoutSidenav #layoutSidenav_content {
+          margin-left: -300px;
+        }
+
+        .sb-sidenav-toggled #layoutSidenav #layoutSidenav_content:before {
+          display: none;
+        }
+      }
     </style>
   </head>
 
-  <body onload="init()" class="nav-fixed">
-    <nav class="topnav navbar navbar-expand shadow navbar-mgw bg-mgw">
+  <body onload="init()" class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-light navbar-expand shadow navbar-mgw bg-mgw">
     </nav>
     <div id="layoutSidenav">
       <div id="layoutSidenav_nav">
-        <nav class="sidenav shadow-right sidenav-light navbar-nav-scroll" id="sidenavAccordion">
+        <nav class="sb-sidenav shadow-right accordion sb-sidenav-light navbar-nav-scroll" id="sidenavAccordion">
         </nav>
       </div>
       <div id="layoutSidenav_content">
@@ -314,21 +386,22 @@ Let's start with the very first line which is the first &lt;template> tag:
 
 ```html
 <template 
-  slot="*head" 
-  :title="^title"
-  :cssurl="^cssurl|https://sb-admin-pro.startbootstrap.com/css/styles.css" 
-  :featherurl="^featherurl|https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" 
-  :bsurl="^brurl|https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
-  :topbarcolor="^topbarcolor|#bdddf6"
-  :topbartextcolor="^topbartextcolor"
-  :topbaropacity="^topbaropacity|0.9" 
-  :menubgcolor="^menubgcolor|#fff" 
-  :menutextcolor="^menutextcolor|#212832" 
-  :contentbgcolor="^contentbgcolor|#f2f6fc" 
-  :contenttextcolor="^contenttextcolor|#69707a" 
-  :footerbgcolor="^footerbgcolor|rgb(242, 246, 252)" 
-  :footertextcolor="^footertextcolor|#69707a" 
-  :topbargradient="^topbargradient" 
+ slot="*head"
+ :title="^title|MetaStatic"
+ :cssurl="^cssurl|https://startbootstrap.github.io/startbootstrap-sb-admin/css/styles.css"
+ :faurl="^faurl|https://use.fontawesome.com/releases/v6.3.0/js/all.js"
+ :bsurl="^brurl|https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+ :topbarcolor="^topbarcolor|#bdddf6"
+ :topbartextcolor="^topbartextcolor"
+ :topbaropacity="^topbaropacity|0.9"
+ :menubgcolor="^menubgcolor|#fff"
+ :menutextcolor="^menutextcolor|#212832"
+ :contentbgcolor="^contentbgcolor|#f2f6fc"
+ :contenttextcolor="^contenttextcolor|#69707a"
+ :footerbgcolor="^footerbgcolor|rgb(242, 246, 252)"
+ :footertextcolor="^footertextcolor|#69707a"
+ :topbargradient="^topbargradient"
+ :menuwidth="^menuwidth|225px"
 >
 ```
 
@@ -362,12 +435,18 @@ You'll see that in the &lt;template> tag, the name of the attribute is prefixed 
 Note: substitution variable names **MUST** be all in lower case.
 
 
-The value of this *:title* attribute is specified as *^title*.  
+The value of this *:title* attribute is specified as *^title|MetaStatic*.  
 
 That caret character (^) prefix tells MetaStatic's Builder to use the actual value in the &lt;sbadmin-root> tag that was used in the *index.meta* file: in this case *MetaStatic Demo*, ie as a result of this:
 
 ```html
 <sbadmin-root title="MetaStatic Demo" />
+```
+
+The vertical bar character (|) followed by the text *MetaStatic* defines a default value that should be used if no *title* attribute was defined, eg if we'd used this in the *index.meta* file:
+
+```html
+<sbadmin-root />
 ```
 
 If we take a look at the &lt;title> tag in the *template*, you'll see that the textContent of the &lt;title> tag should be substituted by whatever is the value of the *:title* variable:
@@ -383,16 +462,16 @@ The variable *:title* could, in fact, be used as many times as needed within the
 This allows you to optionally specify an alternative URL for the main CSS stylesheet.  If you look at its value in the template:
 
 ```code
-:cssurl="^cssurl|https://sb-admin-pro.startbootstrap.com/css/styles.css"
+:cssurl="^cssurl|hhttps://startbootstrap.github.io/startbootstrap-sb-admin/css/styles.css"
 ```
 
-you'll see that it has two parts separated by a vertical bar character (|).  The first part tells tells MetaStatic's Builder to use the actual value in the &lt;sbadmin-root> tag that was used in the *index.meta* file - if it can find one.  We haven't specified a value however: all we specified was:
+you'll see that once again it has two parts separated by a vertical bar character (|).  The first part tells tells MetaStatic's Builder to use the actual value in the &lt;sbadmin-root> tag that was used in the *index.meta* file - if it can find one.  We haven't specified a value however: all we specified was:
 
 ```html
 <sbadmin-root title="MetaStatic Demo" />
 ```
 
-So the second part after the vertical bar character defines a default value to use if the actual tag didn't define a value.  So in this case, the *:cssurl* value will be *https://sb-admin-pro.startbootstrap.com/css/styles.css*.
+So the second part after the vertical bar character defines a default value to use if the actual tag didn't define a value.  So in this case, the *:cssurl* value will be *https://startbootstrap.github.io/startbootstrap-sb-admin/css/styles.css*.
 
 If we take a look further down inside the template markup we'll find this:
 
@@ -403,21 +482,21 @@ If we take a look further down inside the template markup we'll find this:
 and in our generated *index.html* file this was substituted with that default value:
 
 ```html
-    <link rel="stylesheet" href="https://sb-admin-pro.startbootstrap.com/css/styles.css">
+    <link rel="stylesheet" href="https://startbootstrap.github.io/startbootstrap-sb-admin/css/styles.css">
 ```
 
 The ability to define optional attributes with default values is a very powerful and useful feature, yet very simple to use, both by a developer of a Meta Tag and a user of that Meta Tag.
 
 Why might you want to use it in this case?  One reason might be if you wanted to use a local copy of the CSS file rather than one fetched from a CDN.  Alternatively you may want to use your own customised version.
 
-#### :featherurl
+#### :faurl
 
-This defines the URL to use for the Feather icon library.  Just like the *:cssurl* attribute, it defines a default URL in the template (*https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js*) that you can optionally override.
+This defines the URL to use for the Free Font Awesome icon library.  Just like the *:cssurl* attribute, it defines a default URL in the template (*https://use.fontawesome.com/releases/v6.3.0/js/all.js*) that you can optionally override.
 
 It's used in this line within the template:
 
 ```html
-  <script async src=":featherurl" onload="feather.replace()"></script>
+  <script async src=":faurl" crossorigin="anonymous"></script>
 ```
 
 #### :bsurl
@@ -633,6 +712,9 @@ http://localhost:3000/tutorial/index.html
 
 You should now see the text we specified occupying each of the respective SB Admin UI panels.
 
+![SB Admin UI with text](./images/sbadmin-2.png)
+
+
 Next, while we're at it, let's try changing the top bar styling.  For example, re-edit the *index.meta* file as shown here:
 
 ```html
@@ -645,6 +727,8 @@ Next, while we're at it, let's try changing the top bar styling.  For example, r
 ```
 
 Re-run MetaStatic's Builder and refresh the newly built version of the *index.html* in your browser.  The top bar should now be blue and the text white.
+
+![SB Admin UI with styled top bar](./images/sbadmin-3.png)
 
 You can try playing about with the other optional *sbadmin-root* attributes described in the previous section above to re-style the other panels.
 

@@ -1,3 +1,0 @@
-<template slot="menu" :text="^text">
-  <div class="sidenav-menu-heading">:text</div>
-</template>

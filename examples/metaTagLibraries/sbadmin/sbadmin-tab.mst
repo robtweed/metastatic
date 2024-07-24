@@ -1,7 +1,0 @@
-<template slot="tabs" :id="<uid" :active="^active" :title="^title">
-    <button class="nav-link :active" data-bs-toggle="tab" id="sbadmin-tab-:id" data-bs-target="#sbadmin-tab-content-:id" type="button" role="tab" aria-controls="nav-home" aria-selected="true">:title</button>
-</template>
-
-<template slot="tabcontent" :active="^active" :show="=>':active'==='active'&& 'show'" :id="<uid" :text="^text">
-  <div class="tab-pane fade :active :show" id="sbadmin-tab-content-:id" role="tabpanel" aria-labelledby="sbadmin-tab-:id">:text</div>
-</template>

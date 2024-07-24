@@ -1,5 +1,0 @@
-<template slot="carouselcontent" :active="^active">
-  <div class="carousel-item :active">
-    <slot name="carouselitem" />
-  </div>
-</template>

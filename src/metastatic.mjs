@@ -298,12 +298,22 @@ class MetaStatic {
               let tags = templateEl.content.querySelectorAll('*');
               for (let tag of tags) {
                 // substitute attribute values
+                let attrs = [];
                 for (let attr of tag.attributes) {
-                  let value = attr.value;         
-                  for (let param of sortedParams) {
-                    value = value.replace(param.name, param.value);
+                  attrs.push(attr);
+                }
+                for (let attr of attrs) {
+                  let value = attr.value;
+                  if (value !== '') {
+                    for (let param of sortedParams) {
+                      value = value.replace(param.name, param.value);
+                    }
+                    tag.setAttribute(attr.name, value);
+                    if (value === '') {
+                      console.log('tag: ' + tag.localName);
+                      console.log('empty attr: ' + attr.name);
+                    }
                   }
-                  tag.setAttribute(attr.name, value);
                 }
                 // substitute markdown text nodes
                 // find only those elements that have a single child of type 3
@@ -315,12 +325,7 @@ class MetaStatic {
                   for (let param of sortedParams) {
                     let name = param.name;
                     let val = param.value;
-                    //value = value.replace(param.name, param.value);
-                  /*
-                  for (let name in params) {
-                  */
                     if (textContent && textContent.includes(name)) {
-                      //textContent = textContent.replaceAll(name, params[name]);
                       textContent = textContent.replaceAll(name, val);
                       if (textContent.startsWith('markdown:')) {
                         let filename = textContent.split('markdown:')[1];
@@ -335,7 +340,19 @@ class MetaStatic {
                       changed = true;
                     }
                   }
-                  if (changed) tag.innerHTML = textContent;
+                  if (changed) {
+                    if (tag.localName === 'style') {
+                      let arr = textContent.split('\n');
+                      let arr2 = [];
+                      for (let line of arr) {
+                        if (!(line.includes(': ;') || line.includes(':;'))) {
+                          arr2.push(line);
+                        }
+                      }
+                      textContent = arr2.join('\n');
+                    }
+                    tag.innerHTML = textContent;
+                  }
                 }
               }
 
@@ -510,6 +527,7 @@ class MetaStatic {
         indent_inner_html: true
       });
     }
+    html = '<!DOCTYPE html>\n' + html;
     console.log(html);
     try {
       await writeFile(outFile, html, 'utf8');
@@ -524,5 +542,6 @@ class MetaStatic {
 };
 
 export {MetaStatic};
+
 
 

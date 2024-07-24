@@ -1,6 +1,6 @@
 <template slot="sidebar">
-  <div class="sidenav-menu">
-    <div class="nav accordion">
+  <div class="sb-sidenav-menu">
+    <div class="nav">
       <slot name="menu" />
     </div>
   </div>

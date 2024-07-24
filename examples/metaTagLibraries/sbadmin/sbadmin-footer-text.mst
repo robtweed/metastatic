@@ -1,3 +1,0 @@
-<template slot="footer" :text="^text" :size="^size">
-  <div class="inline" style="font-size: :size;">:text</div>
-</template>
