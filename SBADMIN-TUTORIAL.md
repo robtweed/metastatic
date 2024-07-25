@@ -181,13 +181,13 @@ Change to the */examples/sites/tutorial* directory that you'll find on your syst
 
 In order to create a Web Site, you create a file with a file extension of *.meta*.  The file name is otherwise up to you, but by convention, a single page Web Site will normally have a name of *index*.
 
-You'll find we've already created an instance of the *index.meta* file for you to get you started.  It's very simple and just contains the *sbadmin-root* tag and defines a value for its *title* attribute:
+You'll find we've already created an instance of the *index.meta* file for you to get you started.  It's very simple and just contains the *sbadmin-root* tag:
 
 ```html
-<sbadmin-root title="MetaStatic Demo" />
+<sbadmin-root />
 ```
 
-Let's try building a Web Site from it.
+Let's try building a Web Site from it and see what happens.
 
 
 ## Running the MetaStatic Builder
@@ -212,9 +212,19 @@ Specifying *tutorial* as a command line parameter will tell the builder to find 
 bun build.mjs tutorial index.meta
 ```
 
-The first time you run this, Bun will automatically install all its dependencies.
+The first time you run this, Bun will probably return an error, telling you that it couldn't find the *metastatic* module.  You can fix this by typing:
 
-You should then see the generated HTML returned in the terminal, but that same HTML should now be in a file named *index.html* in your */examples/sites/tutorial* directory.  
+```code
+bun install metastatic
+```
+
+Now you should be able to re-run the Builder:
+
+```code
+bun build.mjs tutorial
+```
+
+You should see the generated HTML returned in the terminal, but that same HTML should now be in a file named *index.html* in your */examples/sites/tutorial* directory.  
 
 Try fetching it in a browser (making use of the Bun Web Server we started earlier):
 
@@ -234,11 +244,12 @@ If you inspect the contents of the generated *index.html* file, you'll see that 
 ```html
 <!DOCTYPE html>
 <html>
+
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>MetaStatic Demo</title>
+    <title>MetaStatic</title>
     <link rel="stylesheet" href="https://startbootstrap.github.io/startbootstrap-sb-admin/css/styles.css">
     <script async="async" src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -323,9 +334,10 @@ If you inspect the contents of the generated *index.html* file, you'll see that 
       }
     </style>
   </head>
+
   <body onload="init()" class="sb-nav-fixed">
-    <nav class="sb-topnav navbar navbar-light navbar-expand shadow navbar-mgw bg-mgw">
-    </nav>
+    <span>
+    </span>
     <div id="layoutSidenav">
       <div id="layoutSidenav_nav">
         <nav class="sb-sidenav shadow-right accordion sb-sidenav-light navbar-nav-scroll" id="sidenavAccordion">
@@ -338,8 +350,6 @@ If you inspect the contents of the generated *index.html* file, you'll see that 
         </main>
         <footer class="py-4 bg-light mt-auto">
           <div class="container-fluid px-4">
-            <div class="d-flex align-items-center justify-content-between small">
-            </div>
           </div>
         </footer>
       </div>
@@ -348,13 +358,32 @@ If you inspect the contents of the generated *index.html* file, you'll see that 
       function init() {}
     </script>
   </body>
+
 </html>
 ```
 
-Notice how the &lt;title> tag has used the title attribute value we specified in the &lt;sbadmin-root> tag:
+Notice how the &lt;title> tag has used a default title attribute value from the &lt;sbadmin-root> tag:
 
 ```html
-    <title>MetaStatic Demo</title>
+    <title>MetaStatic</title>
+```
+
+If you want to specify your own &lt;title> text, edit the *index.meta* tag as shown:
+
+```html
+<sbadmin-root title="My MetaStatic Demo" />
+```
+
+and re-run the builder:
+
+```code
+bun build.mjs tutorial
+```
+
+You'll see that the *index.html* file has been overwritten and contains the new version of the generated markup, and if you take a look at the &lt;title> tag, it should now contain our own modified text:
+
+```html
+    <title>My MetaStatic Demo</title>
 ```
 
 It might not look like it yet, but this *sbadmin-root* tag has already generated all the basic scaffolding needed to create your own customised version of the SB Admin UI, with empty versions of:
@@ -594,8 +623,11 @@ The *sbadmin-root* Meta Tag's second template is much simpler and defines the sp
 
 ```html
 <template>
-  <nav class="sb-topnav navbar navbar-light navbar-expand shadow navbar-mgw bg-mgw">
+  <span>
+    <slot name="topbar" />
+  </span>
 
+  <div id="layoutSidenav">
   ...etc
 
 </template>
@@ -606,9 +638,9 @@ The key thing to notice within this Template are the four *slots*:
 - topbar:
 
 ```html
-  <nav class="sb-topnav navbar navbar-light navbar-expand shadow navbar-mgw bg-mgw">
+  <span>
     <slot name="topbar" />
-  </nav>
+  </span>
 ```
 
 - sidebar:
@@ -633,9 +665,7 @@ The key thing to notice within this Template are the four *slots*:
 ```html
       <footer class="py-4 bg-light mt-auto">
         <div class="container-fluid px-4">
-          <div class="d-flex align-items-center justify-content-between small">
-            <slot name="footer" />
-          </div>
+          <slot name="footer" />
         </div>
       </footer>
 ```
@@ -715,21 +745,64 @@ You should now see the text we specified occupying each of the respective SB Adm
 
 ![SB Admin UI with text](./images/sbadmin-2.png)
 
+You'll notice that the text we specified for the *topbar* slot isn't actually visible, and also notice that the text for the *sidebar* and *content* slots are in what appear to be strange positions.
 
-Next, while we're at it, let's try changing the top bar styling.  For example, re-edit the *index.meta* file as shown here:
+This is because the top bar banner requires its own styling which is carried out by another Meta Tag in the *sbadmin* tag library: *sdadmin-header*.  It will insert itself into the *topbar* slot and makes available its own slot named *header*.
+
+So let's edit our *index.meta* file to make use of that:
 
 ```html
-<sbadmin-root title="MetaStatic Demo" topbarcolor="blue" topbartextcolor="white">
-  <div slot="topbar">Top Bar Content Goes Here</div>
+<sbadmin-root title="MetaStatic Demo">
+  <sbadmin-header>
+    <div slot="header">Top Bar Content Goes Here</div>
+  </sbadmin-header>
   <div slot="sidebar">Menu Content Goes Here</div>
   <div slot="content">Main Content Goes Here</div>
   <div slot="footer">Footer Content Goes Here</div>
 </sbadmin-root>
 ```
 
+Re-run the Builder as before and reload the page in your browser.  You should now see the top banner and the menu and content text will be properly aligned:
+
+![SB Admin UI with banner](./images/sbadmin-3.png)
+
+The *footer* text isn't using the correct styling either: we should use another Meta Tag - *sbadmin-footer* to provide that.  The *sbadmin-footer* Meta Tag attaches itself to the *footer* slot and makes its own slot available: *footercontent*.
+
+So let's edit the *index.meta* file to use this too:
+
+```html
+<sbadmin-root title="MetaStatic Demo">
+  <sbadmin-header>
+    <div slot="header">Top Bar Content Goes Here</div>
+  </sbadmin-header>
+  <div slot="sidebar">Menu Content Goes Here</div>
+  <div slot="content">Main Content Goes Here</div>
+  <sbadmin-footer>
+    <div slot="footercontent">Footer Content Goes Here</div>
+  </sbadmin-footer>
+</sbadmin-root>
+```
+
+Re-run the Builder as before and reload the page in your browser. The page will look almost identical, but the footer text will now be a bit smaller.
+
+Next, while we're at it, let's try changing the top bar styling.  For example, re-edit the *index.meta* file as shown here:
+
+```html
+<sbadmin-root title="MetaStatic Demo" topbarcolor="blue" topbartextcolor="white">
+  <sbadmin-header>
+    <div slot="header">Top Bar Content Goes Here</div>
+  </sbadmin-header>
+  <div slot="sidebar">Menu Content Goes Here</div>
+  <div slot="content">Main Content Goes Here</div>
+  <sbadmin-footer>
+    <div slot="footercontent">Footer Content Goes Here</div>
+  </sbadmin-footer>
+</sbadmin-root>
+```
+
 Re-run MetaStatic's Builder and refresh the newly built version of the *index.html* in your browser.  The top bar should now be blue and the text white.
 
-![SB Admin UI with styled top bar](./images/sbadmin-3.png)
+![SB Admin UI with styled top bar](./images/sbadmin-3a.png)
 
 You can try playing about with the other optional *sbadmin-root* attributes described in the previous section above to re-style the other panels.
 
@@ -748,22 +821,9 @@ The *sbadmin* Meta Tag Library includes Meta Tags for these:
 - *sbadmin-brand*
 - *sbadmin-sidebar-toggle*
 
-These could have been designed to be added inside the *&lt;sbadmin-root>* tag, but it wouldn't be entirely obvious that they would be populating the *sbadmin* top bar.
+These have been designed to use the *sbadmin-header* Meta Tag's *header* slot.
 
-So, for clarity, the *sbadmin* Meta Tag Library includes another Meta Tag:
-
-- *sbadmin-header*
-
-This is very much a dummy, or "do-nothing" Meta Tag.  If you look at its 
-[contents](./examples/metaTagLibraries/sbadmin/sbadmin-header.mst) you'll see that it simply contains:
-
-```html
-<template slot="topbar">
-  <span />
-</template>
-```
-
-Why bother, you might ask?  Hopefully this will become clear when you see how we can define how we want our top bar to appear.  Edit your *index.meta* tag as follows:
+Let's try them out.  Edit your *index.meta* tag as follows:
 
 ```html
 <sbadmin-root title="MetaStatic Demo">
@@ -774,40 +834,20 @@ Why bother, you might ask?  Hopefully this will become clear when you see how we
 </sbadmin-root>
 ```
 
-You can hopefully see that use of the *&lt;sbadmin-header>* tag makes it clear that the top bar is defined by the two tags:
-
-- &lt;sbadmin-sidebar-toggle>
-- &lt;sbadmin-brand>
+Before we re-run the Builder, let's just take a closer look at these two Meta Tags:
 
 ### *&lt;sbadmin-brand>*
 
-The *sbadmin-brand* Meta Tag allows you to specify text and/or an image.  We're displaying both.  
+The *sbadmin-brand* Meta Tag allows you to specify text and/or an image.  In our example above, we're displaying both.  
 
 The *height*, *right* and *opacity* attributes allow you to size, position and blend the image/logo within the top bar.
 
 It's a good idea to use a color tool to determine your logo file's RGB value(s) and style the top bar's background colour or background gradient to match (see the *sbadmin-root* attributes described earlier).  As it happens, the *sbadmin* Meta Tags are pre-styled with colours that match the example image/logo that are included in this repository, so you'll see how such colour matching can work.
 
-If you look at the source code for the 
-[*sbadmin-brand* Meta Tag](./examples/metaTagLibraries/sbadmin/sbadmin-brand.mst), you'll notice that its *&lt;template>* tag doesn't specify a slot:
-
-```html
-<template>
- ... etc
-</template>
-```
-
-You probably also noticed earlier that the *sbadmin-header* Meta Tag didn't specify a named slot in its *&lt;span>* tag.
-
-This makes use of a shorthand convention in MetaStatic:
-
-- if a Meta Tag doesn't include a *&lt;slot>* tag, its *firstChild* element is used as the insertion point for any child tags
-
-Hence the *sbadmin-brand* *&lt;template>* tag doesn't need to explicitly define a slot for its insertion.
-
 
 ### *&lt;sbadmin-sidebar-toggle>*
 
-You'll notice that the *sbadmin-sidebar-toggle* Meta Tag is specified without any attributes.  By default it will be coloured black.  Depending on the colour of your top bar, you may prefer to have it coloured white, in which case you simply add the attribute:
+You'll notice in our example above that we've specified the *sbadmin-sidebar-toggle* Meta Tag is specified without any attributes.  By default it will be coloured black.  Depending on the colour of your top bar, you may prefer to have it coloured white, in which case you simply add the attribute:
 
 - color="light"
 
@@ -831,11 +871,9 @@ You'll see in the Meta Tag's *template* how this is triggered:
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!" onclick="toggle(event)">
 ```
 
-You'll also notice that the *sbadmin-sidebar-toggle* Meta Tag doesn't specify a named slot in its *&lt;template>* tag, for the same reason described earlier for the *sbadmin-brand* Meta Tag.
+### Rebuild and Reload the *index.html* File
 
-### Rebuild the *index.html* File
-
-Save your edited version of the *index.meta* tag and re-run the Builder:
+OK let's try out our changes.  Save your edited version of the *index.meta* tag and re-run the Builder:
 
 ```code
 bun build.mjs tutorial
@@ -847,7 +885,7 @@ Refresh it in your browser and you should now see:
 
 Try clicking the "hamburger" widget: the menu panel should slide in and out of view on each successive click.
 
-Also try either reducing the width of the browser, or try viewing the page in your mobile phone's browser:
+Also try either reducing the width of the browser, or try viewing the page in your mobile phone's browser.  As a result of the Responsive design of the SB Admin styling, it should now look like this:
 
 <p align="center">
   <img src="./images/sbadmin-5.jpg" alt="SB Admin UI in mobile browser" width="300">
@@ -856,6 +894,8 @@ Also try either reducing the width of the browser, or try viewing the page in yo
 Notice how the menu panel has now automatically disappeared, but it will slide across into view when you click the "hamburger".
 
 Notice also that the title text appears on top of the image.  That has been achieved by reducing the opacity of the image to 0.2: the image would otherwise obscure the text.
+
+
 
 
 

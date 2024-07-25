@@ -1,3 +1,5 @@
 <template slot="topbar">
-  <span />
+  <nav class="sb-topnav navbar navbar-light navbar-expand shadow navbar-mgw bg-mgw">
+    <slot name="header" />
+  </nav>
 </template>

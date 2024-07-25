@@ -101,9 +101,9 @@ body {
 </template>
 
 <template>
-  <nav class="sb-topnav navbar navbar-light navbar-expand shadow navbar-mgw bg-mgw">
+  <span>
     <slot name="topbar" />
-  </nav>
+  </span>
 
   <div id="layoutSidenav">
     <div id="layoutSidenav_nav">
@@ -119,9 +119,7 @@ body {
       </main>
       <footer class="py-4 bg-light mt-auto">
         <div class="container-fluid px-4">
-          <div class="d-flex align-items-center justify-content-between small">
-            <slot name="footer" />
-          </div>
+          <slot name="footer" />
         </div>
       </footer>
     </div>

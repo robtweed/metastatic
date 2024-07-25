@@ -1,0 +1,5 @@
+<template slot="footercontent" :text="^text" :size="^size|8pt">
+  <div class="inline" style="font-size: :size;">
+    Copyright &copy; :text
+  </div>
+</template>

@@ -4,5 +4,7 @@
   </sbadmin-header>
   <div slot="sidebar">Menu Content Goes Here</div>
   <div slot="content">Main Content Goes Here</div>
-  <div slot="footer">Footer Content Goes Here</div>
+  <sbadmin-footer>
+    <div slot="footercontent">Footer Content Goes Here</div>
+  </sbadmin-footer>
 </sbadmin-root>

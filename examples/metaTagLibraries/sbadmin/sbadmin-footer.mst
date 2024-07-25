@@ -1,0 +1,5 @@
+<template slot="footer">
+  <div class="d-flex align-items-center justify-content-between small">
+    <slot name="footercontent" />
+  </div>
+</template>
