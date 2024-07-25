@@ -658,7 +658,7 @@ Meta Tags can optionally contain one or two script tags.  There are two types yo
 
 ```html
 <script type="build">
-document.body.classList.add('nav-fixed');
+document.body.classList.add('sb-nav-fixed');
 </script>
 ```
 
@@ -779,7 +779,7 @@ You can hopefully see that use of the *&lt;sbadmin-header>* tag makes it clear t
 - &lt;sbadmin-sidebar-toggle>
 - &lt;sbadmin-brand>
 
-### *&lt;sbadmin-brand>
+### *&lt;sbadmin-brand>*
 
 The *sbadmin-brand* Meta Tag allows you to specify text and/or an image.  We're displaying both.  
 
@@ -800,12 +800,12 @@ You probably also noticed earlier that the *sbadmin-header* Meta Tag didn't spec
 
 This makes use of a shorthand convention in MetaStatic:
 
-- if a Meta Tag doesn't include a *&lt;slot> tag, its *firstChild* element is used as the insertion point for any child tags
+- if a Meta Tag doesn't include a *&lt;slot>* tag, its *firstChild* element is used as the insertion point for any child tags
 
 Hence the *sbadmin-brand* *&lt;template>* tag doesn't need to explicitly define a slot for its insertion.
 
 
-### *&lt;sbadmin-sidebar-toggle>
+### *&lt;sbadmin-sidebar-toggle>*
 
 You'll notice that the *sbadmin-sidebar-toggle* Meta Tag is specified without any attributes.  By default it will be coloured black.  Depending on the colour of your top bar, you may prefer to have it coloured white, in which case you simply add the attribute:
 
@@ -815,6 +815,7 @@ If you look at the source code for the
 [*sbadmin-sidebar-toggle* Meta Tag](./examples/metaTagLibraries/sbadmin/sbadmin-sidebar-toggle.mst), you'll notice that it contains a script tag:
 
 ```html
+<script>
 function toggle(e) {
   e.preventDefault();
   document.body.classList.toggle('sb-sidenav-toggled');
