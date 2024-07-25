@@ -895,7 +895,106 @@ Notice how the menu panel has now automatically disappeared, but it will slide a
 
 Notice also that the title text appears on top of the image.  That has been achieved by reducing the opacity of the image to 0.2: the image would otherwise obscure the text.
 
+----
+## Adding a Footer
 
+Now let's add a footer.  
+
+You've already seen that there's a *sbadmin-footer* Meta Tag that provides a styled insertion point.  There are two other Meta Tags included in the *sbadmin* Tag Library:
+
+- *sbadmin-copyright*: this can be used to add a copyright notice at the bottom of the page
+- *sbadmin-footer-text*: this can be used for any other text.
+
+You can have multiple combinations of these Meta Tags within a parent *sbadmin-footer* Tag.  The text will be equally spaced across the available width of the footer panel.
+
+So, let's edit the *index.meta* tag and we'll first add a copyright notice in the footer:
+
+```html
+<sbadmin-root title="MetaStatic Demo">
+  <sbadmin-header>
+    <sbadmin-sidebar-toggle />
+    <sbadmin-brand text="MetaStatic Demo" src="images/logo.png" height="55" right="0" opacity="0.2" />
+  </sbadmin-header>
+  <sbadmin-footer>
+    <sbadmin-copyright text="2024 MGateway Ltd" />
+  </sbadmin-footer>
+</sbadmin-root>
+```
+
+If you re-run the Builder and reload the generated *index.html* file in your browser, you'll now see a Copyright notice in the footer.  By default it uses a very small 8pt font size.  To increase the font size, specify it using the *size* attribute, eg:
+
+```html
+<sbadmin-copyright text="2024 MGateway Ltd" size="10pt" />
+```
+
+Now try also adding some footer text:
+
+```html
+<sbadmin-root title="MetaStatic Demo">
+  <sbadmin-header>
+    <sbadmin-sidebar-toggle />
+    <sbadmin-brand text="MetaStatic Demo" src="images/logo.png" height="55" right="0" opacity="0.2" />
+  </sbadmin-header>
+  <sbadmin-footer>
+    <sbadmin-copyright text="2024 MGateway Ltd" />
+    <sbadmin-footer-text text="Registered in England" />
+  </sbadmin-footer>
+</sbadmin-root>
+```
+
+Re-run the Builder and reload the *index.html* page in your browser.  The footer should now look something like this:
+
+![SB Admin UI with footer](./images/sbadmin-6.png)
+
+----
+
+## Adding Menus and Associated Content
+
+Now we get to the really interesting part which is adding menus with options which, when clicked, change the content displayed in the *content* panel of the SB Admin UI.
+
+With appropriately defined Meta Tags, menus become very easy to define and manage.
+
+The first thing to add is an *&lt;sbadmin-sidebar-menu>* Meta Tag.  This is designed to use the *sidebar* slot.
+
+The *sbadmin-sidebar-menu* Meta Tag doesn't do a great deal, but it establishes the correct styled scaffolding for all the other menu-related Meta Tags to work:
+
+```html
+<template slot="sidebar">
+  <div class="sb-sidenav-menu">
+    <div class="nav">
+      <slot name="menu" />
+    </div>
+  </div>
+</template>
+```
+
+All the other menu-related Meta Tags attach to its *menu* slot.
+
+So the first Meta Tag we'll use isn't a menu item *per se*, but allows you to create some header text for a group of menu items: *&lt;sbadmin-sidebar-heading>*.
+
+Edit your *index.meta* file as follows:
+
+```html
+<sbadmin-root title="MetaStatic Demo">
+  <sbadmin-header>
+    <sbadmin-sidebar-toggle />
+    <sbadmin-brand text="MetaStatic Demo" src="images/logo.png" height="55" right="0" opacity="0.2" />
+  </sbadmin-header>
+  
+  <sbadmin-sidebar-menu>
+    <sbadmin-sidebar-heading text="Select a Menu Option" />
+  </sbadmin-sidebar-menu>
+
+  <sbadmin-footer>
+    <sbadmin-copyright text="2024 MGateway Ltd" />
+    <sbadmin-footer-text text="Registered in England" />
+  </sbadmin-footer>
+</sbadmin-root>
+```
+
+Re-run the Builder and refresh the *index.html* page in your browser.  You should now see the heading in the menu panel:
+
+![SB Admin UI with menu heading](./images/sbadmin-7.png)
 
 
 
