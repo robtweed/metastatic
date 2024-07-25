@@ -1,0 +1,10 @@
+<template>
+  <nav>
+    <div class="nav nav-tabs" role="tablist">
+      <slot name="tabs" />
+    </div>
+  </nav>
+  <div class="tab-content">
+    <slot name="tabcontent" />
+  </div>
+</template>
