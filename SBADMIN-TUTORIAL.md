@@ -849,7 +849,7 @@ Try clicking the "hamburger" widget: the menu panel should slide in and out of v
 
 Also try either reducing the width of the browser, or try viewing the page in your mobile phone's browser:
 
-![SB Admin UI Mobile View](./images/sbadmin-5.jpg)
+<img src="./images/sbadmin-5.jpg" alt="SB Admin UI in mobile browser" width="200">
 
 Notice how the menu panel has now automatically disappeared, but it will slide across into view when you click the "hamburger".
 
