@@ -24,11 +24,11 @@ function shouldSidebarHide() {
 }
 
 function hideSideNav() {
-  document.body.classList.remove('sidenav-toggled');
+  document.body.classList.remove('sb-sidenav-toggled');
 }
 
 function showSideNav() {
-  document.body.classList.add('sidenav-toggled');
+  document.body.classList.add('sb-sidenav-toggled');
 }
 
 function switchPage(e, id) {

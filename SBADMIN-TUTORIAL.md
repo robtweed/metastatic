@@ -1056,7 +1056,7 @@ Re-run the Builder and refresh the *index.html* page in your browser.  You shoul
 
 Being able to group menu items into categories is a very useful feature, and the *sbadmin* Meta Tag Library allows you to achieve this with nested menus.  You can even have multiple levels of nesting if you need to do so.
 
-All you need to use is the *&lt;sbadmin-sidebar-nested-menu>* Meta Tag within which you embed one or more *&lt;sbadmin-sidebar-menu-item>* tags.
+All you need to use is the *&lt;sbadmin-sidebar-nested-menu>* Meta Tag within which you embed one or more *&lt;sbadmin-sidebar-menu-item>* tags, and/or other *&lt;sbadmin-sidebar-nested-menu>* tags.
 
 Just like the *&lt;sbadmin-sidebar-menu-item>* Meta Tag, the *&lt;sbadmin-sidebar-nested-menu>* Meta Tag has two attributes:
 
@@ -1083,7 +1083,8 @@ Let's add it to our *index.meta* file.  Change the *sdadmin-sidebar-menu* sectio
     
   </sbadmin-sidebar-menu>
 ```
-Re-run the Builder and refresh the *index.html* page in your browser.  You should now see the *Technical* sub-menu heading below the highlighted *About* option.  If you click it, it will expand to reveal the submenu (*Installation* and *Configuration*), each of which switches the text in the *content* panel.
+
+Re-run the Builder and refresh the *index.html* page in your browser.  You should now see the *Technical* sub-menu heading below the highlighted *About* option.  If you click it, it will expand to reveal the submenu (*Installation* and *Configuration*), each of which switches the text in the *content* panel:
 
 ![SB Admin UI with nested menu](./images/sbadmin-10.png)
 
