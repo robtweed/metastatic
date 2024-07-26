@@ -1052,6 +1052,40 @@ Re-run the Builder and refresh the *index.html* page in your browser.  You shoul
 
 ![SB Admin UI with 2 menu items](./images/sbadmin-9.png)
 
+### Nested Menus
+
+Being able to group menu items into categories is a very useful feature, and the *sbadmin* Meta Tag Library allows you to achieve this with nested menus.  You can even have multiple levels of nesting if you need to do so.
+
+All you need to use is the *&lt;sbadmin-sidebar-nested-menu>* Meta Tag within which you embed one or more *&lt;sbadmin-sidebar-menu-item>* tags.
+
+Just like the *&lt;sbadmin-sidebar-menu-item>* Meta Tag, the *&lt;sbadmin-sidebar-nested-menu>* Meta Tag has two attributes:
+
+- text: defines the text to appear in the menu
+- iconname: (optional) defines the name of the Font Awesome icon to use
+
+Let's add it to our *index.meta* file.  Change the *sdadmin-sidebar-menu* section to this:
+
+```html
+ <sbadmin-sidebar-menu>
+    <sbadmin-sidebar-heading text="Select a Menu Option" />
+    <sbadmin-sidebar-menu-item text="About" iconname="circle-info" active>
+      <div slot="contentpage">About Content will go here...</div>
+    </sbadmin-sidebar-menu-item>
+    
+    <sbadmin-sidebar-nested-menu text="Technical" iconname="gears">
+      <sbadmin-sidebar-menu-item text="Installation" iconname="wrench">
+        <div slot="contentpage">Installation text will go here</div>
+      </sbadmin-sidebar-menu-item>
+      <sbadmin-sidebar-menu-item text="Configuration" iconname="sliders">
+        <div slot="contentpage">Configuration text will go here</div>
+      </sbadmin-sidebar-menu-item>
+    </sbadmin-sidebar-nested-menu>
+    
+  </sbadmin-sidebar-menu>
+```
+Re-run the Builder and refresh the *index.html* page in your browser.  You should now see the *Technical* sub-menu heading below the highlighted *About* option.  If you click it, it will expand to reveal the submenu (*Installation* and *Configuration*), each of which switches the text in the *content* panel.
+
+![SB Admin UI with nested menu](./images/sbadmin-10.png)
 
 
 ----

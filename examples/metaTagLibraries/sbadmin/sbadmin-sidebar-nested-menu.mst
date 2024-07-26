@@ -1,0 +1,16 @@
+<template slot="menu" :icon="^iconname" :text="^text" :menuno="<uid":d-none="=>':iconname'===''&& 'd-none'">
+  <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#nested-menu-:menuno" aria-expanded="true" aria-controls="nested-menu-:menuno">
+    <div class="sb-nav-link-icon :d-none">
+      <i class="fas fa-:icon"></i>
+    </div>
+    <span>:text</span>
+    <div class="sb-sidenav-collapse-arrow">
+      <i class="fas fa-angle-down"></i>
+    </div>
+  </a>
+  <div class="collapse" id="nested-menu-:menuno">
+    <nav class="sb-sidenav-menu-nested nav">
+      <slot name="menu" />
+    </nav>
+  </div>
+</template>

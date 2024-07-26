@@ -1,0 +1,26 @@
+<sbadmin-root title="MetaStatic Demo">
+  <sbadmin-header>
+    <sbadmin-sidebar-toggle />
+    <sbadmin-brand text="MetaStatic Demo" src="images/logo.png" height="55" right="0" opacity="0.2" />
+  </sbadmin-header>
+  
+ <sbadmin-sidebar-menu>
+    <sbadmin-sidebar-heading text="Select a Menu Option" />
+    <sbadmin-sidebar-menu-item text="About" iconname="circle-info" active>
+      <div slot="contentpage">About Content will go here...</div>
+    </sbadmin-sidebar-menu-item>
+    <sbadmin-sidebar-nested-menu text="Technical" iconname="gears">
+      <sbadmin-sidebar-menu-item text="Installation" iconname="wrench">
+        <div slot="contentpage">Installation text will go here</div>
+      </sbadmin-sidebar-menu-item>
+      <sbadmin-sidebar-menu-item text="Configuration" iconname="sliders">
+        <div slot="contentpage">Configuration text will go here</div>
+      </sbadmin-sidebar-menu-item>
+    </sbadmin-sidebar-nested-menu>
+  </sbadmin-sidebar-menu>
+
+  <sbadmin-footer>
+    <sbadmin-copyright text="2024 MGateway Ltd" />
+    <sbadmin-footer-text text="Registered in England" />
+  </sbadmin-footer>
+</sbadmin-root>
