@@ -954,6 +954,8 @@ Now we get to the really interesting part which is adding menus with options whi
 
 With appropriately defined Meta Tags, menus become very easy to define and manage.
 
+### The *&lt;sbadmin-sidebar-menu>* Tag
+
 The first thing to add is an *&lt;sbadmin-sidebar-menu>* Meta Tag.  This is designed to use the *sidebar* slot.
 
 The *sbadmin-sidebar-menu* Meta Tag doesn't do a great deal, but it establishes the correct styled scaffolding for all the other menu-related Meta Tags to work:
@@ -969,6 +971,8 @@ The *sbadmin-sidebar-menu* Meta Tag doesn't do a great deal, but it establishes 
 ```
 
 All the other menu-related Meta Tags attach to its *menu* slot.
+
+### Menu Headings
 
 So the first Meta Tag we'll use isn't a menu item *per se*, but allows you to create some header text for a group of menu items: *&lt;sbadmin-sidebar-heading>*.
 
@@ -995,6 +999,58 @@ Edit your *index.meta* file as follows:
 Re-run the Builder and refresh the *index.html* page in your browser.  You should now see the heading in the menu panel:
 
 ![SB Admin UI with menu heading](./images/sbadmin-7.png)
+
+### Menu Items
+
+Now let's add a proper menu item.  Each menu item has some associated text that will appear in the menu, and can also have an optional icon before the text.
+
+Each menu item is associated with text content that will appear in the *content* panel whenever the menu item is clicked.  This will all happen automatically.
+
+To add a menu item, we use the *&lt;sbadmin-sidebar-menu-item*> tag.  This has two attributes:
+
+- text: defines the text to appear in the menu
+- iconname: (optional) defines the name of the Font Awesome icon to use
+
+  You can 
+  [view the available free icons and their names here](https://fontawesome.com/search?m=free&o=r).
+
+You specify the text content that is associated with this menu using one or more child Meta Tags.
+
+There are special *sbadmin* Meta Tags available for displaying and styling the text within the *content* panel that we'll describe later, but let's start out with just a simple &lt;div> tag for our text, to demonstrate the basic principles.  To use a &lt;div> tag we'll need to specify that it should use a slot named *contentpage* which has been created automatically by one of the *sbadmin-sidebar-menu-item* Meta Tag templates.
+
+You can [view the source for the *sbadmin-sidebar-menu-item* Meta Tag here](./examples/metaTagLibraries/sbadmin/sbadmin-sidebar-menu-item.mst).
+
+Edit the *sbadmin-sidebar-menu* section of your *index.meta* file as shown below (leave everything else in the *index.meta* file as before):
+
+```html
+ <sbadmin-sidebar-menu>
+    <sbadmin-sidebar-heading text="Select a Menu Option" />
+    <sbadmin-sidebar-menu-item text="About" iconname="circle-info">
+      <div slot="contentpage">About Content will go here...</div>
+    </sbadmin-sidebar-menu-item>
+  </sbadmin-sidebar-menu>
+```
+
+Re-run the Builder and refresh the *index.html* page in your browser.  You should now see the *About* option in the menu panel.  Click it and the menu option will be highlighted and the text we specified will appear in the *content* panel:
+
+![SB Admin UI with menu item](./images/sbadmin-8.png)
+
+Let's now add a second menu item with its own text, and this time we'll make the *About* menu option active, which means it will be automatically selected when the page is loaded/reloaded:
+
+```html
+ <sbadmin-sidebar-menu>
+    <sbadmin-sidebar-heading text="Select a Menu Option" />
+    <sbadmin-sidebar-menu-item text="About" iconname="circle-info" active>
+      <div slot="contentpage">About Content will go here...</div>
+    </sbadmin-sidebar-menu-item>
+    <sbadmin-sidebar-menu-item text="Installation" iconname="wrench">
+      <div slot="contentpage">Installation text will go here</div>
+    </sbadmin-sidebar-menu-item>
+  </sbadmin-sidebar-menu>
+```
+Re-run the Builder and refresh the *index.html* page in your browser.  You should now see the *About* option highlighted in the menu panel with its associated text showing in the *content* panel.  Try clicking the new *Installation* Menu Option and you'll see the text change in the *content* panel and *Installation* will be highlighted instead of *About*.
+
+![SB Admin UI with 2 menu items](./images/sbadmin-9.png)
 
 
 
