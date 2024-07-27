@@ -9,6 +9,7 @@
 
 <template slot="content" :active="^active" :show="=>':active'==='active'&& 'show'" :uid="<uid">
   <div class="content-page collapse multi-collapse :show" id="content-page-:uid">
+    <div style="opacity: 0;">_</div>
     <slot name="contentpage" />
   </div>
 </template>

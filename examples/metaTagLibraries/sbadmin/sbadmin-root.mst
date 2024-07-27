@@ -25,7 +25,7 @@
   <script async src=":bsurl"></script>
   <style>
 .navbar-nav-scroll {
-  max-height: var(--bs-scroll-height, 100vh);
+  max-height: var(--bs-scroll-height, 100dvh);
   overflow-y: auto;
 }
 .bg-mgw {
@@ -41,6 +41,7 @@
 body {
   background-color: :contentbgcolor;
   color: :contenttextcolor;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 .bg-light {
   background-color: :footerbgcolor !important;

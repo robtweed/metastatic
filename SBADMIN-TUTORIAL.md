@@ -1088,6 +1088,110 @@ Re-run the Builder and refresh the *index.html* page in your browser.  You shoul
 
 ![SB Admin UI with nested menu](./images/sbadmin-10.png)
 
+## Formatting Content
+
+Now that we know how to construct menus using the *sbadmin* Meta Tag Library, we can now turn our attention to the *content* panel.  So far we've just displayed placeholder text for each menu item using a simple &lt;div> tag.  Now let's look at how we can properly define and style content.
+
+### The *&lt;sbadmin-content-text>* Tag
+
+The simplest of the *content* panel-specific Meta Tags is the *&lt;sbadmin-content-text>* tag.
+
+It's designed to automatically use the *contentpage* slot, and takes a single attribute: *text*.
+
+Let's modify our previous version of the *index.meta* file to use this tag instead of the &lt;div> tags.  For now we'll just continue to use similar placeholder text:
+
+```html
+ <sbadmin-sidebar-menu>
+    <sbadmin-sidebar-heading text="Select a Menu Option" />
+    <sbadmin-sidebar-menu-item text="About" iconname="circle-info" active>
+      <sbadmin-content-text text="About text goes here..." />
+    </sbadmin-sidebar-menu-item>
+    
+    <sbadmin-sidebar-nested-menu text="Technical" iconname="gears">
+      <sbadmin-sidebar-menu-item text="Installation" iconname="wrench">
+        <sbadmin-content-text text="Installation text goes here..." />
+      </sbadmin-sidebar-menu-item>
+      <sbadmin-sidebar-menu-item text="Configuration" iconname="sliders">
+        <sbadmin-content-text text="Configuration text goes here..." />
+      </sbadmin-sidebar-menu-item>
+    </sbadmin-sidebar-nested-menu>
+    
+  </sbadmin-sidebar-menu>
+```
+
+The *&lt;sbadmin-content-text>* tag also allows you to add extra tags before and after its main text content: it provides two optional slots: *beforetext* and *aftertext*.  Let's use this to add a heading to the *About* text:
+
+```html
+    <sbadmin-sidebar-menu-item text="About" iconname="circle-info" active>
+      <sbadmin-content-text text="About text goes here...">
+        <h1 slot="beforetext">About MetaStatic</h1>
+      </sbadmin-content-text>
+    </sbadmin-sidebar-menu-item>
+```
+
+Re-run the Builder and refresh the *index.html* page in your browser.  You should now see the *About* text in the *content* panel pretty much as before, but now there's big title at the start of it:
+
+![SB Admin UI with content text](./images/sbadmin-11.png)
+
+### Using MetaStatic's Content Management System
+
+Im most situations we'll have quite a bit of text to display in the *content* panel for each menu item, and we'll want to be able to style it properly.  A single *text* attribute doesn't seem adequate for that.
+
+That's because you usually won't actually specify the *content* panel text using the *text* attribute.  Instead we'll define the text in a separate file, using [Markdown syntax](https://www.markdownguide.org/basic-syntax/) to style it, and we'll use the *text* attribute to point to that file.  Let's see how it's done.
+
+You'll see that you already have some content files in your MetaStatic repository.  Look in this directory: 
+
+```code
+examples/sites/tutorial/content/
+```
+
+You can also [view these files here](./examples/sites/tutorial/content).
+
+You'll see that they contain copies of paragraphs taken from the MetaStatic repository's *README.md* file.
+
+So let's amend our *index.meta* file to use the first one for the *About* menu item content.  Just edit this part of the *index.meta* file, leaving everything else unchanged:
+
+```html
+    <sbadmin-sidebar-menu-item text="About" iconname="circle-info" active>
+      <sbadmin-content-text text="markdown:tutorial.about.txt">
+        <h1 slot="beforetext">About MetaStatic</h1>
+      </sbadmin-content-text>
+    </sbadmin-sidebar-menu-item>
+```
+
+Notice the syntax we use in the *&lt;sbadmin-content-text>* tag's *text* attribute.  It consists of three parts:
+
+```code
+markdown:{{namespace}}.{{filename}}
+```
+This syntax can be used for any Meta Tag attribute, and is of course normally used where the attribute value will be blocks of formatted/styled text.
+
+- The *markdown:* prefix tells MetaStatic's Builder to use a text file for the attribute's value rather than the attribute's literal value.
+
+- the *namespace* is an alias for a file path.
+
+  Take a look at the [Builder script](./examples/build.mjs) and you'll see where the namespace to file path mapping is done for the *tutorial* namespace:
+  
+```code
+    contentPath: {
+      tutorial: './sites/tutorial/content'
+    }
+```  
+  
+- the *filename* is simply the name of the file to be used from within the namespace-aliased directory.  The name must include the file extension.
+
+In our example above, *MetaStatic*'s Builder will therefore try to find the file *./sites/tutorial/content/about.txt* and will used the Node.js *marked* Markdown processor module to convert its contents to HTML.  This converted content will then be used as the value for the *text* attribute.
+
+Notice in our example that we're going to leave the heading defined for the *beforetext* slot.
+
+Re-run the Builder and refresh the *index.html* page in your browser.  Now you'll see several paragraphs of properly marked-up and styled text that have been imported from the *about.txt* file.
+
+![SB Admin UI with markdown text](./images/sbadmin-12.png)
+
+Note that this text was imported at build time: it's not being retrieved from the file into the browser: all the text held in MetaStatic's CMS are pulled into the HTML file that the Builder creates.
+
+
+
 
 ----
 ### To be continued...

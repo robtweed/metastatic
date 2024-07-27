@@ -1,0 +1,9 @@
+<template slot="contentpage" :text="^text">
+  <span>
+    <slot name="beforetext" />
+  </span>
+  <span>:text</span>
+  <span>
+    <slot name="aftertext" />
+  </span>
+</template>
