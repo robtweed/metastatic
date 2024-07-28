@@ -1245,7 +1245,7 @@ Re-run the Builder and refresh the *index.html* page in your browser.  You'll no
 ## Displaying Tabbed Content
 
 Another way to format and display your content is to use a 
-[Bootstrap Tab Component](https://getbootstrap.com/docs/5.3/components/navs-tabs/#tabs)
+[Bootstrap Tab Component](https://getbootstrap.com/docs/5.3/components/navs-tabs/#tabs).
 
 This can be used instead of a nested menu for displaying two or more related topics.
 
@@ -1260,10 +1260,10 @@ Let's use these for our *Installation* menu option content, to separately displa
 
 So instead of using the current combined text in the *install.md* content file, we'll use two other pre-defined content files for this:
 
-- install-node.md
-- install-bun.md
+- [install-node.md](./examples/sites/tutorial/content/install-node.md)
+- [install-bun.md](./examples/sites/tutorial/content/install-bun.md)
 
-The *&lt;sbadmin-tabs>* Meta Tag is used as the container for the *&lt;sbadmin-tab>* Meta Tags, the latter defining the individual tabs and their contents.
+The *&lt;sbadmin-tabs>* Meta Tag is used as the container for the *&lt;sbadmin-tab>* Meta Tags, the latter defining each individual tab and its content.
 
 Similarly to the *&lt;sbadmin-content-text>* Meta Tag, the *&lt;sbadmin-tabs>* Meta Tag allows you to optionally insert additional markup before the actual tabs by providing a slot named *beforetabs*.  This allows you to add, for example, a heading or title.
 
@@ -1284,6 +1284,26 @@ Note that we've specified the first tab to be *active*, so it's automatically di
 Re-run the Builder and refresh the *index.html* page in your browser.  When you click the *Installation* menu option, you'll now see the tabbed display:
 
 ![SB Admin UI with tabbed content](./images/sbadmin-15.png)
+
+Of course you're now probably wondering if you can combine Tabs and Cards, ie displaying the tabbed content within a card.  The answer is yes, and it's made possible by an optionall slot named *alttabcontent* provided by the *&lt;sbadmin-tab>* Meta Tag.
+
+Let's use this to change the *Installation* text for the Bun.js tab to use a Card:
+
+```html
+      <sbadmin-sidebar-menu-item text="Installation" iconname="wrench">
+        <sbadmin-tabs>
+          <h1 slot="beforetabs">Installing MetaStatic</h1>
+          <sbadmin-tab title="Node.js" text="markdown:tutorial.install-node.md" active />
+          <sbadmin-tab title="Bun.js">
+            <sbadmin-card-content slot="alttabcontent" text="markdown:tutorial.install-bun.md" title="Bun.js" />
+          </sbadmin-tab>
+        </sbadmin-tabs>
+      </sbadmin-sidebar-menu-item>
+```
+Re-run the Builder and refresh the *index.html* page in your browser.  When you click the *Installation* menu option and select the *Bun.js* tab, you'll now see its content displayed in a Card:
+
+![SB Admin UI with tabs and card](./images/sbadmin-16.png)
+
 
 
 ----

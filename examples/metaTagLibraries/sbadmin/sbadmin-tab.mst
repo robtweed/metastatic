@@ -3,5 +3,9 @@
 </template>
 
 <template slot="tabcontent" :active="^active" :show="=>':active'==='active'&& 'show'" :id="<uid" :text="^text">
-  <div class="tab-pane fade :active :show" id="sbadmin-tab-content-:id" role="tabpanel" aria-labelledby="sbadmin-tab-:id">:text</div>
+  <div class="tab-pane fade :active :show" id="sbadmin-tab-content-:id" role="tabpanel" aria-labelledby="sbadmin-tab-:id">
+    <span>:text</span>
+    <span>
+      <slot name="alttabcontent" />
+  </div>
 </template>
