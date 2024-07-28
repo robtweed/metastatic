@@ -1304,8 +1304,6 @@ Re-run the Builder and refresh the *index.html* page in your browser.  When you 
 
 ![SB Admin UI with tabs and card](./images/sbadmin-16.png)
 
-
-
 ----
 ### To be continued...
 

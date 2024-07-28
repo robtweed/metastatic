@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>MetaStatic Demo</title>
+    <link rel="stylesheet" href="https://startbootstrap.github.io/startbootstrap-sb-admin/css/styles.css">
+    <script async="async" src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+      .navbar-nav-scroll {
+        max-height: var(--bs-scroll-height, 100dvh);
+        overflow-y: auto;
+      }
+
+      .bg-mgw {
+        opacity: 0.9;
+        background-color: #bdddf6;
+      }
+
+      .sidenav-light {
+        background-color: #fff;
+        color: #212832;
+      }
+
+      body {
+        background-color: #f2f6fc;
+        color: #69707a;
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+
+      .bg-light {
+        background-color: rgb(242, 246, 252) !important;
+        color: #69707a;
+      }
+
+      .shadow-right {
+        box-shadow: .15rem 0 1.75rem 0 rgba(33, 40, 50, 0.15) !important;
+      }
+
+      .sb-nav-fixed #layoutSidenav #layoutSidenav_nav {
+        width: 225px;
+      }
+
+      .sb-nav-fixed #layoutSidenav #layoutSidenav_content {
+        padding-left: 225px;
+      }
+
+      #layoutSidenav #layoutSidenav_nav {
+        flex-basis: 225px;
+        flex-shrink: 0;
+        transition: transform 0.15s ease-in-out;
+        z-index: 1038;
+        transform: translateX(-225px);
+      }
+
+      #layoutSidenav #layoutSidenav_content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-width: 0;
+        flex-grow: 1;
+        min-height: calc(100vh - 56px);
+        margin-left: -225pxpx;
+      }
+
+      @media (min-width: 992px) {
+        #layoutSidenav #layoutSidenav_nav {
+          transform: translateX(0);
+        }
+
+        #layoutSidenav #layoutSidenav_content {
+          margin-left: 0;
+          transition: margin 0.15s ease-in-out;
+        }
+
+        .sb-sidenav-toggled #layoutSidenav #layoutSidenav_nav {
+          transform: translateX(-225px);
+        }
+
+        .sb-sidenav-toggled #layoutSidenav #layoutSidenav_content {
+          margin-left: -225px;
+        }
+
+        .sb-sidenav-toggled #layoutSidenav #layoutSidenav_content:before {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body onload="init()" class="sb-nav-fixed">
+    <span>
+      <nav class="sb-topnav navbar navbar-light navbar-expand shadow navbar-mgw bg-mgw">
+        <span class="me-2 ms-lg-2 me-lg-0">
+          <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!" onclick="toggle(event)">
+            <i class="fas fa-bars"></i>
+          </button>
+        </span>
+        <span style="color: black; font-weight: bold;">MetaStatic Demo</span>
+        <img src="images/logo.png" style="position: absolute; top: 0%; right: 0%; height: 55px; z-index: 0; opacity: 0.2">
+      </nav>
+    </span>
+    <div id="layoutSidenav">
+      <div id="layoutSidenav_nav">
+        <nav class="sb-sidenav shadow-right accordion sb-sidenav-light navbar-nav-scroll" id="sidenavAccordion">
+          <div class="sb-sidenav-menu">
+            <div class="nav">
+              <div class="sb-sidenav-menu-heading">Select a Menu Option</div>
+              <a class="nav-link sidebar-menu-item active" id="menu-item-35" href="#" onclick="switchPage(event, '35')">
+                <div class="sb-nav-link-icon ">
+                  <i class="fas fa-circle-info"></i>
+                </div>
+                <span>About</span>
+              </a>
+              <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#nested-menu-63" aria-expanded="true" aria-controls="nested-menu-63">
+                <div class="sb-nav-link-icon ">
+                  <i class="fas fa-gears"></i>
+                </div>
+                <span>Technical</span>
+                <div class="sb-sidenav-collapse-arrow">
+                  <i class="fas fa-angle-down"></i>
+                </div>
+              </a>
+              <div class="collapse" id="nested-menu-63">
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link sidebar-menu-item " id="menu-item-72" href="#" onclick="switchPage(event, '72')">
+                    <div class="sb-nav-link-icon ">
+                      <i class="fas fa-wrench"></i>
+                    </div>
+                    <span>Installation</span>
+                  </a>
+                  <a class="nav-link sidebar-menu-item " id="menu-item-111" href="#" onclick="switchPage(event, '111')">
+                    <div class="sb-nav-link-icon ">
+                      <i class="fas fa-sliders"></i>
+                    </div>
+                    <span>Configuration</span>
+                  </a>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+      <div id="layoutSidenav_content">
+        <main>
+          <div class="container-fluid px-4">
+            <div class="content-page collapse multi-collapse show" id="content-page-35">
+              <div style="opacity: 0;">_</div>
+              <div class="card text-dark bg-light" style="width: 100%; margin: auto">
+                <h5 class="card-header">About MetaStatic</h5>
+                <div class="card-body">
+                  <div class="card-text">
+                    <p><em>MetaStatic</em> is a JavaScript tool that allows you to build and maintain a static web site using:</p>
+                    <ul>
+                      <li>high-level tags that we call <em>Meta Tags</em> and that represent and encapsulate a particular set of user interface (UI) features and behaviours</li>
+                      <li>optionally, a simple text file-based Content Management System, with your content written using Markdown syntax</li>
+                    </ul>
+                    <p><em>MetatStatic</em> can be used with either Node.js or Bun.js.</p>
+                    <p>Using <em>MetaStatic</em>, a Web Site maintainer can quickly and easily define and maintain a complex static web site that has a modern responsive user interface, using a few simple Meta Tags and without the need for complex JavaScript frameworks.</p>
+                    <p><em>MetaStatic</em> allows a Web Site to be described/defined completely declaratively, requiring no programming knowledge or expertise.</p>
+                    <p>However, technical developers can create libraries of re-usable <em>MetaStatic</em> Meta Tags that encapsulate any amount of markup and JavaScript logic, to whatever degree of complexity is required. These can then be used by a Web Site maintainer as building-blocks that describe the Web Site.</p>
+                    <p>The file containing the Meta Tag-based definition of a web site is then used as the input to the <em>MetaStatic</em> module which converts it to a corresponding HTML file that can be run in a browser.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="content-page collapse multi-collapse " id="content-page-72">
+              <div style="opacity: 0;">_</div>
+              <span>
+                <h1>Installing MetaStatic</h1>
+              </span>
+              <nav>
+                <div class="nav nav-tabs" role="tablist">
+                  <button class="nav-link active" data-bs-toggle="tab" id="sbadmin-tab-86" data-bs-target="#sbadmin-tab-content-86" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Node.js</button>
+                  <button class="nav-link " data-bs-toggle="tab" id="sbadmin-tab-96" data-bs-target="#sbadmin-tab-content-96" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Bun.js</button>
+                </div>
+              </nav>
+              <div style="opacity: 0;">_</div>
+              <div class="tab-content">
+                <div class="tab-pane fade active show" id="sbadmin-tab-content-86" role="tabpanel" aria-labelledby="sbadmin-tab-86">
+                  <span>
+                    <p><em>MetatStatic</em>'s Build Module is written in JavaScript and can be used with Node.js.</p>
+                    <p>Install it as follows:</p>
+                    <pre><code class="language-code">npm install metastatic
+</code></pre>
+                  </span>
+                  <span>
+                  </span>
+                </div>
+                <div class="tab-pane fade  " id="sbadmin-tab-content-96" role="tabpanel" aria-labelledby="sbadmin-tab-96">
+                  <span></span>
+                  <span>
+                    <div class="card text-dark bg-light" style="width: 100%; margin: auto">
+                      <h5 class="card-header">Bun.js</h5>
+                      <div class="card-body">
+                        <div class="card-text">
+                          <p><em>MetaStatic</em>'s Build Module is written in JavaScript and can be used with Bun.js.</p>
+                          <p>Install it as follows:</p>
+                          <pre><code class="language-code">bun install metastatic
+</code></pre>
+                        </div>
+                      </div>
+                    </div>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="content-page collapse multi-collapse " id="content-page-111">
+              <div style="opacity: 0;">_</div>
+              <span>
+                <h1>Configuring MetaStatic</h1>
+              </span>
+              <span>
+                <p>Configuration of MetaStatic's Builder module is performed when you instantiate its <em>MetaStatic</em> class. You pass its constructor an <em>options</em> object as an argument.</p>
+                <p>The <em>options</em> object's properties are as follows:</p>
+                <ul>
+                  <li><em>tagLibraryPath</em>: the file path under which each of your Meta Tag Libraries are stored</li>
+                  <li><em>inputPath</em>: the file path holding your <em>.meta</em> files which describe your Web Site's page(s)</li>
+                  <li><em>outputPath</em>: the destination file path into which MetaStatic's Builder will output the generated HTML file</li>
+                  <li><em>contentPath</em>: an object containing one or more key/value pairs, with each key/value pair describing the mapping of a <em>namespace</em> to a corresponding physical file path. These are used by MetaStatic's Builder to locate Markdown content files that are referenced in Meta Tag attributes.</li>
+                </ul>
+                <p>For example, the configuration used in your cloned repository is:</p>
+                <pre><code class="language-javascript">const metaStatic = new MetaStatic({
+  tagLibraryPath: './metaTagLibraries/',
+  inputPath: './sites/',
+  outputPath: './sites/',
+  contentPath: {
+    tutorial: './sites/tutorial/content'
+  }
+});
+</code></pre>
+              </span>
+              <span>
+              </span>
+            </div>
+          </div>
+        </main>
+        <footer class="py-4 bg-light mt-auto">
+          <div class="container-fluid px-4">
+            <div class="d-flex align-items-center justify-content-between small">
+              <div class="inline" style="font-size: 8pt;"> Copyright © 2024 MGateway Ltd </div>
+              <div class="inline" style="font-size: 8pt;">Registered in England</div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <script>
+      function init() {}
+
+      function toggle(e) {
+        e.preventDefault();
+        document.body.classList.toggle('sb-sidenav-toggled');
+      }
+
+      function shouldSidebarHide() {
+        let w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        if (w < 992) {
+          return true;
+        }
+        return false;
+      }
+
+      function hideSideNav() {
+        document.body.classList.remove('sb-sidenav-toggled');
+      }
+
+      function showSideNav() {
+        document.body.classList.add('sb-sidenav-toggled');
+      }
+
+      function switchPage(e, id) {
+        let divTags = document.getElementsByClassName('content-page');
+        for (let divTag of divTags) {
+          divTag.classList.remove('show');
+        }
+        document.getElementById('content-page-' + id).classList.add('show');
+        let aTags = document.getElementsByClassName('sidebar-menu-item');
+        for (let aTag of aTags) {
+          aTag.classList.remove('active');
+        }
+        let aTag = e.target;
+        if (aTag.localName !== 'a') {
+          aTag = aTag.parentNode;
+          if (aTag.localName !== 'a') aTag = aTag.parentNode;
+        }
+        aTag.classList.add('active');
+        if (shouldSidebarHide()) {
+          hideSideNav();
+        }
+      }
+    </script>
+  </body>
+
+</html>
