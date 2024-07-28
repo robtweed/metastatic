@@ -24,7 +24,15 @@ However, technical developers can create libraries of re-usable *MetaStatic* Met
 
 The file containing the Meta Tag-based definition of a web site is then used as the input to the *MetaStatic* module which converts it to a corresponding HTML file that can be run in a browser.
 
-For example, take a look at [this example Web Site definition file](./examples/sites/tutorial/example.meta).
+## Example
+
+Take a look at [this example Web Site definition file](./examples/sites/tutorial/index.meta.14) which uses
+ [this Meta Tag library](./examples/metaTagLibraries/sbadmin).
+
+[Click here](https://robtweed.github.io/metastatic/examples/sites/tutorial/index.html)
+ to view and run the HTML page that MetaStatic generated from it. 
+
+Find out more about this example in [our tutorial](./SBADMIN-TUTORIAL.md).
 
 ----
 
