@@ -1,0 +1,14 @@
+<template slot="contentpage">
+  <span>
+    <slot name="beforetabs" />
+  </span>
+  <nav>
+    <div class="nav nav-tabs" role="tablist">
+      <slot name="tabs" />
+    </div>
+  </nav>
+  <div style="opacity: 0;">_</div>
+  <div class="tab-content">
+      <slot name="tabcontent" />
+  </div>
+</template>

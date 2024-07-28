@@ -1236,11 +1236,54 @@ Let's use this instead of the *&lt;sbadmin-content-text>* Meta Tag for displayin
       <sbadmin-card-content text="markdown:tutorial.about.md" title="About MetaStatic" />
     </sbadmin-sidebar-menu-item>
 ```
-Re-run the Builder and refresh the *index.html* page in your browser.  You'll now see the *About* content now nicely displayed in a *card* component.  You'll see now why we used the separate title text earlier:
+
+Re-run the Builder and refresh the *index.html* page in your browser.  You'll now see the *About* content nicely displayed in a *card* component.  You'll also see now why we used the separate title text earlier:
 
 ![SB Admin UI with card content](./images/sbadmin-14.png)
 
 
+## Displaying Tabbed Content
+
+Another way to format and display your content is to use a 
+[Bootstrap Tab Component](https://getbootstrap.com/docs/5.3/components/navs-tabs/#tabs)
+
+This can be used instead of a nested menu for displaying two or more related topics.
+
+The *&lt;sbadmin-tabs>* and *&lt;sbadmin-tab>* Meta Tags encapsulate the required behaviour for you.
+
+You can view their contents here:
+
+- [*sbadmin-tabs*](./examples/metaTagLibraries/sbadmin/sbadmin-tabs.mst)
+- [*sbadmin-tab*](./examples/metaTagLibraries/sbadmin/sbadmin-tab.mst)
+
+Let's use these for our *Installation* menu option content, to separately display the installation steps for Node.js and Bun.js.
+
+So instead of using the current combined text in the *install.md* content file, we'll use two other pre-defined content files for this:
+
+- install-node.md
+- install-bun.md
+
+The *&lt;sbadmin-tabs>* Meta Tag is used as the container for the *&lt;sbadmin-tab>* Meta Tags, the latter defining the individual tabs and their contents.
+
+Similarly to the *&lt;sbadmin-content-text>* Meta Tag, the *&lt;sbadmin-tabs>* Meta Tag allows you to optionally insert additional markup before the actual tabs by providing a slot named *beforetabs*.  This allows you to add, for example, a heading or title.
+
+Let's put this all together for the *Installation* menu item which you should change in your *index.meta* file as follows:
+
+```html
+      <sbadmin-sidebar-menu-item text="Installation" iconname="wrench">
+        <sbadmin-tabs>
+          <h1 slot="beforetabs">Installing MetaStatic</h1>
+          <sbadmin-tab title="Node.js" text="markdown:tutorial.install-node.md" active />
+          <sbadmin-tab title="Bun.js" text="markdown:tutorial.install-bun.md" />
+        </sbadmin-tabs>
+      </sbadmin-sidebar-menu-item>
+```
+
+Note that we've specified the first tab to be *active*, so it's automatically displayed when the content for the *Installation* option is selected, along with its associated text.
+
+Re-run the Builder and refresh the *index.html* page in your browser.  When you click the *Installation* menu option, you'll now see the tabbed display:
+
+![SB Admin UI with tabbed content](./images/sbadmin-15.png)
 
 
 ----
