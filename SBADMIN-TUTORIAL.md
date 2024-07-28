@@ -1221,6 +1221,26 @@ Re-run the Builder and refresh the *index.html* page in your browser.  You'll no
 
 ![SB Admin UI with markdown content](./images/sbadmin-13.png)
 
+## Using Cards to Format Content Text
+
+The *&lt;sbadmin-content-text>* Meta Tag is the most basic one to use for displaying Markup text content.
+
+Since the *sbadmin* UI is based on [*Bootstrap v5*](https://getbootstrap.com/), you can make use of its many built-in styled components.  We've therefore included a number of additional Meta Tags for styling your content.
+
+Let's start with a [*Card*](https://getbootstrap.com/docs/5.3/components/card/) which has been encapsulated in the *&lt;sbadmin-card-content>* Meta Tag.  You can [view its contents here](./examples/metaTagLibraries/sbadmin/sbadmin-card-content.mst).
+
+Let's use this instead of the *&lt;sbadmin-content-text>* Meta Tag for displaying the *About* content.  Edit the *About* menu item in your *index.meta* file as follows:
+
+```html
+    <sbadmin-sidebar-menu-item text="About" iconname="circle-info" active>
+      <sbadmin-card-content text="markdown:tutorial.about.md" title="About MetaStatic" />
+    </sbadmin-sidebar-menu-item>
+```
+Re-run the Builder and refresh the *index.html* page in your browser.  You'll now see the *About* content now nicely displayed in a *card* component.  You'll see now why we used the separate title text earlier:
+
+![SB Admin UI with card content](./images/sbadmin-14.png)
+
+
 
 
 ----
