@@ -7,16 +7,20 @@
  <sbadmin-sidebar-menu>
     <sbadmin-sidebar-heading text="Select a Menu Option" />
     <sbadmin-sidebar-menu-item text="About" iconname="circle-info" active>
-      <sbadmin-content-text text="markdown:tutorial.about.txt">
-        <h1 slot="beforetext">What is MetaStatic?</h1>
+      <sbadmin-content-text text="markdown:tutorial.about.md">
+        <h1 slot="beforetext">About MetaStatic</h1>
       </sbadmin-content-text>
     </sbadmin-sidebar-menu-item>
     <sbadmin-sidebar-nested-menu text="Technical" iconname="gears">
       <sbadmin-sidebar-menu-item text="Installation" iconname="wrench">
-        <sbadmin-content-text text="Installation text goes here..." />
+        <sbadmin-content-text text="markdown:tutorial.install.md">
+          <h1 slot="beforetext">Installing MetaStatic</h1>
+        </sbadmin-content-text>
       </sbadmin-sidebar-menu-item>
       <sbadmin-sidebar-menu-item text="Configuration" iconname="sliders">
-        <sbadmin-content-text text="Configuration text goes here..." />
+        <sbadmin-content-text text="markdown:tutorial.configure.md">
+          <h1 slot="beforetext">Configuring MetaStatic</h1>
+        </sbadmin-content-text>
       </sbadmin-sidebar-menu-item>
     </sbadmin-sidebar-nested-menu>
   </sbadmin-sidebar-menu>

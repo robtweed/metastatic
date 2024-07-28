@@ -1153,7 +1153,7 @@ So let's amend our *index.meta* file to use the first one for the *About* menu i
 
 ```html
     <sbadmin-sidebar-menu-item text="About" iconname="circle-info" active>
-      <sbadmin-content-text text="markdown:tutorial.about.txt">
+      <sbadmin-content-text text="markdown:tutorial.about.md">
         <h1 slot="beforetext">About MetaStatic</h1>
       </sbadmin-content-text>
     </sbadmin-sidebar-menu-item>
@@ -1178,9 +1178,9 @@ This syntax can be used for any Meta Tag attribute, and is of course normally us
     }
 ```  
   
-- the *filename* is simply the name of the file to be used from within the namespace-aliased directory.  The name must include the file extension.
+- the *filename* is simply the name of the file to be used from within the namespace-aliased directory.  The name must include the file extension which, by convention, will normally be *.md* which denotes these to be Markdown files.
 
-In our example above, *MetaStatic*'s Builder will therefore try to find the file *./sites/tutorial/content/about.txt* and will used the Node.js *marked* Markdown processor module to convert its contents to HTML.  This converted content will then be used as the value for the *text* attribute.
+In our example above, *MetaStatic*'s Builder will therefore try to find the file *./sites/tutorial/content/about.md* and will used the Node.js *marked* Markdown processor module to convert its contents to HTML.  This converted content will then be used as the value for the *text* attribute.
 
 Notice in our example that we're going to leave the heading defined for the *beforetext* slot.
 
@@ -1188,8 +1188,38 @@ Re-run the Builder and refresh the *index.html* page in your browser.  Now you'l
 
 ![SB Admin UI with markdown text](./images/sbadmin-12.png)
 
-Note that this text was imported at build time: it's not being retrieved from the file into the browser: all the text held in MetaStatic's CMS are pulled into the HTML file that the Builder creates.
+Note that this text was imported at build time: it's not being retrieved dynamically from the file into the browser: all the text content held in MetaStatic's CMS are pulled into the HTML file that the Builder creates.
 
+You might be wondering why we're handing the *About* content's title/heading with an *&lt;h1>* tag and the *beforetext* slot.  It could, of course, have been included in the Markdown content of the *about.md* file.  However, you'll see later while we're doing that here (spoiler: we're going to re-use that file with another *sbadmin* Meta Tag later, where we want to handle the heading separately).
+
+Let's now add similarly-managed text content to our other menu options.  Edit the Menu section of your *index.meta* file to contain this:
+
+```html
+ <sbadmin-sidebar-menu>
+    <sbadmin-sidebar-heading text="Select a Menu Option" />
+    <sbadmin-sidebar-menu-item text="About" iconname="circle-info" active>
+      <sbadmin-content-text text="markdown:tutorial.about.md">
+        <h1 slot="beforetext">About MetaStatic</h1>
+      </sbadmin-content-text>
+    </sbadmin-sidebar-menu-item>
+    <sbadmin-sidebar-nested-menu text="Technical" iconname="gears">
+      <sbadmin-sidebar-menu-item text="Installation" iconname="wrench">
+        <sbadmin-content-text text="markdown:tutorial.install.md">
+          <h1 slot="beforetext">Installing MetaStatic</h1>
+        </sbadmin-content-text>
+      </sbadmin-sidebar-menu-item>
+      <sbadmin-sidebar-menu-item text="Configuration" iconname="sliders">
+        <sbadmin-content-text text="markdown:tutorial.configure.md">
+          <h1 slot="beforetext">Configuring MetaStatic</h1>
+        </sbadmin-content-text>
+      </sbadmin-sidebar-menu-item>
+    </sbadmin-sidebar-nested-menu>
+  </sbadmin-sidebar-menu>
+```
+
+Re-run the Builder and refresh the *index.html* page in your browser.  You'll now see properly marked-up content for each of the menu options.  For example, the *Configuration* text will display as shown below when you click its menu option:
+
+![SB Admin UI with markdown content](./images/sbadmin-13.png)
 
 
 
