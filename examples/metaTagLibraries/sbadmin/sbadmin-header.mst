@@ -1,5 +1,5 @@
-<template slot="topbar">
-  <nav class="sb-topnav navbar navbar-light navbar-expand shadow navbar-mgw bg-mgw">
+<template slot="topbar" :color="^color|light">
+  <nav class="sb-topnav navbar navbar-:color navbar-expand shadow navbar-mgw bg-mgw">
     <slot name="header" />
   </nav>
 </template>

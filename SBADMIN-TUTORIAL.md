@@ -829,7 +829,7 @@ Let's try them out.  Edit your *index.meta* tag as follows:
 <sbadmin-root title="MetaStatic Demo">
   <sbadmin-header>
     <sbadmin-sidebar-toggle />
-    <sbadmin-brand text="MetaStatic Demo" src="images/logo.png" height="55" right="0" opacity="0.2" />
+    <sbadmin-brand text="MetaStatic Demo" src="images/logo.png" height="55" position="right" opacity="0.2" />
   </sbadmin-header>
 </sbadmin-root>
 ```
@@ -840,7 +840,7 @@ Before we re-run the Builder, let's just take a closer look at these two Meta Ta
 
 The *sbadmin-brand* Meta Tag allows you to specify text and/or an image.  In our example above, we're displaying both.  
 
-The *height*, *right* and *opacity* attributes allow you to size, position and blend the image/logo within the top bar.
+The *height*, *position* and *opacity* attributes allow you to size, position and blend the image/logo within the top bar.  The *position* attribute value can be *left*, *right* or *center*.
 
 It's a good idea to use a color tool to determine your logo file's RGB value(s) and style the top bar's background colour or background gradient to match (see the *sbadmin-root* attributes described earlier).  As it happens, the *sbadmin* Meta Tags are pre-styled with colours that match the example image/logo that are included in this repository, so you'll see how such colour matching can work.
 
@@ -913,7 +913,7 @@ So, let's edit the *index.meta* tag and we'll first add a copyright notice in th
 <sbadmin-root title="MetaStatic Demo">
   <sbadmin-header>
     <sbadmin-sidebar-toggle />
-    <sbadmin-brand text="MetaStatic Demo" src="images/logo.png" height="55" right="0" opacity="0.2" />
+    <sbadmin-brand text="MetaStatic Demo" src="images/logo.png" height="55" position="right" opacity="0.2" />
   </sbadmin-header>
   <sbadmin-footer>
     <sbadmin-copyright text="2024 MGateway Ltd" />
@@ -933,7 +933,7 @@ Now try also adding some footer text:
 <sbadmin-root title="MetaStatic Demo">
   <sbadmin-header>
     <sbadmin-sidebar-toggle />
-    <sbadmin-brand text="MetaStatic Demo" src="images/logo.png" height="55" right="0" opacity="0.2" />
+    <sbadmin-brand text="MetaStatic Demo" src="images/logo.png" height="55" position="right" opacity="0.2" />
   </sbadmin-header>
   <sbadmin-footer>
     <sbadmin-copyright text="2024 MGateway Ltd" />
@@ -982,7 +982,7 @@ Edit your *index.meta* file as follows:
 <sbadmin-root title="MetaStatic Demo">
   <sbadmin-header>
     <sbadmin-sidebar-toggle />
-    <sbadmin-brand text="MetaStatic Demo" src="images/logo.png" height="55" right="0" opacity="0.2" />
+    <sbadmin-brand text="MetaStatic Demo" src="images/logo.png" height="55" position="right" opacity="0.2" />
   </sbadmin-header>
   
   <sbadmin-sidebar-menu>
