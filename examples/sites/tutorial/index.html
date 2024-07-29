@@ -67,6 +67,16 @@
         margin-left: -225pxpx;
       }
 
+      .carousel-control-prev {
+        top: 100px;
+        align-items: start;
+      }
+
+      .carousel-control-next {
+        top: 100px;
+        align-items: start;
+      }
+
       @media (min-width: 992px) {
         #layoutSidenav #layoutSidenav_nav {
           transform: translateX(0);
@@ -141,6 +151,12 @@
                   </a>
                 </nav>
               </div>
+              <a class="nav-link sidebar-menu-item " id="menu-item-142" href="#" onclick="switchPage(event, '142')">
+                <div class="sb-nav-link-icon ">
+                  <i class="fas fa-chalkboard-user"></i>
+                </div>
+                <span>Use Case for MetaStatic</span>
+              </a>
             </div>
           </div>
         </nav>
@@ -236,6 +252,95 @@
               </span>
               <span>
               </span>
+            </div>
+            <div class="content-page collapse multi-collapse " id="content-page-142">
+              <div style="opacity: 0;">_</div>
+              <div class="carousel carousel-dark slide" id="carousel-149">
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <div class="card text-dark bg-light" style="width: 77%; margin: auto">
+                      <h5 class="card-header">JavaScript Frameworks</h5>
+                      <div class="card-body">
+                        <div class="card-text">
+                          <p>Many people these days are using complex and cumbersome JavaScript frameworks such as React, Vue or Angular, to create what are actually just static Web Sites where the content is largely fixed and only occasionally updated.</p>
+                          <p>This isn't perhaps so much of an issue if the maintainer of such a Web Site is technically well-versed in such a framework, but, more often than not, the maintainer is someone else in the organisation who has little or no detailed technical or programming expertise, but is more focused on ensuring that the content required for the site is accurate and kept up to date. Such a Web Site maintainer will find it difficult to learn and understand the complexities involved when changes need to be made, and, nine times out of ten will need to go back to the original developer (if they are still available!) in order to make the change.</p>
+                          <p>In any case, the use of such frameworks to create such Web Sites is often an unnecessary "sledgehammer to crack a nut".</p>
+                          <p>Furthermore, such a site will typically be slow to load and start for users, because it will require potentially huge files of JavaScript to be loaded into the browser before anything can begin to be rendered.</p>
+                          <p>And just to add insult to injury, Web Sites developed using JavaScript frameworks that dynamically build the markup by manipulating the page DOM can be difficult for web crawlers to properly and fully process and index the content for search engines to use, resulting in sub-optimal Search Engine Optimisation (SEO).</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="carousel-item ">
+                    <div class="card text-dark bg-light" style="width: 77%; margin: auto">
+                      <h5 class="card-header">Content Management Systems</h5>
+                      <div class="card-body">
+                        <div class="card-text">
+                          <p>For Web Sites that require maintenance of a lot of content that can change over time, the usual solution is to use a Content Management System (CMS). This requires specific technical skills and a potentially steep learning curve, and often the cost of a license for the CMS and/or associated database. The latter database may also need technical maintenance (eg backup, restore etc), again requiring specific technical expertise.</p>
+                          <p>As a result, many Web Site maintainers turn to commercial packaged solutions such as Wordpress, Wix, Squarespace etc, most of which incur licensing or subscription costs and/or remote/cloud hosting, and potentially constraining the look and feel of the Web Site. Migrating between such services can also be problematic, so vendor lock-in is a real risk of such a solution.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="carousel-item ">
+                    <div class="card text-dark bg-light" style="width: 77%; margin: auto">
+                      <h5 class="card-header">CSS/JavaScript Templates</h5>
+                      <div class="card-body">
+                        <div class="card-text">
+                          <p>Meanwhile, there are a great many pre-built templates that can be used to create complex, modern, responsive user interfaces for static web sites, with the entire content and functionality delivered as a single HTML page. See for example:</p>
+                          <ul>
+                            <li>the <a href="https://www.w3schools.com/css/css_rwd_templates.asp">W3 Schools W3.CSS Templates</a></li>
+                            <li>the <a href="https://startbootstrap.com/theme/sb-admin-2">SB Admin Dashboard Template</a></li>
+                          </ul>
+                          <p>Templates such as these don't require anything other than their own pre-defined CSS stylesheets and some behaviour-specific JavaScript files. They don't require React, Vue, Angular or any other build and runtime framework. As a result they are incredibly fast to load and run, and, being static HTML files, can be crawled and indexed completely for use by all search engines.</p>
+                          <p>Whilst impressive in terms of their look and feel and functionality, tailoring such templates for a specific use case is, however, time-consuming, error-prone and fiddly, and requires a good understanding of HTML and JavaScript. For a full web site, the page would be huge, and making content changes would require scanning or searching the HTML page and editing in situ. More complex modifications, such as adding or changing new menu options, tabbed panels or content sections would probably be beyond the skills of a basic Web Site maintainer and would be a cumbersome task.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="carousel-item ">
+                    <div class="card text-dark bg-light" style="width: 77%; margin: auto">
+                      <h5 class="card-header">Breaking Down Templates into Building Blocks</h5>
+                      <div class="card-body">
+                        <div class="card-text">
+                          <p>The thinking behind <em>MetaStatic</em> is: what if it was possible for a technically skilled developer to break down such templates into a hierarchy of high-level building blocks - Meta Tags - that represent the individual elements or components (eg the backdrop, the menus, tab controls, carousels etc) from which that template is constructed? Armed with a library of such Meta Tags, a relatively unskilled Web Site maintainer could then define their own spefically-customised version that conforms to the template, but containing their own content and using a much simpler and intuitive shorthand description summarising the bulding blocks and content needed for their specific site.</p>
+                          <p>The idea would be to process such a high-level Meta Tag description and generate a user-specific version of the template HTML that could be loaded into the browser. If any changes were made to the Meta Tag description, simply re-running the build process would create an updated version of the HTML file needed for the Web Server.</p>
+                          <p>The technical expertise required to build a Meta Tag library for a particular template would be a one-off expert task. However, the resulting Tag Library could then be used repeatedly and easily by any number of Web Site maintainers who would not require particularly detailed technical skills.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="carousel-item ">
+                    <div class="card text-dark bg-light" style="width: 77%; margin: auto">
+                      <h5 class="card-header">Content Management</h5>
+                      <div class="card-body">
+                        <div class="card-text">
+                          <p>Furthermore, if the text content of the Web Site could be held separately, maintained in simple text files in a directory, using the now widely used and easily understood Markdown syntax (using any convenient editor from <em>nano</em> upwards!), then this content could be pulled in at build time for inclusion in the final template file. All this would require is a simple file naming convention and the ability to reference the corresponding file name in a Meta Tag that made use of that content.</p>
+                          <p>No database would be needed, and no license or subscription fees needed. All that would be needed would be a basic understanding of a server's directory structure and the ability to use a text editor and devise a simple file nomeclature convention.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="carousel-item ">
+                    <div class="card text-dark bg-light" style="width: 77%; margin: auto">
+                      <h5 class="card-header">Ergo MetaStatic</h5>
+                      <div class="card-body">
+                        <div class="card-text">
+                          <p>So these are the underlying ideas and concepts behind <em>MetaStatic</em>: a new and deceptively simple way to create and maintain static Web Sites of any size and complexity, without the need for any complex JavaScript frameworks, CMS, database or build chain.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-149" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carousel-149" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
             </div>
           </div>
         </main>

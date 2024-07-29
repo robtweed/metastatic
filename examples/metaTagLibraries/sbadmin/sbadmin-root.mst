@@ -79,6 +79,16 @@ body {
   margin-left: -:menuwidthpx;
 }
 
+.carousel-control-prev {
+  top: 100px;
+  align-items: start;
+}
+
+.carousel-control-next {
+  top: 100px;
+  align-items: start;
+}
+
 @media (min-width: 992px) {
   #layoutSidenav #layoutSidenav_nav {
     transform: translateX(0);
@@ -95,7 +105,7 @@ body {
   }
   .sb-sidenav-toggled #layoutSidenav #layoutSidenav_content:before {
     display: none;
-  }
+  }  
 }
 
   </style>

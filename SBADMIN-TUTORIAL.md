@@ -1304,7 +1304,136 @@ Re-run the Builder and refresh the *index.html* page in your browser.  When you 
 
 ![SB Admin UI with tabs and card](./images/sbadmin-16.png)
 
-----
-### To be continued...
+## Using Carousels to Display Text Content
 
+Another way to display text content is to use 
+[Bootstrap's Carousels](https://getbootstrap.com/docs/5.3/components/carousel/).  These can work well where you have a sequence of related text sections.  Rather than having a lengthy set of paragraphs that the user has to scroll through, you can display each paragraph or section in its own carousel card, and the user can move forwards or backwards through the content, essentially like a set of slides.
+
+Carousels can, of course, also be used for displaying images, but in this example we'll just use one for text.  We're going to use it for the *usecase-{{no}}.md* files that 
+[you'll see here](./examples/sites/tutorial/content).
+
+Let's first add a new menu item to the end of the main menu, titled *Use Case for MetaStatic*:
+
+```html
+ <sbadmin-sidebar-menu>
+    <sbadmin-sidebar-heading text="Select a Menu Option" />
+    <sbadmin-sidebar-menu-item text="About" iconname="circle-info" active>
+      <sbadmin-card-content text="markdown:tutorial.about.md" title="About MetaStatic" />
+    </sbadmin-sidebar-menu-item>
+    <sbadmin-sidebar-nested-menu text="Technical" iconname="gears">
+      <sbadmin-sidebar-menu-item text="Installation" iconname="wrench">
+        <sbadmin-tabs>
+          <h1 slot="beforetabs">Installing MetaStatic</h1>
+          <sbadmin-tab title="Node.js" text="markdown:tutorial.install-node.md" active />
+          <sbadmin-tab title="Bun.js">
+            <sbadmin-card-content slot="alttabcontent" text="markdown:tutorial.install-bun.md" title="Bun.js" />
+          </sbadmin-tab>
+        </sbadmin-tabs>
+      </sbadmin-sidebar-menu-item>
+      <sbadmin-sidebar-menu-item text="Configuration" iconname="sliders">
+        <sbadmin-content-text text="markdown:tutorial.configure.md">
+          <h1 slot="beforetext">Configuring MetaStatic</h1>
+        </sbadmin-content-text>
+      </sbadmin-sidebar-menu-item>
+    </sbadmin-sidebar-nested-menu>
+
+    <sbadmin-sidebar-menu-item text="Use Case for MetaStatic" iconname="chalkboard-user">
+    </sbadmin-sidebar-menu-item>
+    
+  </sbadmin-sidebar-menu>
+```
+
+Inside this menu item tag, we'll specify that we want to use a Carousel by adding a
+[*&lt;sbadmin-carousel>*](./examples/metaTagLibraries/sbadmin/sbadmin-carousel.mst) Meta Tag.  This creates the styled container for the
+[*&lt;sbadmin-carousel-item>*](./examples/metaTagLibraries/sbadmin/sbadmin-carousel-item.mst) Meta Tags.
+
+```html
+    <sbadmin-sidebar-menu-item text="Use Case for MetaStatic" iconname="chalkboard-user">
+      <sbadmin-carousel>
+      </sbadmin-carousel>
+    </sbadmin-sidebar-menu-item>
+```
+
+Then we add each Carousel Item.  We'll start with the first which must be specified as *active*:
+
+```html
+    <sbadmin-sidebar-menu-item text="Use Case for MetaStatic" iconname="chalkboard-user">
+      <sbadmin-carousel>
+        <sbadmin-carousel-item active>
+        </sbadmin-carousel-item>       
+      </sbadmin-carousel>
+    </sbadmin-sidebar-menu-item>
+```
+
+Within each Carousel Item we can use either of the text formatting Meta Tags we've used previously:
+
+- *sbadmin-content-text*
+- *sbadmin-card-content*
+
+We'll just need to override their default slot with the one provided by the *sbadmin-carousel-item* Meta Tag: *carouselitem*.  Let's use Cards to display each Carousel Item.  Here's the first one:
+
+```html
+    <sbadmin-sidebar-menu-item text="Use Case for MetaStatic" iconname="chalkboard-user">
+      <sbadmin-carousel>
+        <sbadmin-carousel-item active>
+          <sbadmin-card-content slot="carouselitem" width="77%" title="JavaScript Frameworks" text="markdown:tutorial.usecase-1.md" />
+        </sbadmin-carousel-item>       
+      </sbadmin-carousel>
+    </sbadmin-sidebar-menu-item>
+```
+
+We're going to set the card width to 77% to provide room on either side for the Carousel controls.
+
+OK so now we have established the pattern, let's add all the other Carousel Items.  Note that only the first *sbadmin-carousel-item* should be specified as *active*:
+
+```html
+    <sbadmin-sidebar-menu-item text="Use Case for MetaStatic" iconname="chalkboard-user">
+      <sbadmin-carousel>
+      
+        <sbadmin-carousel-item active>
+          <sbadmin-card-content slot="carouselitem" width="77%" title="JavaScript Frameworks" text="markdown:tutorial.usecase-1.md" />
+        </sbadmin-carousel-item>
+        
+        <sbadmin-carousel-item>
+          <sbadmin-card-content slot="carouselitem" width="77%" title="Content Management Systems" text="markdown:tutorial.usecase-2.md" />
+        </sbadmin-carousel-item> 
+        
+        <sbadmin-carousel-item>
+          <sbadmin-card-content slot="carouselitem" width="77%" title="CSS/JavaScript Templates" text="markdown:tutorial.usecase-3.md" />
+        </sbadmin-carousel-item>           
+        
+        <sbadmin-carousel-item>
+          <sbadmin-card-content slot="carouselitem" width="77%" title="Breaking Down Templates into Building Blocks" text="markdown:tutorial.usecase-4.md" />
+        </sbadmin-carousel-item> 
+        
+        <sbadmin-carousel-item>
+          <sbadmin-card-content slot="carouselitem" width="77%" title="Content Management" text="markdown:tutorial.usecase-5.md" />
+        </sbadmin-carousel-item> 
+                        
+        <sbadmin-carousel-item>
+          <sbadmin-card-content slot="carouselitem" width="77%" title="Ergo MetaStatic" text="markdown:tutorial.usecase-6.md" />
+        </sbadmin-carousel-item> 
+ 
+      </sbadmin-carousel>
+    </sbadmin-sidebar-menu-item>
+```
+
+Re-run the Builder and refresh the *index.html* page in your browser.  When you click the new *Use Case for MetaStatic* menu option, you'll now see the first of the Carousel items.  Click the *next* and *previous* controls (< and >) to move through the Carousel Items.
+
+![SB Admin UI with carousel](./images/sbadmin-17.png)
+
+----
+
+## Conclusions
+
+You've now learnt how to use MetaStatic and how to build a Web Site using a Meta Tag Library.
+
+The *sbadmin* Tag Library implements just a sub-set of the SB Admin UI, but hopefully enough:
+
+- to provide the main components needed for anyone wanting to build and maintain Web Sites;
+- to demonstrate to technical developers how to create and design MetaStatic Meta Tags.
+
+Feel free to implement more *sbadmin* Meta Tags of your own, or try creating a completely different Tag Library based on some other template.
+
+We hope you find MetaStatic to be useful, productive and fun!
 

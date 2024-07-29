@@ -26,11 +26,13 @@ The file containing the Meta Tag-based definition of a web site is then used as 
 
 ## Example
 
-Take a look at [this example Web Site definition file](./examples/sites/tutorial/index.meta.14) which uses
- [this Meta Tag library](./examples/metaTagLibraries/sbadmin).
+Take a look at [this example Web Site definition file](./examples/sites/tutorial/index.meta.15).
+
+It uses [this Meta Tag library](./examples/metaTagLibraries/sbadmin), and the 
+[text files it refers to are held here](./examples/sites/tutorial/content).
 
 [Click here](https://robtweed.github.io/metastatic/examples/sites/tutorial/index.html)
- to view and run the HTML page that MetaStatic generated from it. 
+ to view and run the HTML page that MetaStatic generated from these files. 
 
 Find out more about this example in [our tutorial](./SBADMIN-TUTORIAL.md).
 

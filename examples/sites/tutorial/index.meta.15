@@ -1,0 +1,64 @@
+<sbadmin-root title="MetaStatic Demo">
+  <sbadmin-header>
+    <sbadmin-sidebar-toggle />
+    <sbadmin-brand text="MetaStatic Demo" src="images/logo.png" height="55" right="0" opacity="0.2" />
+  </sbadmin-header>
+  
+ <sbadmin-sidebar-menu>
+    <sbadmin-sidebar-heading text="Select a Menu Option" />
+    <sbadmin-sidebar-menu-item text="About" iconname="circle-info" active>
+      <sbadmin-card-content text="markdown:tutorial.about.md" title="About MetaStatic" />
+    </sbadmin-sidebar-menu-item>
+    <sbadmin-sidebar-nested-menu text="Technical" iconname="gears">
+      <sbadmin-sidebar-menu-item text="Installation" iconname="wrench">
+        <sbadmin-tabs>
+          <h1 slot="beforetabs">Installing MetaStatic</h1>
+          <sbadmin-tab title="Node.js" text="markdown:tutorial.install-node.md" active />
+          <sbadmin-tab title="Bun.js">
+            <sbadmin-card-content slot="alttabcontent" text="markdown:tutorial.install-bun.md" title="Bun.js" />
+          </sbadmin-tab>
+        </sbadmin-tabs>
+      </sbadmin-sidebar-menu-item>
+      <sbadmin-sidebar-menu-item text="Configuration" iconname="sliders">
+        <sbadmin-content-text text="markdown:tutorial.configure.md">
+          <h1 slot="beforetext">Configuring MetaStatic</h1>
+        </sbadmin-content-text>
+      </sbadmin-sidebar-menu-item>
+    </sbadmin-sidebar-nested-menu>
+    
+    <sbadmin-sidebar-menu-item text="Use Case for MetaStatic" iconname="chalkboard-user">
+      <sbadmin-carousel>
+      
+        <sbadmin-carousel-item active>
+          <sbadmin-card-content slot="carouselitem" width="77%" title="JavaScript Frameworks" text="markdown:tutorial.usecase-1.md" />
+        </sbadmin-carousel-item>
+        
+        <sbadmin-carousel-item>
+          <sbadmin-card-content slot="carouselitem" width="77%" title="Content Management Systems" text="markdown:tutorial.usecase-2.md" />
+        </sbadmin-carousel-item> 
+        
+        <sbadmin-carousel-item>
+          <sbadmin-card-content slot="carouselitem" width="77%" title="CSS/JavaScript Templates" text="markdown:tutorial.usecase-3.md" />
+        </sbadmin-carousel-item>           
+        
+        <sbadmin-carousel-item>
+          <sbadmin-card-content slot="carouselitem" width="77%" title="Breaking Down Templates into Building Blocks" text="markdown:tutorial.usecase-4.md" />
+        </sbadmin-carousel-item> 
+        
+        <sbadmin-carousel-item>
+          <sbadmin-card-content slot="carouselitem" width="77%" title="Content Management" text="markdown:tutorial.usecase-5.md" />
+        </sbadmin-carousel-item> 
+                        
+        <sbadmin-carousel-item>
+          <sbadmin-card-content slot="carouselitem" width="77%" title="Ergo MetaStatic" text="markdown:tutorial.usecase-6.md" />
+        </sbadmin-carousel-item> 
+ 
+      </sbadmin-carousel>
+    </sbadmin-sidebar-menu-item>
+  </sbadmin-sidebar-menu>
+
+  <sbadmin-footer>
+    <sbadmin-copyright text="2024 MGateway Ltd" />
+    <sbadmin-footer-text text="Registered in England" />
+  </sbadmin-footer>
+</sbadmin-root>
