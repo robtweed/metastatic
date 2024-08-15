@@ -76,7 +76,7 @@ body {
   min-width: 0;
   flex-grow: 1;
   min-height: calc(100vh - 56px);
-  margin-left: -:menuwidthpx;
+  margin-left: -:menuwidth;
 }
 
 .carousel-control-prev {
@@ -111,7 +111,7 @@ body {
   </style>
 </template>
 
-<template>
+<template slot="*body">
   <span>
     <slot name="topbar" />
   </span>

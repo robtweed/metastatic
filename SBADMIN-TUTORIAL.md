@@ -435,9 +435,12 @@ Let's go through the attributes one by one:
 
 #### slot
 
-This attribute tells MetaStatic's Builder where to insert the markup that's within the &lt;template> tag.  The value in this case is *\*head*.  That asterisk (\*) prefix denotes that this refers to an actual HTML tag within the target page, in this case the initially empty &lt;head> tag.
+This attribute tells MetaStatic's Builder where to insert the markup that's within the &lt;template> tag.  The value in this case is *\*head*.  That asterisk (\*) prefix denotes that this refers to one of two reserved slot names that denote:
 
-It also highlights an important aspect of MetaStatic's Builder: its starting point is an empty HTML page:
+- *\*head*: The document's &lt;head> tag
+- *\*body*: The document's &lt;body> tag
+
+It also highlights an important aspect of MetaStatic's Builder: its starting point is an empty HTML page or document:
 
 ```html
 <html>
@@ -446,9 +449,9 @@ It also highlights an important aspect of MetaStatic's Builder: its starting poi
 </html>
 ```
 
-So the first or "root" Meta Tag that you specify in your *index.meta* Web Site description will be inserted by default into the &lt;body> tag, unless you tell it otherwise.  So in this case, the first &lt;template> tag is defining what we want to go into our &lt;head> section.
+So the first or "root" Meta Tag that you specify in your *index.meta* Web Site description will start the process of populating that empty document, and in this case, the first &lt;template> tag is defining what we want to go into our document's &lt;head> section.
 
-Note that MetaStatic will use the first instance of a tag that's referenced in a *slot* attribute (ie if the value is prefixed with an asterisk).  Of course, here there's only one &lt;head> tag, so that's OK!
+Meta Tag *template*s will normally specify a slot into which their contents will be inserted by MetaStatic's Builder.  We'll see how they are defined and used later.
 
 #### :title
 
@@ -486,7 +489,7 @@ The variable *:title* could, in fact, be used as many times as needed within the
 This allows you to optionally specify an alternative URL for the main CSS stylesheet.  If you look at its value in the template:
 
 ```code
-:cssurl="^cssurl|hhttps://startbootstrap.github.io/startbootstrap-sb-admin/css/styles.css"
+:cssurl="^cssurl|https://startbootstrap.github.io/startbootstrap-sb-admin/css/styles.css"
 ```
 
 you'll see that once again it has two parts separated by a vertical bar character (|).  The first part tells tells MetaStatic's Builder to use the actual value in the &lt;sbadmin-root> tag that was used in the *index.meta* file - if it can find one.  We haven't specified a value however: all we specified was:
@@ -619,10 +622,10 @@ If you require menu options with longer than normal text descriptions, you may n
 
 ### Second Template
 
-The *sbadmin-root* Meta Tag's second template is much simpler and defines the specifically-styled markup that constitutes the basic SB Admin UI scaffolding.  This markup belongs within the generate Web Page's &lt;body> tag which, by default, is where MetaStatic's Builder will insert it.  Hence, the second Template starts with only a simple &lt;template> tag without specifying a *slot*:
+The *sbadmin-root* Meta Tag's second template is much simpler and defines the specifically-styled markup that constitutes the basic SB Admin UI scaffolding.  This markup belongs within the generate Web Page's &lt;body> tag, so the *&lt;template>* tag specifies its *slot* to be *\*body*:
 
 ```html
-<template>
+<template slot="*body">
   <span>
     <slot name="topbar" />
   </span>
@@ -633,7 +636,7 @@ The *sbadmin-root* Meta Tag's second template is much simpler and defines the sp
 </template>
 ``` 
 
-The key thing to notice within this Template are the four *slots*:
+The key thing to notice within this Template are the four *slots* that it defines:
 
 - topbar:
 
@@ -1119,19 +1122,25 @@ Let's modify our previous version of the *index.meta* file to use this tag inste
   </sbadmin-sidebar-menu>
 ```
 
-The *&lt;sbadmin-content-text>* tag also allows you to add extra tags before and after its main text content: it provides two optional slots: *beforetext* and *aftertext*.  Let's use this to add a heading to the *About* text:
+The *&lt;sbadmin-content-text>* tag also allows you to specify a heading, eg::
 
 ```html
     <sbadmin-sidebar-menu-item text="About" iconname="circle-info" active>
-      <sbadmin-content-text text="About text goes here...">
-        <h1 slot="beforetext">About MetaStatic</h1>
-      </sbadmin-content-text>
+      <sbadmin-content-text text="About text goes here..." title="About MetaStatic" />
     </sbadmin-sidebar-menu-item>
 ```
 
 Re-run the Builder and refresh the *index.html* page in your browser.  You should now see the *About* text in the *content* panel pretty much as before, but now there's big title at the start of it:
 
 ![SB Admin UI with content text](./images/sbadmin-11.png)
+
+You can reduce the size of the heading text by adding another attribute - *h* - that specifies the *h* tag styling to be used.  Use a number between 1 and 6 to define *h1*, *h2* etc, eg:
+
+```html
+    <sbadmin-sidebar-menu-item text="About" iconname="circle-info" active>
+      <sbadmin-content-text text="About text goes here..." title="About MetaStatic" h="3" />
+    </sbadmin-sidebar-menu-item>
+```
 
 ### Using MetaStatic's Content Management System
 
@@ -1153,9 +1162,7 @@ So let's amend our *index.meta* file to use the first one for the *About* menu i
 
 ```html
     <sbadmin-sidebar-menu-item text="About" iconname="circle-info" active>
-      <sbadmin-content-text text="markdown:tutorial.about.md">
-        <h1 slot="beforetext">About MetaStatic</h1>
-      </sbadmin-content-text>
+      <sbadmin-content-text text="markdown:tutorial.about.md" title="About MetaStatic" h="3" />
     </sbadmin-sidebar-menu-item>
 ```
 
@@ -1190,7 +1197,7 @@ Re-run the Builder and refresh the *index.html* page in your browser.  Now you'l
 
 Note that this text was imported at build time: it's not being retrieved dynamically from the file into the browser: all the text content held in MetaStatic's CMS are pulled into the HTML file that the Builder creates.
 
-You might be wondering why we're handing the *About* content's title/heading with an *&lt;h1>* tag and the *beforetext* slot.  It could, of course, have been included in the Markdown content of the *about.md* file.  However, you'll see later while we're doing that here (spoiler: we're going to re-use that file with another *sbadmin* Meta Tag later, where we want to handle the heading separately).
+**Note**: You might have realised that the markdown text within the content file could have included a title.  If this is the case, simply leave out the *title* attribute from the *&lt;sbadmin-content-text>* tag.
 
 Let's now add similarly-managed text content to our other menu options.  Edit the Menu section of your *index.meta* file to contain this:
 
@@ -1198,20 +1205,14 @@ Let's now add similarly-managed text content to our other menu options.  Edit th
  <sbadmin-sidebar-menu>
     <sbadmin-sidebar-heading text="Select a Menu Option" />
     <sbadmin-sidebar-menu-item text="About" iconname="circle-info" active>
-      <sbadmin-content-text text="markdown:tutorial.about.md">
-        <h1 slot="beforetext">About MetaStatic</h1>
-      </sbadmin-content-text>
+      <sbadmin-content-text text="markdown:tutorial.about.md" title="About MetaStatic" h="3" />
     </sbadmin-sidebar-menu-item>
     <sbadmin-sidebar-nested-menu text="Technical" iconname="gears">
       <sbadmin-sidebar-menu-item text="Installation" iconname="wrench">
-        <sbadmin-content-text text="markdown:tutorial.install.md">
-          <h1 slot="beforetext">Installing MetaStatic</h1>
-        </sbadmin-content-text>
+        <sbadmin-content-text text="markdown:tutorial.install.md" title="Installing MetaStatic" />
       </sbadmin-sidebar-menu-item>
       <sbadmin-sidebar-menu-item text="Configuration" iconname="sliders">
-        <sbadmin-content-text text="markdown:tutorial.configure.md">
-          <h1 slot="beforetext">Configuring MetaStatic</h1>
-        </sbadmin-content-text>
+        <sbadmin-content-text text="markdown:tutorial.configure.md" title="Configuring MetaStatic" />
       </sbadmin-sidebar-menu-item>
     </sbadmin-sidebar-nested-menu>
   </sbadmin-sidebar-menu>
@@ -1241,6 +1242,37 @@ Re-run the Builder and refresh the *index.html* page in your browser.  You'll no
 
 ![SB Admin UI with card content](./images/sbadmin-14.png)
 
+MetaStatic also allows you to use a Markdown-styled document that has a header as its first line.  Take a look at [this alternative version](./examples/sites/tutorial/content/about-2.md) of the *about.md* file.  You'll see that it includes a header as its first line, denoted by the *#* prefix:
+
+```code
+# About MetaStatic
+
+*MetaStatic* is a JavaScript tool that allows you to build and maintain a static web site using:
+... etc
+
+```
+
+MetaStatic allows you to specify that you just want the header by specifying:
+
+```code
+  title="markdown:tutorial.about-2.md#header"
+```
+
+You can also specify that you want the body - *ie* everything after, but not including, the header:
+
+```code
+  text="markdown:tutorial.about-2.md#body"
+```
+
+So we could use this version of the Markdown content file as follows:
+
+```html
+    <sbadmin-sidebar-menu-item text="About" iconname="circle-info" active>
+      <sbadmin-card-content text="markdown:tutorial.about-2.md#body" title="markdown:tutorial.about-2.md#header" />
+    </sbadmin-sidebar-menu-item>
+```
+
+Try it out for yourself.
 
 ## Displaying Tabbed Content
 
@@ -1265,14 +1297,13 @@ So instead of using the current combined text in the *install.md* content file, 
 
 The *&lt;sbadmin-tabs>* Meta Tag is used as the container for the *&lt;sbadmin-tab>* Meta Tags, the latter defining each individual tab and its content.
 
-Similarly to the *&lt;sbadmin-content-text>* Meta Tag, the *&lt;sbadmin-tabs>* Meta Tag allows you to optionally insert additional markup before the actual tabs by providing a slot named *beforetabs*.  This allows you to add, for example, a heading or title.
+Similarly to the *&lt;sbadmin-content-text>* Meta Tag, the *&lt;sbadmin-tabs>* Meta Tag allows you to optionally define a title.
 
 Let's put this all together for the *Installation* menu item which you should change in your *index.meta* file as follows:
 
 ```html
       <sbadmin-sidebar-menu-item text="Installation" iconname="wrench">
-        <sbadmin-tabs>
-          <h1 slot="beforetabs">Installing MetaStatic</h1>
+        <sbadmin-tabs title="Installing MetaStatic">
           <sbadmin-tab title="Node.js" text="markdown:tutorial.install-node.md" active />
           <sbadmin-tab title="Bun.js" text="markdown:tutorial.install-bun.md" />
         </sbadmin-tabs>
@@ -1285,7 +1316,7 @@ Re-run the Builder and refresh the *index.html* page in your browser.  When you 
 
 ![SB Admin UI with tabbed content](./images/sbadmin-15.png)
 
-Of course you're now probably wondering if you can combine Tabs and Cards, ie displaying the tabbed content within a card.  The answer is yes, and it's made possible by an optionall slot named *alttabcontent* provided by the *&lt;sbadmin-tab>* Meta Tag.
+Of course you're now probably wondering if you can combine Tabs and Cards, ie displaying the tabbed content within a card.  The answer is yes, and it's made possible by an optional slot named *tabcontent* provided by the *&lt;sbadmin-tab>* Meta Tag.  To use this, simply override the *&lt;sbadmin-card-content>* Meta Tag's default slot by specifying the *tabcontent* slot in a *slot* attribute.
 
 Let's use this to change the *Installation* text for the Bun.js tab to use a Card:
 
@@ -1295,7 +1326,7 @@ Let's use this to change the *Installation* text for the Bun.js tab to use a Car
           <h1 slot="beforetabs">Installing MetaStatic</h1>
           <sbadmin-tab title="Node.js" text="markdown:tutorial.install-node.md" active />
           <sbadmin-tab title="Bun.js">
-            <sbadmin-card-content slot="alttabcontent" text="markdown:tutorial.install-bun.md" title="Bun.js" />
+            <sbadmin-card-content slot="tabcontent" text="markdown:tutorial.install-bun.md" title="Bun.js" />
           </sbadmin-tab>
         </sbadmin-tabs>
       </sbadmin-sidebar-menu-item>
@@ -1376,10 +1407,16 @@ We'll just need to override their default slot with the one provided by the *sba
     <sbadmin-sidebar-menu-item text="Use Case for MetaStatic" iconname="chalkboard-user">
       <sbadmin-carousel>
         <sbadmin-carousel-item active>
-          <sbadmin-card-content slot="carouselitem" width="77%" title="JavaScript Frameworks" text="markdown:tutorial.usecase-1.md" />
+          <sbadmin-card-content slot="carouselitem" width="77%" title="markdown:tutorial.usecase-1.md#header" text="markdown:tutorial.usecase-1.md#body" />
         </sbadmin-carousel-item>       
       </sbadmin-carousel>
     </sbadmin-sidebar-menu-item>
+```
+
+**Note**: The *usecase-1.md* file includes a header which we want to display in the Card header, whilst we want to display the Markdown content's body (*ie* everything else apart from the header) in the Card's body.  We therefore use the *#header* and *#body* suffixes at the end of the file references:
+
+```html
+          <sbadmin-card-content slot="carouselitem" width="77%" title="markdown:tutorial.usecase-1.md#header" text="markdown:tutorial.usecase-1.md#body" />
 ```
 
 We're going to set the card width to 77% to provide room on either side for the Carousel controls.
@@ -1391,27 +1428,27 @@ OK so now we have established the pattern, let's add all the other Carousel Item
       <sbadmin-carousel>
       
         <sbadmin-carousel-item active>
-          <sbadmin-card-content slot="carouselitem" width="77%" title="JavaScript Frameworks" text="markdown:tutorial.usecase-1.md" />
+<sbadmin-card-content slot="carouselitem" width="77%" title="markdown:tutorial.usecase-1.md#header" text="markdown:tutorial.usecase-1.md#body" />
         </sbadmin-carousel-item>
         
         <sbadmin-carousel-item>
-          <sbadmin-card-content slot="carouselitem" width="77%" title="Content Management Systems" text="markdown:tutorial.usecase-2.md" />
+<sbadmin-card-content slot="carouselitem" width="77%" title="markdown:tutorial.usecase-2.md#header" text="markdown:tutorial.usecase-2.md#body" />
         </sbadmin-carousel-item> 
         
         <sbadmin-carousel-item>
-          <sbadmin-card-content slot="carouselitem" width="77%" title="CSS/JavaScript Templates" text="markdown:tutorial.usecase-3.md" />
+<sbadmin-card-content slot="carouselitem" width="77%" title="markdown:tutorial.usecase-3.md#header" text="markdown:tutorial.usecase-3.md#body" />
         </sbadmin-carousel-item>           
         
         <sbadmin-carousel-item>
-          <sbadmin-card-content slot="carouselitem" width="77%" title="Breaking Down Templates into Building Blocks" text="markdown:tutorial.usecase-4.md" />
+<sbadmin-card-content slot="carouselitem" width="77%" title="markdown:tutorial.usecase-4.md#header" text="markdown:tutorial.usecase-4.md#body" />
         </sbadmin-carousel-item> 
         
         <sbadmin-carousel-item>
-          <sbadmin-card-content slot="carouselitem" width="77%" title="Content Management" text="markdown:tutorial.usecase-5.md" />
+<sbadmin-card-content slot="carouselitem" width="77%" title="markdown:tutorial.usecase-5.md#header" text="markdown:tutorial.usecase-5.md#body" />
         </sbadmin-carousel-item> 
                         
         <sbadmin-carousel-item>
-          <sbadmin-card-content slot="carouselitem" width="77%" title="Ergo MetaStatic" text="markdown:tutorial.usecase-6.md" />
+<sbadmin-card-content slot="carouselitem" width="77%" title="markdown:tutorial.usecase-6.md#header" text="markdown:tutorial.usecase-6.md#body" />
         </sbadmin-carousel-item> 
  
       </sbadmin-carousel>
@@ -1421,6 +1458,56 @@ OK so now we have established the pattern, let's add all the other Carousel Item
 Re-run the Builder and refresh the *index.html* page in your browser.  When you click the new *Use Case for MetaStatic* menu option, you'll now see the first of the Carousel items.  Click the *next* and *previous* controls (< and >) to move through the Carousel Items.
 
 ![SB Admin UI with carousel](./images/sbadmin-17.png)
+
+
+## Making Use of the MetaStatic *&lt;foreach>* Tag
+
+You're probably thinking that the specification of each Carousel item in the previous example was both laborious and repetitive.  The only thing that was different for each Carousel item definition was the Markdown file name, each of which had a number from 1 to 6:
+
+- usecase-{{number}}.md
+
+Wouldn't it be nice to define a loop and iterate through each of these?  This is precisely what the special *&lt;foreach>* Tag allows you to do.
+
+Whilst you can use the *&lt;foreach>* Tag in your own *index.meta* file, its use is a little complex and more suited to being used by a developer to construct a Meta Tag with a built-in loop.
+
+Take a look at the [*&lt;sbadmin-carousel-cards>* Tag](./examples/metaTagLibraries/sbadmin/sbadmin-carousel-cards.mst).  You'll see that it includes the *&lt;foreach>* Tag to create a loop:
+
+```html
+<template :namespace="^namespace" :prefix="^filenameprefix">
+  <sbadmin-carousel>
+    <foreach type="filename" namespace=":namespace" prefix=":prefix" >
+      <sbadmin-carousel-item active="=><index===0 && 'active'">
+        <sbadmin-card-content slot="carouselitem" width="77%" title="markdown::namespace.<iterator#header" text="markdown::namespace.<iterator#body" />
+      </sbadmin-carousel-item>
+    </foreach>
+  </sbadmin-carousel>
+</template>
+```
+
+If you specify a *foreach* type of *filename*, as in this example, MetaStatic will loop through all the files in the specified *namespace* folder where the filename is prefixed by the text specified by the *prefix* attribute.
+
+So in our example, we would specify a prefix of *usecase-*, and it will find all the files we want and put them into alphanumeric order before processing each one within the loop.
+
+Inside the loop we make use of two special attribute variables that are provided by MetaStatic:
+
+- *<index*: the loop index number, which starts at 0;
+- *<iterator*: for a *foreach* of type *filename*, this will be the filename for each loop iteration.
+
+These are simply applied to the standard *sbadmin* Meta Tags that we're using inside the *foreach* loop.
+
+This example also demonstrates another important aspect of MetaStatic: Meta Tags can be layered inside each other.
+
+So, let's modify our previous example to make use of this *&lt;sbadmin-carousel-cards>* Tag.  All those repetitive Carousel tags can be simply replaced with this:
+
+```html
+    <sbadmin-sidebar-menu-item text="Use Case for MetaStatic" iconname="chalkboard-user">
+      <sbadmin-carousel-cards namespace="tutorial" filenameprefix="usecase-" />
+    </sbadmin-sidebar-menu-item>
+```
+
+Re-run the Builder and refresh the *index.html* page in your browser.  When you click the new *Use Case for MetaStatic* menu option, you'll see exactly the same set of cards in the Carousel, but these were generated at build time using the *&lt;sbadmin-carousel-card>* Meta Tag's *foreach* loop!
+
+You can see how MetaStatic can be used to create Meta Tags that allow a very succinct and intuitive syntax for describing an otherwise complex user interface HTML file: take a look at the *index.html* file that has been generated and you'll see what we mean!
 
 ----
 

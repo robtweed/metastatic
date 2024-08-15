@@ -33,14 +33,31 @@ let metaStatic = new MetaStatic({
 
 let site = process.argv[2];
 site = site + '/';
-let inFile = process.argv[3] || 'index.meta';
-let outFile = process.argv[4] || 'index.html';
+let inFile = 'index.meta';
+let outFile = 'index.html';
+let debug = false;
+let p3 = process.argv[3]; // || 'index.meta';
+let p4 = process.argv[4]; // || 'index.html';
+let p5 = process.argv[5];
+if (typeof p3 !== 'undefined') {
+  if (p3 === 'true' || p3 === 'false') {
+    debug = p3 === 'true';
+    console.log(99999);
+    if (typeof p4 !== 'undefined') inFile = p4;
+    if (typeof p5 !== 'undefined') outFile = p5;
+  }
+  else {
+    inFile = p3;
+    if (typeof p4 !== 'undefined') outFile = p4;
+  }
+}
 if (inFile === '') {
   console.log('No input file defined');
 }
 else {
   await metaStatic.buildPage({
     inputFileName: site + inFile,
-    outputFileName: site + outFile
+    outputFileName: site + outFile,
+    debug: debug
   });
 }

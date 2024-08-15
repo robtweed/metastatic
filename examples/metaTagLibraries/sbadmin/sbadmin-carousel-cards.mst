@@ -1,0 +1,10 @@
+<template :namespace="^namespace" :prefix="^filenameprefix">
+  <sbadmin-carousel>
+    <foreach type="filename" namespace=":namespace" prefix=":prefix" >
+      <sbadmin-carousel-item active="=><index===0 && 'active'">
+        <sbadmin-card-content slot="carouselitem" width="77%" title="markdown::namespace.<iterator#header" text="markdown::namespace.<iterator#body" />
+      </sbadmin-carousel-item>
+    </foreach>
+  </sbadmin-carousel>
+</template>
+

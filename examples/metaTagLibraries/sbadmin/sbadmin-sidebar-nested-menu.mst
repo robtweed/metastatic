@@ -1,4 +1,4 @@
-<template slot="menu" :icon="^iconname" :text="^text" :menuno="<uid":d-none="=>':iconname'===''&& 'd-none'">
+<template slot="menu" :icon="^iconname" :text="^text" :menuno="<uid" :d-none="=>':iconname'===''&& 'd-none'">
   <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#nested-menu-:menuno" aria-expanded="true" aria-controls="nested-menu-:menuno">
     <div class="sb-nav-link-icon :d-none">
       <i class="fas fa-:icon"></i>

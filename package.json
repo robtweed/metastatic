@@ -1,6 +1,6 @@
 {
   "name": "metastatic",
-  "version": "0.0.11",
+  "version": "0.1.1",
   "description": "Static Site Generator using Meta Tags",
   "main": "./src/metastatic.mjs",
   "exports": {

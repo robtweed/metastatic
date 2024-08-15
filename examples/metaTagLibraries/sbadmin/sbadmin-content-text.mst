@@ -1,7 +1,6 @@
-<template slot="contentpage" :text="^text">
-  <span>
-    <slot name="beforetext" />
-  </span>
+ <template slot="contentpage" :text="^text" :title="^title" :hlevel="^h|1" :d-none="=>':title'===''&& 'd-none'" >
+  <span class="h:hlevel">:title</span>
+  <div style="opacity: 0;" class=":d-none">_</div>
   <span>:text</span>
   <span>
     <slot name="aftertext" />

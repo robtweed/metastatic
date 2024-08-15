@@ -1,0 +1,39 @@
+<sbadmin-root title="MetaStatic Demo">
+  <sbadmin-header>
+    <sbadmin-sidebar-toggle />
+    <sbadmin-brand text="MetaStatic Demo" src="images/logo.png" height="55" position="right" opacity="0.2" />
+  </sbadmin-header>
+  
+ <sbadmin-sidebar-menu>
+    <sbadmin-sidebar-heading text="Select a Menu Option" />
+    <sbadmin-sidebar-menu-item text="About" iconname="circle-info" active>
+      <sbadmin-card-content text="markdown:tutorial.about-2.md#body" title="markdown:tutorial.about-2.md#header" />
+    </sbadmin-sidebar-menu-item>
+    
+    <sbadmin-sidebar-nested-menu text="Technical" iconname="gears">
+    
+      <sbadmin-sidebar-menu-item text="Installation" iconname="wrench">
+        <sbadmin-tabs title="Installing MetaStatic">
+          <sbadmin-tab title="Node.js" text="markdown:tutorial.install-node.md" active />
+          <sbadmin-tab title="Bun.js">
+            <sbadmin-card-content slot="tabcontent" text="markdown:tutorial.install-bun.md" title="Bun.js" />
+          </sbadmin-tab>
+        </sbadmin-tabs>
+      </sbadmin-sidebar-menu-item>
+    
+      <sbadmin-sidebar-menu-item text="Configuration" iconname="sliders">
+        <sbadmin-content-text text="markdown:tutorial.configure.md" title="Configuring MetaStatic" />
+      </sbadmin-sidebar-menu-item>
+    </sbadmin-sidebar-nested-menu>
+    
+    <sbadmin-sidebar-menu-item text="Use Case for MetaStatic" iconname="chalkboard-user">
+      <sbadmin-carousel-cards namespace="tutorial" filenameprefix="usecase-" />
+    </sbadmin-sidebar-menu-item>
+    
+  </sbadmin-sidebar-menu>
+
+  <sbadmin-footer>
+    <sbadmin-copyright text="2024 MGateway Ltd" />
+    <sbadmin-footer-text text="Registered in England" />
+  </sbadmin-footer>
+</sbadmin-root>

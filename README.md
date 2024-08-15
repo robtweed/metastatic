@@ -26,7 +26,7 @@ The file containing the Meta Tag-based definition of a web site is then used as 
 
 ## Example
 
-Take a look at [this example Web Site definition file](./examples/sites/tutorial/index.meta.15).
+Take a look at [this example Web Site definition file](./examples/sites/tutorial/index.meta.demo).
 
 It uses [this Meta Tag library](./examples/metaTagLibraries/sbadmin), and the 
 [text files it refers to are held here](./examples/sites/tutorial/content).

@@ -1,7 +1,6 @@
-<template slot="contentpage">
-  <span>
-    <slot name="beforetabs" />
-  </span>
+<template slot="contentpage" :title="^title" :hlevel="^h|1" :d-none="=>':title'===''&& 'd-none'" >
+  <span class="h:hlevel">:title</span>
+  <div style="opacity: 0;" class=":d-none">_</div>
   <nav>
     <div class="nav nav-tabs" role="tablist">
       <slot name="tabs" />
