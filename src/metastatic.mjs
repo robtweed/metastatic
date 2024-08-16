@@ -24,7 +24,7 @@
  |  limitations under the License.                                           |
  ----------------------------------------------------------------------------
 
- 17 July 2024
+ 16 August 2024
 
  */
 
@@ -196,7 +196,13 @@ class MetaStatic {
       }
       for (let attr of attrs) {
         this.log('attribute: ' + attr.name);
-        let value = attr.value || '';
+        let isEmpty = false;
+        let value = attr.value;
+        if (!value) {
+          isEmpty = true;
+          value = attr.name;
+          tag.setAttribute(attr.name, attr.name);
+        }
         this.log('175: attr value = ' + value);
         if (value !== '') {
           for (let name of subNames) {
@@ -207,17 +213,15 @@ class MetaStatic {
           tag.setAttribute(attr.name, value);
         }
         else {
-          this.log(999999);
           if (subNames.includes(attr.name)) {
-            this.log(9999998);
             for (let name of subNames) {
-              this.log('189: name = ' + name);
+              this.log('217: name = ' + name);
               if (name === attr.name) {
-                this.log('191');
                 let subVal = subs[name];
                 this.log('subVal = ' + subVal);
                 if (subVal !== '') {
-                  tag.setAttribute(subVal, subVal);
+                  if (isEmpty) value = subVal;
+                  tag.setAttribute(subVal, value);
                 }
                 this.log('210');
                 tag.removeAttribute(attr.name);
@@ -400,7 +404,7 @@ class MetaStatic {
         let parentsArr = parents.slice(0);
         let tagName = child.localName;
         _this.log('child of : ' + elementString(element) + ': ' + elementString(child)); 
-        await _this.pause(364);
+        await _this.pause(407);
         
         if (isMetaTag(child)) {
           //locate slots within Meta Tags
@@ -418,7 +422,7 @@ class MetaStatic {
               toBeSlotted[slotName] = [];
             }
           }
-          await _this.pause(382);
+          await _this.pause(425);
         }
 
         if (tagName === 'slot') {
@@ -429,7 +433,7 @@ class MetaStatic {
             appendToSlot(toBeSlotted, slotName, child, parents);
             _this.log('pending slotted elements appended to ' + elementString(child));
             _this.log(child.outerHTML);
-            await _this.pause(393);
+            await _this.pause(436);
           }
         }
         
@@ -490,7 +494,7 @@ class MetaStatic {
         else {
           if (hasChildElements(child)) {
             _this.log(elementString(child) + ' has children so will begin processing them');
-            await _this.pause(399);
+            await _this.pause(497);
             let parr = parents.slice(0);
             parr.push(child.localName);
             let tbsClone = Object.assign({}, toBeSlotted);
@@ -501,7 +505,7 @@ class MetaStatic {
           }
         }
         _this.log('All children of ' + elementString(child) + ' processed');
-        await _this.pause(410);
+        await _this.pause(508);
         let slotOverride;
         if (child.hasAttribute('slot')) {
           let slot = child.getAttribute('slot');
@@ -510,7 +514,7 @@ class MetaStatic {
             addToBeSlotted(toBeSlotted, slot, child);
             _this.log(elementString(child) + ' to be added to slot: ' + slot);
             _this.log('parents: ' + parents.toString());
-            await _this.pause(419);
+            await _this.pause(517);
           }
           slotOverride = slot;
         }
@@ -519,7 +523,7 @@ class MetaStatic {
         if (isMetaTag(child)) {
           _this.log(elementString(child) + ' is a meta tag so start to expand it');
 
-          await _this.pause(427);
+          await _this.pause(526);
           _this.log('fetching source for ' + tagName);
            
           let meta = await _this.fetchMetaTag(tagName); 
@@ -535,7 +539,7 @@ class MetaStatic {
           for (let templateEl of templateEls) {
             tno++;
             _this.log('Processing template ' + tno + ' of ' + templateEls.length + ': ' + tagName);
-            await _this.pause(443);
+            await _this.pause(542);
             
             let slotName = templateEl.getAttribute('slot');
             if (slotOverride) {
@@ -544,12 +548,12 @@ class MetaStatic {
             }
             if (slotName) {
               _this.log('4.0 slot found for template: ' + slotName);
-              await _this.pause(452);
+              await _this.pause(551);
             }
             else {
               slotName = '*' + elementName;
               _this.log('4.0 no slot so set to ' + slotName);
-              await _this.pause(457);
+              await _this.pause(556);
             }
             let metaDom = document.createElement('section');
             metaDom.setAttribute('class', 'metastatic');
@@ -576,8 +580,8 @@ class MetaStatic {
               _this.log('fragmentChild: ' + elementString(fChild));
               
               if (hasChildElements(fChild)) {
-                _this.log('555 about to process children of fragment ' + elementString(fChild));
-                await _this.pause(471);
+                _this.log('583 about to process children of fragment ' + elementString(fChild));
+                await _this.pause(584);
                 let parr = parentsArr.slice(0);
                 parr.push(fChild.localName);
                 let tbsClone = Object.assign({}, toBeSlotted);
@@ -587,7 +591,7 @@ class MetaStatic {
                 _this.log(fChild.outerHTML);
                 _this.log('4.1 ****');
                 metaDom.appendChild(fChild);
-                await _this.pause(481);
+                await _this.pause(594);
               }
               else {
                 _this.log('4.15 ****');
@@ -595,13 +599,13 @@ class MetaStatic {
                 _this.log('so append it to metaDom:');
                 metaDom.appendChild(fChild);
                 _this.log(metaDom.outerHTML);
-                await _this.pause(489);
+                await _this.pause(602);
               }
             }
             _this.log('processing of fragment children completed');
             _this.log('4.2 Final MetaDom for fragment is:');
             _this.log(metaDom.outerHTML);
-            await _this.pause(495);
+            await _this.pause(608);
             
             if (toBeSlotted['*' + tagName]) {
               // append any pending child metaDom that is assigned by default to this metaTag's metaDom
@@ -609,19 +613,19 @@ class MetaStatic {
             }
             
             _this.log('destination slot for this metaDom: ' + slotName);
-            await _this.pause(503);
+            await _this.pause(616);
 
             _this.log('4.3 slotName: ' + slotName);
             _this.log('metaDom set aside for insertion into slot ' + slotName);
             //addToBeSlotted(toBeSlotted, slotName, metaDom);
             addToBeSlotted(tbs_original, slotName, metaDom);
             _this.log(metaDom.outerHTML);
-            await _this.pause(510);
+            await _this.pause(623);
           }
 
           _this.log('432 all templates processed for metatag: ' + elementString(child));
           _this.log('moving on to processing any script tags it might have');
-          await _this.pause(515);
+          await _this.pause(628);
 
           // now process any script tags
           
@@ -644,7 +648,7 @@ class MetaStatic {
             eval('(function () {' + buildFn + '}());');
           }
           
-          _this.log('455 end of meta tag processing for ' + child.localName);
+          _this.log('651 end of meta tag processing for ' + child.localName);
           _this.log('Now delete it from page DOM');
           let parentNode = child.parentNode;
           let childTag = elementString(child);
@@ -652,13 +656,13 @@ class MetaStatic {
           parentNode.removeChild(child);
           _this.log('***deleted ' + childTag + ' from ' + parentTag);
           _this.log(parentTag.outerHTML);
-          await _this.pause(546);
+          await _this.pause(659);
         }
         
         // end of meta tag
         
-        _this.log('632 processing of child ' + child.localName + ' completed');
-        await _this.pause(633);    
+        _this.log('664 processing of child ' + child.localName + ' completed');
+        await _this.pause(665);    
       }
       _this.log('9 processing of element ' + element.localName + ' completed');
       
@@ -666,7 +670,7 @@ class MetaStatic {
       _this.log('9 *****');
       _this.log('9.1 toBeSlotted:');
       _this.log({toBeSlotted});
-      await _this.pause(557); 
+      await _this.pause(673); 
     }
 
     // start recursion
