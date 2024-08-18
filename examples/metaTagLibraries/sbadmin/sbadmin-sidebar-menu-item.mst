@@ -1,5 +1,5 @@
-<template slot="menu" :text="^text" :iconname="^iconname" :icontype="^icontype|solid" :active="^active" :uid="<uid" :d-none="=>':iconname'===''&& 'd-none'" :icon="^iconName|triangle-exclamation">
-  <a class="nav-link sidebar-menu-item :active" id="menu-item-:uid" href="#" onclick="switchPage(event, ':uid')">
+<template slot="menu" :text="^text" :hash="^hash" :iconname="^iconname" :icontype="^icontype|solid" :active="^active" :uid="<uid" :d-none="=>':iconname'===''&& 'd-none'" :icon="^iconName|triangle-exclamation">
+  <a class="nav-link sidebar-menu-item :active " ms-id=":hash" id="menu-item-:uid" href="#" onclick="switchPage(event, ':uid')">
     <div class="sb-nav-link-icon :d-none">
       <i class="fa-:icontype fa-:icon"></i>
     </div>
@@ -13,6 +13,17 @@
     <slot name="contentpage" />
   </div>
 </template>
+
+<script type="build">
+  let dom = Templates[0];
+  let aTag = dom.getElementsByTagName('a')[0];
+  let hash = aTag.getAttribute('ms-id');
+  if (hash === '') {
+    let span = aTag.getElementsByTagName('span')[0];
+    hash = MetaStatic.stringToId(span.textContent);
+    aTag.setAttribute('ms-id', hash);
+  }
+</script>
 
 <script>
 
