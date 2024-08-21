@@ -1,5 +1,5 @@
 <template slot="menu" :text="^text" :hash="^hash" :iconname="^iconname" :icontype="^icontype|solid" :active="^active" :uid="<uid" :d-none="=>':iconname'===''&& 'd-none'" :icon="^iconName|triangle-exclamation">
-  <a class="nav-link sidebar-menu-item :active " ms-id=":hash" id="menu-item-:uid" href="#" onclick="switchPage(event, ':uid')">
+  <a class="nav-link sidebar-menu-item :active " ms-id=":hash" ms-el-id=":uid" id="menu-item-:uid" href="#" onload="addMenuItemHandler(':uid')">
     <div class="sb-nav-link-icon :d-none">
       <i class="fa-:icontype fa-:icon"></i>
     </div>
@@ -26,6 +26,13 @@
 </script>
 
 <script>
+
+function addMenuItemHandler(id) {
+  let fn = function(event) {
+    switchPage(event, id);
+  };
+  addHandler(id, 'click', fn);
+}
 
 function shouldSidebarHide() {
   let w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;

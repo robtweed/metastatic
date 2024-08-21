@@ -239,128 +239,7 @@ You should see an empty version of the SB Admin UI!
 
 Clearly this isn't very useful as yet, but it's worth taking a look at what's been generated and why.
 
-If you inspect the contents of the generated *index.html* file, you'll see that it includes everything that was needed to render this UI:
-
-```html
-<!DOCTYPE html>
-<html>
-
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>MetaStatic</title>
-    <link rel="stylesheet" href="https://startbootstrap.github.io/startbootstrap-sb-admin/css/styles.css">
-    <script async="async" src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <style>
-      .navbar-nav-scroll {
-        max-height: var(--bs-scroll-height, 100vh);
-        overflow-y: auto;
-      }
-
-      .bg-mgw {
-        opacity: 0.9;
-        background-color: #bdddf6;
-      }
-
-      .sidenav-light {
-        background-color: #fff;
-        color: #212832;
-      }
-
-      body {
-        background-color: #f2f6fc;
-        color: #69707a;
-      }
-
-      .bg-light {
-        background-color: rgb(242, 246, 252) !important;
-        color: #69707a;
-      }
-
-      .shadow-right {
-        box-shadow: .15rem 0 1.75rem 0 rgba(33, 40, 50, 0.15) !important;
-      }
-
-      .sb-nav-fixed #layoutSidenav #layoutSidenav_nav {
-        width: 225px;
-      }
-
-      .sb-nav-fixed #layoutSidenav #layoutSidenav_content {
-        padding-left: 225px;
-      }
-
-      #layoutSidenav #layoutSidenav_nav {
-        flex-basis: 225px;
-        flex-shrink: 0;
-        transition: transform 0.15s ease-in-out;
-        z-index: 1038;
-        transform: translateX(-225px);
-      }
-
-      #layoutSidenav #layoutSidenav_content {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        min-width: 0;
-        flex-grow: 1;
-        min-height: calc(100vh - 56px);
-        margin-left: -225pxpx;
-      }
-
-      @media (min-width: 992px) {
-        #layoutSidenav #layoutSidenav_nav {
-          transform: translateX(0);
-        }
-
-        #layoutSidenav #layoutSidenav_content {
-          margin-left: 0;
-          transition: margin 0.15s ease-in-out;
-        }
-
-        .sb-sidenav-toggled #layoutSidenav #layoutSidenav_nav {
-          transform: translateX(-225px);
-        }
-
-        .sb-sidenav-toggled #layoutSidenav #layoutSidenav_content {
-          margin-left: -225px;
-        }
-
-        .sb-sidenav-toggled #layoutSidenav #layoutSidenav_content:before {
-          display: none;
-        }
-      }
-    </style>
-  </head>
-
-  <body onload="init()" class="sb-nav-fixed">
-    <span>
-    </span>
-    <div id="layoutSidenav">
-      <div id="layoutSidenav_nav">
-        <nav class="sb-sidenav shadow-right accordion sb-sidenav-light navbar-nav-scroll" id="sidenavAccordion">
-        </nav>
-      </div>
-      <div id="layoutSidenav_content">
-        <main>
-          <div class="container-fluid px-4">
-          </div>
-        </main>
-        <footer class="py-4 bg-light mt-auto">
-          <div class="container-fluid px-4">
-          </div>
-        </footer>
-      </div>
-    </div>
-    <script>
-      function init() {}
-    </script>
-  </body>
-
-</html>
-```
+If you inspect the contents of the generated *index.html* file, you'll see that it includes everything that was needed to render this UI. [Here's a copy of what it should contain](./examples/sites/tutorial/example1.html).
 
 Notice how the &lt;title> tag has used a default title attribute value from the &lt;sbadmin-root> tag:
 
@@ -626,7 +505,7 @@ The *sbadmin-root* Meta Tag's second template is much simpler and defines the sp
 
 ```html
 <template slot="*body">
-  <span>
+  <span onload="loadByHash()">
     <slot name="topbar" />
   </span>
 
@@ -692,19 +571,32 @@ Meta Tags can optionally contain one or two script tags.  There are two types yo
 ```html
 <script type="build">
 document.body.classList.add('sb-nav-fixed');
+let index = '{}';
+if (MetaStatic.indexContent) {
+  index = JSON.stringify(MetaStatic.wordToFileIndex);
+}
+scriptEl.textContent += `
+  function getWordIndex() {
+    return ${index};
+  }
+`;
 </script>
 ```
 
   Such scripts allow you to optionally define custom code that you want MetaStatic's Builder to execute at the end of its standard processing of the Meta Tag.  In this case we're adding a class to the generate'd Web Page's &lt;body> tag: something MetaStatic's Builder's own logic doesn't automatically make possible.
 
+It's also adding optional word search indexing, but that's something we're not going to use in this tutorial.
+
   You'll therefore see in the generated Web Page HTML:
 
 ```html
-  <body onload="init()" class="sb-nav-fixed">
+  <body class="sb-nav-fixed">
 ```
 
   If you want to provide your own custom *build* script in a Meta Tag, the main thing you need to know is that the generated Web Page DOM is held in the *document* object.  MetaStatic's Builder makes use of the
 [jsdom](https://www.npmjs.com/package/jsdom) package which emulates the in-browser DOM APIs, so you can manipulate the generated Web Page's DOM using the standard DOM API methods and properties.
+
+Build scripts also have access to the MetaStatic class instance, and the partially-processed Meta Tag DOM(s) (via the *Templates* array). As a result, advanced MetaStatic developers can extend and customise the functionality of MetaStatic.
 
 ----
 

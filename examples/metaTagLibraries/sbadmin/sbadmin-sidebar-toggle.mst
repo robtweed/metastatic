@@ -1,14 +1,20 @@
-<template slot="header">
-  <span class="me-2 ms-lg-2 me-lg-0">
-    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!" onclick="toggle(event)">
+<template slot="header" :elid="<uid">
+  <span class="me-2 ms-lg-2 me-lg-0" onload="addToggleHandler()">
+    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" ms-el-id=":elid" id="sidebarToggle" href="#!">
       <i class="fas fa-bars"></i>
     </button>
   </span>
 </template>
 
 <script>
+
+function addToggleHandler() {
+  addHandler('<uid', 'click', toggle); 
+}
+
 function toggle(e) {
   e.preventDefault();
   document.body.classList.toggle('sb-sidenav-toggled');
 }
+
 </script>

@@ -9,3 +9,13 @@
       <slot name="tabcontent" />
   </div>
 </template>
+
+<script type="build">
+  let fileRef = child.getAttribute('text');
+  if (fileRef && fileRef.startsWith('markdown:')) {
+    fileRef = fileRef.split('markdown:')[1];
+    fileRef = fileRef.split('.')[1];
+    let div = Templates[1].querySelector('div');
+    div.setAttribute('ms-file', fileRef);
+  }  
+</script>

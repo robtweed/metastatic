@@ -1,0 +1,173 @@
+<template slot="header" :uid="<uid">
+  <span id="search-icon" class="ms-search-icon" ms-el-id="a:uid" onload="addSearchHandlers(':uid')">
+    <i class="fas fa-magnifying-glass"></i>
+  </span>
+  <div id="search-field" class="ms-search-field d-none input-group rounded">
+    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" ms-el-id="c:uid" />
+    <span class="input-group-text border-0" id="search-addon" ms-el-id="b:uid">
+      <i class="fas fa-search"></i>
+    </span>
+
+    <div class="dropdown">
+      <ul id="ms-search-dropdown-ul" class="dropdown-menu ms-search-dropdown" ms-el-id="d:uid"></ul>
+    </div>
+
+    <div class="dropstart">
+      <ul id="ms-search-sub-dropdown-ul" class="dropdown-menu ms-search-sub-dropdown" ms-el-id="e:uid"></ul>
+    </div>
+
+  </div>
+</template>
+
+<script>
+
+function addSearchHandlers(id) {
+  addHandler('a' + id, 'click', showSearch);
+  addHandler('b' + id, 'click', hideSearch);
+  addHandler('c' + id, 'keyup', displayMatches);
+  addHandler('d' + id, 'mouseover', detect);
+  addHandler('e' + id, 'mouseover', activate);
+}
+
+function showSearch() {
+  document.getElementById('search-icon').classList.add('d-none');
+  document.getElementById('search-field').classList.remove('d-none');
+}
+function hideSearch() {
+  document.getElementById('search-icon').classList.remove('d-none');
+  document.getElementById('search-field').classList.add('d-none');
+  let subUl = document.getElementById('ms-search-sub-dropdown-ul');
+  subUl.classList.remove('show');
+}
+
+function sortArr(arr) {
+  function compare( a, b ) {
+    if ( a < b ){
+      return -1;
+    }
+    if ( a > b ){
+      return 1;
+    }
+    return 0;
+  }
+  arr.sort(compare);
+}
+
+function displayMatches(e) {
+  let prefix = e.target.value.toLowerCase();
+  let ul = document.getElementById('ms-search-dropdown-ul');
+  let subUl = document.getElementById('ms-search-sub-dropdown-ul');
+  subUl.classList.remove('show', 'ms-active');
+  if (prefix === '') {
+    ul.classList.remove('show');
+  }
+  else {
+    removeHandlersFromChildren(ul);
+    ul.textContent = '';
+    let matches = [];
+    for (let word in wordIndex) {
+      if (word.startsWith(prefix)) {
+        matches.push(word);
+      }
+    }
+    if (matches.length === 0) {
+      ul.classList.remove('show');
+    }
+    else {
+      ul.classList.add('show');
+      sortArr(matches);
+      let elId = 0;
+      for (let word of matches) {
+        elId++;
+        if (word.startsWith(prefix)) {
+          let li = document.createElement('li');
+          li.classList.add('dropstart');
+          let a = document.createElement('a');
+          a.classList.add('dropdown-item');
+          a.setAttribute('href', '#');
+          a.textContent = word;
+          let fn = function(event) {
+            showArticleMatches(event, word);
+          };
+          let id = 'aword' + elId;
+          a.setAttribute('ms-el-id', id);
+          addElementHandler(a, 'click', fn);
+          let ul2 = document.createElement('ul');
+          ul2.classList.add('dropdown-menu');
+          a.appendChild(ul2);
+          li.appendChild(a);
+          ul.appendChild(li);
+        }
+      }
+    }
+  }
+}
+
+function showArticleMatches(e, word) {
+  let a = e.target;
+  let offset = getOffset(a);
+  let subUl = document.getElementById('ms-search-sub-dropdown-ul');
+  subUl.style.top = offset.top + 40 + 'px';
+  removeHandlersFromChildren(subUl);
+  subUl.textContent = '';
+  let ul = e.target.querySelector('ul');
+  subUl.classList.add('show');
+  subUl.classList.remove('ms-active');
+  let files = wordIndex[word];
+  let elId = 0;
+  for (let file in files) {
+    let data = getContentValues(file);
+    let li = document.createElement('li');
+    let a = document.createElement('a');
+    a.classList.add('dropdown-item');
+    a.setAttribute('href', '#');
+    let id = 'article' + elId;
+    a.setAttribute('ms-el-id', id); 
+    let fn = function() {
+      selectContent(file, data.elType, data.itemEl);
+    }
+    addElementHandler(a, 'click', fn);
+    let p1 = document.createElement('p');
+    p1.textContent = data.title;
+    p1.classList.add('ms-heading-text');
+    let p2 = document.createElement('p');
+    p2.classList.add('ms-small-text');
+    p2.textContent = data.heading;
+    let hr = document.createElement('hr');
+    hr.classList.add('ms-small-text');
+    a.appendChild(p1);
+    a.appendChild(p2);
+    a.appendChild(hr);
+    li.appendChild(a);
+    subUl.appendChild(li);
+  }
+}
+
+function getOffset(el) {
+  const rect = el.getBoundingClientRect();
+  return {
+    left: rect.left + window.scrollX,
+    top: rect.top + window.scrollY
+  };
+}
+
+function selectContent(file, elType, itemEl) {
+  hideSearch();
+  displayContent(file, elType, itemEl);
+}
+
+function detect() {
+  let subUl = document.getElementById('ms-search-sub-dropdown-ul');
+  if (subUl.classList.contains('ms-active')) {
+    subUl.classList.remove('show');
+    subUl.classList.remove('ms-active');
+  }
+}
+
+function activate(e) {
+  if (!e.target.classList.contains('ms-active')) {
+    e.target.classList.add('ms-active');
+  }
+}
+
+</script>

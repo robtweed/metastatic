@@ -101,6 +101,109 @@ pre code {
     text-transform: none;
 }
 
+
+.ms-search-icon {
+  position: absolute;
+  left: 65%;
+  z-index: 2;
+}
+
+.ms-search-field {
+  width: 300px;
+  position: absolute;
+  left: 40%;
+  z-index: 2;
+}
+
+.ms-search-dropdown {
+  position: absolute; 
+  left: -300px; 
+  top: 48px;
+  overflow-y: scroll;
+  max-height: 350px;
+}
+
+  .ms-search-sub-dropdown {
+    position: absolute; 
+    left: -500px; 
+    top: 0px;
+    overflow-y: scroll;
+    max-height: 350px;
+  }
+
+  .ms-small-text {
+    font-size: 0.6rem;
+    margin: 0px;
+  }
+
+  .ms-heading-text {
+    font-size: 0.75rem;
+    margin: 0px;
+  }
+
+@media (max-width: 576px) {
+  .ms-search-icon {
+    position: absolute;
+    left: 85%;
+    z-index: 2;
+  }
+
+  .ms-search-field {
+    width: 200px;
+    position: absolute;
+    left: 40%;
+    z-index: 2;
+  }
+
+  .ms-search-dropdown {
+    position: absolute; 
+    left: -200px; 
+    top: 40px;
+    overflow-y: scroll;
+    max-height: 350px;
+  }
+
+  .ms-search-sub-dropdown {
+    position: absolute; 
+    left: -300px; 
+    top: 30px;
+    overflow-y: scroll;
+    max-height: 350px;
+  }
+}
+
+@media (min-width: 577px) and (max-width: 992px) {
+  .ms-search-icon {
+    position: absolute;
+    left: 50%;
+    z-index: 2;
+  }
+
+  .ms-search-field {
+    width: 200px;
+    position: absolute;
+    left: 24%;
+    z-index: 2;
+  }
+
+  .ms-search-dropdown {
+    position: absolute;
+    left: -200px;
+    top: 40px;
+    overflow-y: scroll;
+    max-height: 350px;
+  }
+
+  .ms-search-sub-dropdown {
+    position: absolute; 
+    left: -200px; 
+    top: 0px;
+    overflow-y: scroll;
+    max-height: 350px;
+  }
+
+}
+
 @media (min-width: 992px) {
   #layoutSidenav #layoutSidenav_nav {
     transform: translateX(0);
@@ -151,9 +254,77 @@ pre code {
 
 <script type="build">
 document.body.classList.add('sb-nav-fixed');
+let index = '{}';
+if (MetaStatic.indexContent) {
+  index = JSON.stringify(MetaStatic.wordToFileIndex);
+}
+scriptEl.textContent += `
+  function getWordIndex() {
+    return ${index};
+  }
+`;
 </script>
 
 <script>
+
+let ms_handlers = {};
+let wordIndex;
+
+function addHandler(id, type, fn) {
+  if (!ms_handlers[id]) {
+    ms_handlers[id] = [];
+  }
+  ms_handlers[id].push({
+    fn: fn,
+    type: type
+  });
+  let ptrn = '[ms-el-id="' + id + '"]';
+  document.querySelector(ptrn).addEventListener(type, fn);
+}
+
+function addElementHandler(element, type, fn) {
+  let id = element.getAttribute('ms-el-id');
+  if (id && id !== '') {
+    if (!ms_handlers[id]) {
+      ms_handlers[id] = [];
+    }
+    ms_handlers[id].push({
+      fn: fn,
+      type: type
+    });
+    element.addEventListener(type, fn);
+  }
+}
+
+function removeHandler(id, type) {
+  if (ms_handlers[id]) {
+    for (let ix = 0; ix < ms_handlers[id].length; ix++) {
+      let h = ms_handlers[id][ix];
+      if (h.type === type) {
+        let ptrn = '[ms-el-id="' + id + '"]';
+        document.querySelector(ptrn).removeEventListener(type, h.fn);
+        ms_handlers[id].splice(ix, 1);
+      }
+    }
+  }
+}
+
+function removeHandlers(element) {
+  let id = element.getAttribute('ms-el-id');
+  if (id && id!=='' && ms_handlers[id]) {
+    for (let h of ms_handlers[id]) {
+      element.removeEventListener(h.type, h.fn);
+    }
+    delete ms_handlers[id];
+  }
+}
+
+function removeHandlersFromChildren(element) {
+  let els = element.querySelectorAll('[ms-el-id]');
+  for (let el of els) {
+    removeHandlers(el);
+  }
+}
 
 function stringToId(string) {
   if (string.startsWith('#')) string = string.slice(1);
@@ -162,13 +333,111 @@ function stringToId(string) {
   return string.replaceAll('--', '-');
 }
 
+function displayContent(filename, elType, itemEl) {
+  if (itemEl) {
+    let contentPageEl = itemEl.closest('.content-page');
+    if (contentPageEl) {
+      let id = contentPageEl.id.split('content-page-')[1];
+      if (id) {
+        let aTag = document.getElementById('menu-item-' + id);
+        if (aTag) aTag.click();
+
+        if (elType === 'carousel') {
+          let itemNo = itemEl.getAttribute('ms-index');
+          if (itemNo >= 0) {
+            let carouselEl = contentPageEl.querySelector('div.carousel');
+            if (carouselEl) {
+              const carousel = new bootstrap.Carousel(carouselEl, {})
+              carousel.to(itemNo);
+            }
+          }
+        }
+        if (elType === 'card') {
+          let tabEl = itemEl.closest('.tab-pane');
+          if (tabEl) {
+            let id = tabEl.id.split('sbadmin-tab-content-')[1];
+            if (id) {
+              let btn = document.querySelector('button#sbadmin-tab-' + id );
+              if (btn) btn.click();
+            }
+          }
+        }
+        if (elType === 'tab') {
+          let tabId = itemEl.id.split('sbadmin-tab-content-')[1];
+          if (tabId) {
+            let btn = document.querySelector('button#sbadmin-tab-' + tabId );
+            if (btn) btn.click();
+          }
+        }
+      }
+    }
+  }
+}
+
+function getContentValues(filename) {
+  let title;
+  let heading;
+  let elType;
+  let ptrn = 'ms-file="' + filename + '"';
+  let itemEl = document.querySelector('[' + ptrn + ']');
+  if (itemEl) {
+    if (itemEl.classList.contains('card')) elType = 'card';
+    if (itemEl.classList.contains('carousel-item')) elType = 'carousel';
+    if (itemEl.classList.contains('tab-pane')) elType = 'tab';
+    let contentPageEl = itemEl.closest('.content-page');
+    if (contentPageEl) {
+      let id = contentPageEl.id.split('content-page-')[1];
+      let aTag = document.getElementById('menu-item-' + id);
+      title = aTag.querySelector('span').textContent;
+
+      if (elType === 'carousel' || elType === 'card') {
+        heading = itemEl.querySelector('h5').textContent;
+      }
+      if (elType === 'tab') {
+        id = itemEl.id.split('sbadmin-tab-content-')[1];
+        let btn = document.querySelector('button#sbadmin-tab-' + id );
+        heading = btn.textContent;
+      }
+    }
+  }
+  return {
+    title: title,
+    heading: heading,
+    elType: elType,
+    itemEl: itemEl
+  }
+}
+
 function loadByHash() {
+  wordIndex = getWordIndex();
   let hash = window.location.hash;
+  let carouselItemNo;
+  if (hash.includes(':')) {
+    let pcs = hash.split(':');
+    carouselItemNo = pcs.pop();
+    hash = pcs.join(':');
+  }
+
   hash = stringToId(hash);
   if (hash && hash !== '') {
     let ptrn = "a[ms-id='" + hash + "']";
-    let el = document.querySelectorAll(ptrn)[0];
-    if (el) el.click();
+    let el = document.querySelector(ptrn);
+    if (el) {
+      let id = el.id.split('menu-item-')[1];
+      let divTags = document.getElementsByClassName('content-page');
+      for (let divTag of divTags) {
+        divTag.classList.remove('show');
+      }
+      let cpEl = document.getElementById('content-page-' + id);
+      cpEl.classList.add('show');
+      if (carouselItemNo && +carouselItemNo > 0) {
+        let carouselEl = cpEl.querySelector('div.carousel');
+        if (carouselEl) {
+          const carousel = bootstrap.Carousel.getInstance(carouselEl);
+          carousel.to(carouselItemNo);
+        }
+      }
+    }
   }
 }
 </script>

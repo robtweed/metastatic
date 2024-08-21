@@ -1,5 +1,11 @@
-<template slot="carouselcontent" :active="^active">
-  <div class="carousel-item :active">
+<template slot="carouselcontent" :active="^active" :file="^file" :index="^index">
+  <div class="carousel-item :active" ms-file=":file" ms-index=":index">
     <slot name="carouselitem" />
   </div>
 </template>
+
+<script type="build">
+let el = Templates[0].querySelector('div');
+let attr = el.getAttribute('ms-file');
+el.setAttribute('ms-file', attr.split('.md')[0]);
+</script>

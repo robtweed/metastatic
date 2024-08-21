@@ -1,6 +1,6 @@
 {
   "name": "metastatic",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Static Site Generator using Meta Tags",
   "main": "./src/metastatic.mjs",
   "exports": {
@@ -17,10 +17,13 @@
   "author": "Rob Tweed, MGateway Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "jsdom": "latest",
     "collapse-whitespace": "latest",
     "js-beautify": "latest",
-    "marked": "latest"
+    "jsdom": "latest",
+    "keyword-extractor": "^0.0.28",
+    "marked": "latest",
+    "metastatic": "^0.1.2",
+    "pluralize": "^8.0.0"
   },
   "bugs": {
     "url": "https://github.com/robtweed/metastatic/issues"

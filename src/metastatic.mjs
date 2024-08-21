@@ -24,7 +24,7 @@
  |  limitations under the License.                                           |
  ----------------------------------------------------------------------------
 
- 18 August 2024
+ 21 August 2024
 
  */
 
@@ -34,6 +34,8 @@ const require = createRequire(import.meta.url);
 const jsdom = require("jsdom");
 const collapse = require('collapse-whitespace');
 const beautify = require('js-beautify').html;
+const kwx = require('keyword-extractor');
+const pluralise = require('pluralize');
 const { JSDOM } = jsdom;
 import { readFile, writeFile } from 'fs/promises';
 import {marked} from 'marked';
@@ -108,6 +110,8 @@ class MetaStatic {
     this.outputPath = options.outputPath || './';
     if (this.outputPath.slice(-1) !== '/') this.outputPath+= '/';
     this.encoding = options.encoding || 'utf8';
+    this.indexContent = options.indexContent || false;
+    this.wordToFileIndex = {};
   }
 
   stringToId(string) {
@@ -143,6 +147,7 @@ class MetaStatic {
   async substitute(child, templateEl, fragment, document) {
   
     let subs = {};
+    let wordlist = [];
     let subNames = [];
     let attrs = templateEl.attributes;
     this.log('template attributes:');
@@ -256,13 +261,36 @@ class MetaStatic {
                 filename = pcs[0];
                 section = pcs[1];
               }
-              filename = this.contentPath[app] + filename;
+              let filepath = this.contentPath[app] + filename;
               try {
-                textContent = await readFile(filename, this.encoding);
+                textContent = await readFile(filepath, this.encoding);
               }
               catch(err) {
                 console.log('Error processing markdown content file');
                 throw new Error('Unable to read ' + filename);
+              }
+              if (this.indexContent) {
+                let str = textContent.replace(/[^\w\s\']|_/g, " ").replace(/\s+/g, " ");
+                wordlist = kwx.extract(str, {
+                  language: 'english',
+                  remove_digits: true,
+                  return_changed_case: true,
+                  remove_duplicates: true
+                });
+                let words = {};
+                for (let word of wordlist) {
+                  word = word.replace("'","");
+                  word = pluralise.singular(word);
+                  words[word] = true;
+                }
+                wordlist = [];
+                let hash = filename.split('.md')[0];
+                for (let word in words) {
+                  if (word.length > 1) {
+                    if (!this.wordToFileIndex[word]) this.wordToFileIndex[word] = {};
+                    this.wordToFileIndex[word][hash] = '';
+                  }
+                }
               }
               textContent = marked.parse(textContent);
               if (section) {
@@ -301,7 +329,10 @@ class MetaStatic {
         }
       }
     }
-    return fragment;
+    return {
+      fragment: fragment,
+      wordlist: wordlist
+    };
   }
 
   precompile(content) {
@@ -351,7 +382,7 @@ class MetaStatic {
     let metaTagsBySlot = {};
     
     let document = dom.window.document;
-    document.body.setAttribute('onload', 'init()');
+    //document.body.setAttribute('onload', 'init()');
     let scriptEl = document.createElement('script');
 
     function isEmpty(obj) {
@@ -534,6 +565,7 @@ class MetaStatic {
           let meta = await _this.fetchMetaTag(tagName); 
           let templateEls = meta.templateEls;
           let buildFn;
+          let wordlist;
 
           let tno = 0;
           templateUid = uid;
@@ -563,7 +595,9 @@ class MetaStatic {
             metaDom.setAttribute('class', 'metastatic');
             let fragment = templateEl.content.cloneNode(true);
             
-            fragment = await _this.substitute(child, templateEl, fragment, document);
+            let res = await _this.substitute(child, templateEl, fragment, document);
+            fragment = res.fragment;
+            wordlist = res.wordlist;
 
             let childNo = 0;
             let fragmentChildren = getChildElements(fragment);
@@ -648,12 +682,14 @@ class MetaStatic {
               if (scriptTag.getAttribute('type') === 'build') {
                 buildFn = scriptTag.textContent;
                 _this.log('execute build function');
-                eval('(function (Templates, MetaStatic) {' + buildFn + '}(templateDoms, _this));');
+                eval('(function (Templates, MetaStatic, WordList) {' + buildFn + '}(templateDoms, _this, wordlist));');
               }
             }
             else {
               if (!scripts[tagName]) {
-                scriptEl.textContent += '\n' + scriptTag.textContent;
+                let text = scriptTag.textContent;
+                text = text.replaceAll('<uid', templateUid);
+                scriptEl.textContent += '\n' + text;
                 scripts[tagName] = true;
               }
             }
@@ -704,7 +740,13 @@ class MetaStatic {
       init = init + fn + ';\n';
     }
     init = init + '}\n';
-    scriptEl.textContent = init + scriptText;
+    scriptText = init + scriptText;
+
+    scriptText = scriptText + "\ndocument.addEventListener('DOMContentLoaded', function() {init()})";
+
+    scriptText = '(function () {\n' + scriptText + '\n})();'
+
+    scriptEl.textContent = scriptText;
           
     document.body.appendChild(scriptEl);
 
