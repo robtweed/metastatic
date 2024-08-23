@@ -1,0 +1,34 @@
+<template slot="header" :size="^size|lg" :me="^me|2" :ms="^ms|2" :elid="<uid">
+  <span class="me-:me ms-:ms" ms-el-id=":elid">
+    <i class="fas fa-angle-left fa-:size ms-back-btn ms-disabled-btn"></i>
+  </span>
+</template>
+
+<script>
+function addBackBtnHandler() {
+  let fn = function(e) {
+    goBack();
+    showOrHideBackBtn();
+  };
+  addHandler('<uid', 'click', fn); 
+}
+
+function showOrHideBackBtn() {
+  let bckBtnEl = document.querySelector('.ms-back-btn');
+  if (bckBtnEl) {
+    if (hashHistory && hashHistory.length < 2) {
+      if (!bckBtnEl.classList.contains('ms-disabled-btn')) {
+        bckBtnEl.classList.add('ms-disabled-btn');
+        removeHandler('<uid', 'click');
+      }
+    }
+    else {
+      if (bckBtnEl.classList.contains('ms-disabled-btn')) {
+        bckBtnEl.classList.remove('ms-disabled-btn');
+        addBackBtnHandler();
+      }
+    }
+  }
+}
+
+</script>

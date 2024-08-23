@@ -125,7 +125,7 @@ function showArticleMatches(e, word) {
     a.setAttribute('ms-el-id', id); 
     let fn = function() {
       selectContent(file, data.elType, data.itemEl);
-    }
+    };
     addElementHandler(a, 'click', fn);
     let p1 = document.createElement('p');
     p1.textContent = data.title;

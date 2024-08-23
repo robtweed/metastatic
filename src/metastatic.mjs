@@ -24,7 +24,7 @@
  |  limitations under the License.                                           |
  ----------------------------------------------------------------------------
 
- 21 August 2024
+ 23 August 2024
 
  */
 
@@ -742,7 +742,7 @@ class MetaStatic {
     init = init + '}\n';
     scriptText = init + scriptText;
 
-    scriptText = scriptText + "\ndocument.addEventListener('DOMContentLoaded', function() {init()})";
+    scriptText = scriptText + "\ndocument.addEventListener('DOMContentLoaded', function() {init();});";
 
     scriptText = '(function () {\n' + scriptText + '\n})();'
 

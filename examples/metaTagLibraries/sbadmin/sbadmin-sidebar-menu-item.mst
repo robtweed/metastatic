@@ -71,6 +71,10 @@ function switchPage(e, id) {
   if (shouldSidebarHide()) {
     hideSideNav();
   }
+  if (hashHistory && id !== hashHistory.at(-1)) {
+    hashHistory.push(id);
+    if (typeof showOrHideBackBtn !== 'undefined') showOrHideBackBtn();
+  }
 }
 
 

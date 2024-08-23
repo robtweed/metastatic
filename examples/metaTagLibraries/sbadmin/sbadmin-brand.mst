@@ -1,5 +1,18 @@
-<template slot="header" :text="^text" :src="^src" :textcolor="^textcolor|black" :position="^position|center" :center="=>':position'==='center'&& 'margin-left: auto; margin-right: auto; padding-right: 76px;'" :left="=>':position'==='left'&& 'margin-right: auto;'" :right="=>':position'==='right'&& 'margin-left: auto;'" :height="^height|52" :opacity="^opacity|0.2" :style="^style">
-  <span style="color: :textcolor; font-weight: bold; white-space: nowrap; position: absolute; left: 3rem;">:text</span>
+<template
+ slot="header"
+ :text="^text"
+ :src="^src"
+ :textcolor="^textcolor|black"
+ :position="^position|center"
+ :center="=>':position'==='center'&& 'margin-left: auto; margin-right: auto; padding-right: 76px;'"
+ :left="=>':position'==='left'&& 'margin-right: auto;'"
+ :right="=>':position'==='right'&& 'margin-left: auto;'"
+ :height="^height|52"
+ :opacity="^opacity|0.2"
+ :style="^style"
+ :textleft="^textleft|3rem"
+>
+  <span style="color: :textcolor; font-weight: bold; white-space: nowrap; position: absolute; left: :textleft;">:text</span>
   <img src=":src" style=":center :left :right height: :heightpx; z-index: 0; opacity: :opacity; :style" /> 
 </template>
 

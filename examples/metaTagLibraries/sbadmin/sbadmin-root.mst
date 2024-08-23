@@ -22,7 +22,7 @@
   <title>:title</title>
   <link rel="stylesheet" href=":cssurl">
   <script async src=":faurl" crossorigin="anonymous"></script>
-  <script async src=":bsurl"></script>
+  <script src=":bsurl"></script>
   <style>
 .navbar-nav-scroll {
   max-height: var(--bs-scroll-height, 100dvh);
@@ -139,6 +139,10 @@ pre code {
   .ms-heading-text {
     font-size: 0.75rem;
     margin: 0px;
+  }
+
+  .ms-disabled-btn {
+    opacity: 0.2;
   }
 
 @media (max-width: 576px) {
@@ -269,6 +273,7 @@ scriptEl.textContent += `
 
 let ms_handlers = {};
 let wordIndex;
+let hashHistory = [];
 
 function addHandler(id, type, fn) {
   if (!ms_handlers[id]) {
@@ -347,7 +352,7 @@ function displayContent(filename, elType, itemEl) {
           if (itemNo >= 0) {
             let carouselEl = contentPageEl.querySelector('div.carousel');
             if (carouselEl) {
-              const carousel = new bootstrap.Carousel(carouselEl, {})
+              const carousel = new bootstrap.Carousel(carouselEl, {});
               carousel.to(itemNo);
             }
           }
@@ -405,39 +410,80 @@ function getContentValues(filename) {
     heading: heading,
     elType: elType,
     itemEl: itemEl
-  }
+  };
 }
 
-function loadByHash() {
-  wordIndex = getWordIndex();
-  let hash = window.location.hash;
-  let carouselItemNo;
-  if (hash.includes(':')) {
-    let pcs = hash.split(':');
-    carouselItemNo = pcs.pop();
-    hash = pcs.join(':');
+function jumpTo(hash) {
+  if (hash.startsWith('#')) hash = hash.slice(1);
+  if (hash !== '') {
+    let rev = reverse(hash);
+    let ending = rev.split('-')[0];
+    if (!Number.isInteger(ending)) hash = hash + '-1';
+    let data = getContentValues(hash);
+    selectContent(hash, data.elType, data.itemEl);
   }
-
-  hash = stringToId(hash);
-  if (hash && hash !== '') {
-    let ptrn = "a[ms-id='" + hash + "']";
-    let el = document.querySelector(ptrn);
-    if (el) {
-      let id = el.id.split('menu-item-')[1];
-      let divTags = document.getElementsByClassName('content-page');
-      for (let divTag of divTags) {
-        divTag.classList.remove('show');
-      }
-      let cpEl = document.getElementById('content-page-' + id);
-      cpEl.classList.add('show');
-      if (carouselItemNo && +carouselItemNo > 0) {
-        let carouselEl = cpEl.querySelector('div.carousel');
-        if (carouselEl) {
-          const carousel = bootstrap.Carousel.getInstance(carouselEl);
-          carousel.to(carouselItemNo);
-        }
-      }
+  else {
+    if (hashHistory.length === 0) {
+      hashHistory.push(getActiveContentId());
     }
   }
 }
+
+function goBack() {
+  if (hashHistory.length >= 2) {
+    hashHistory.pop();
+    let id = hashHistory.pop();
+    if (id) {
+      let aTag = document.getElementById('menu-item-' + id);
+      if (aTag) aTag.click();
+    }
+  }
+}
+
+function reverse(str) {
+  return [...str].reverse().join('');
+}
+
+function getActiveContentId() {
+  let activeContentEl = document.querySelector('.content-page.show');
+  return activeContentEl.id.split('content-page-')[1];
+}
+
+/* distinguishing back button clicks: */
+
+document.addEventListener('mouseover', function() {
+  /* User's mouse is inside the page. */
+  window.innerDocClick = true;
+});
+
+document.addEventListener('mouseleave', function() {
+  /* User's mouse has left the page */
+  window.innerDocClick = false;
+});
+
+window.addEventListener("hashchange", function() {
+  let hash = document.location.hash;
+
+  if (window.innerDocClick) {
+    /* internal change */
+    jumpTo(hash);
+  }
+  else {
+    /* 
+       browser back button was clicked
+       prevent this happening twice due to subsequent hash change on aTag click
+    */
+    window.innerDocClick = true;
+    goBack();
+    setTimeout(function() {
+      window.innerDocClick = false;
+    }, 100);
+  }
+});
+
+function loadByHash() {
+  wordIndex = getWordIndex();
+  jumpTo(window.location.hash); 
+}
+
 </script>
