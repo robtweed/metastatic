@@ -1,5 +1,6 @@
 <template slot="sidebar">
   <div class="sb-sidenav-menu">
+    <div style="opacity: 0;" class=":d-none">_</div>
     <div class="nav">
       <slot name="menu" />
     </div>

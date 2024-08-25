@@ -15,6 +15,8 @@
  :footertextcolor="^footertextcolor|#69707a"
  :topbargradient="^topbargradient"
  :menuwidth="^menuwidth|225px"
+ :menupaddingtop="^menupaddingtop|0.1rem;"
+ :menupaddingbottom="^menupaddingbottom|0.6rem;"
  >
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -59,6 +61,11 @@ pre code {
   width: :menuwidth;
 }
 
+.sb-sidenav .sb-sidenav-menu .nav .nav-link {
+  padding-top: :menupaddingtop;
+  padding-bottom: :menupaddingbottom;
+}
+
 .sb-nav-fixed #layoutSidenav #layoutSidenav_content {
     padding-left: :menuwidth;
 }
@@ -99,6 +106,11 @@ pre code {
     padding-bottom: 0rem;
     font-size: var(--bs-nav-link-font-size);
     text-transform: none;
+}
+
+.sb-sidenav .sb-sidenav-menu .nav .sb-sidenav-menu-nested {
+  border-left-style: solid;
+  border-left-width: thin;
 }
 
 
