@@ -24,7 +24,7 @@
  |  limitations under the License.                                           |
  ----------------------------------------------------------------------------
 
- 23 August 2024
+ 25 August 2024
 
  */
 
@@ -45,7 +45,7 @@ import * as readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 
 let uid=0;
-let templateUid;
+let templateUid = 0;
 let wait;
 
 function sortArr(arr) {
@@ -568,8 +568,8 @@ class MetaStatic {
           let wordlist;
 
           let tno = 0;
-          templateUid = uid;
-          //****
+          //templateUid = uid;
+          templateUid++;
           parentsArr.push(child.localName);
           let templateDoms = [];
           for (let templateEl of templateEls) {
