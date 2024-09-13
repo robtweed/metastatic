@@ -286,6 +286,7 @@ scriptEl.textContent += `
 let ms_handlers = {};
 let wordIndex;
 let hashHistory = [];
+MetaStatic.viewportHeight = window.innerHeight;
 
 function addHandler(id, type, fn) {
   if (!ms_handlers[id]) {
@@ -458,7 +459,11 @@ function reverse(str) {
 
 function getActiveContentId() {
   let activeContentEl = document.querySelector('.content-page.show');
-  return activeContentEl.id.split('content-page-')[1];
+  let id;
+  if (activeContentEl) {
+    id = activeContentEl.id.split('content-page-')[1];
+  }
+  return id;
 }
 
 /* distinguishing back button clicks: */
@@ -491,6 +496,13 @@ window.addEventListener("hashchange", function() {
       window.innerDocClick = false;
     }, 100);
   }
+});
+
+window.addEventListener('resize', function() {
+  MetaStatic.viewportHeight = window.innerHeight;
+  MetaStatic.emit('resize', {
+    height: window.innerHeight
+  });
 });
 
 function loadByHash() {

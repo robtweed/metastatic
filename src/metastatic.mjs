@@ -24,7 +24,7 @@
  |  limitations under the License.                                           |
  ----------------------------------------------------------------------------
 
- 25 August 2024
+ 2 September 2024
 
  */
 
@@ -39,7 +39,7 @@ const pluralise = require('pluralize');
 const { JSDOM } = jsdom;
 import { readFile, writeFile } from 'fs/promises';
 import {marked} from 'marked';
-import {readdirSync} from 'fs';
+import {readdirSync, readFileSync} from 'fs';
 
 import * as readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
@@ -112,6 +112,7 @@ class MetaStatic {
     this.encoding = options.encoding || 'utf8';
     this.indexContent = options.indexContent || false;
     this.wordToFileIndex = {};
+    this.forEachArrays = {};
   }
 
   stringToId(string) {
@@ -269,6 +270,25 @@ class MetaStatic {
                 console.log('Error processing markdown content file');
                 throw new Error('Unable to read ' + filename);
               }
+
+              let pcs = textContent.split('<<');
+              let varNo = 0;
+              if (pcs.length > 0) {
+                let str = '';
+                for (let pc of pcs) {
+                  if (pc.includes('>>')) {
+                    let pcs2 = pc.split('>>');
+                    let tag = pcs2[0];
+                    pc = pcs2[1];
+                    str = str + '<p id="sb-custom">' + tag + '</p>' + pc;
+                  }
+                  else {
+                    str = str + pc;
+                  }
+                }
+                textContent = str;
+              }
+
               if (this.indexContent) {
                 let str = textContent.replace(/[^\w\s\']|_/g, " ").replace(/\s+/g, " ");
                 wordlist = kwx.extract(str, {
@@ -296,6 +316,7 @@ class MetaStatic {
               if (section) {
                 let temp = document.createElement('div');
                 temp.innerHTML = textContent;
+
                 let header = temp.getElementsByTagName('h1')[0];
                 if (section === 'header') {
                   if (header) {
@@ -391,6 +412,10 @@ class MetaStatic {
       }
       return true;
     }
+
+    function appendScript(text) {
+      scriptEl.textContent += '\n' + text;
+    }
     
     function isMetaTag(element) {
       return element.localName.includes('-');
@@ -459,6 +484,21 @@ class MetaStatic {
             }
           }
           await _this.pause(425);
+
+          // run any prebuild scripts
+
+          for (let scriptTag of meta.scriptTags) {
+            if (scriptTag.hasAttribute('type')) {
+              let scriptType = scriptTag.getAttribute('type');
+              if (scriptType === 'beforeBuild') {
+
+                let buildFn = scriptTag.textContent;
+                _this.log('execute preBuild function');
+                eval('(function (MetaStatic, element) {' + buildFn + '}(_this, child));');
+              }
+            }
+          }
+
         }
 
         if (tagName === 'slot') {
@@ -475,6 +515,13 @@ class MetaStatic {
         
         else if (tagName === 'foreach') {
           let type = child.getAttribute('type') || 'filename';
+          let arr = [];
+
+          if (type === 'array') {
+            let arrName = child.getAttribute('arrayname');
+            arr = _this.forEachArrays[arrName] || [];
+          }
+
           if (type === 'filename') {
             let namespace = child.getAttribute('namespace');
             let filepath = _this.contentPath[namespace];
@@ -488,41 +535,43 @@ class MetaStatic {
               }
             }
             sortArr(fileArr);
-            let ix = -1;
-            for (let name of fileArr) {
-              ix++;
-              let cchild = child.cloneNode(true);
-              let tags = cchild.querySelectorAll('*');
-              for (let tag of tags) {
-                // substitute attribute values
-                let attrs = [];
-                for (let attr of tag.attributes) {
-                  attrs.push(attr);
-                }
-                for (let attr of attrs) {
-                  let value = attr.value;
-                  if (value !== '') {
-                    if (value.includes('<index')) {
-                      value = value.replace('<index', ix);
-                    }
-                    if (value.includes('<iterator')) {
-                      value = value.replace('<iterator', name);
-                    }
-                    if (value.startsWith('=>')) {
-                      value = value.slice(2);
-                      value = eval(value) || '*<empty>*';
-                    }
-                    tag.setAttribute(attr.name, value);
-                  }
-                }
-                
+            arr = fileArr;
+          }
+
+          let ix = -1;
+          for (let name of arr) {
+            ix++;
+            let cchild = child.cloneNode(true);
+            let tags = cchild.querySelectorAll('*');
+            for (let tag of tags) {
+              // substitute attribute values
+              let attrs = [];
+              for (let attr of tag.attributes) {
+                attrs.push(attr);
               }
-               
-              let parr = parentsArr.slice(0);
-              parr.push(cchild.localName);
-              let tbsClone = Object.assign({}, toBeSlotted);
-              await getChildren(cchild, parr, tbsClone);
+              for (let attr of attrs) {
+                let value = attr.value;
+                if (value !== '') {
+                  if (value.includes('<index')) {
+                    value = value.replace('<index', ix);
+                  }
+                  if (value.includes('<iterator')) {
+                    value = value.replace('<iterator', name);
+                  }
+                  if (value.startsWith('=>')) {
+                    value = value.slice(2);
+                    value = eval(value) || '*<empty>*';
+                  }
+                  tag.setAttribute(attr.name, value);
+                }
+              }
+                
             }
+               
+            let parr = parentsArr.slice(0);
+            parr.push(cchild.localName);
+            let tbsClone = Object.assign({}, toBeSlotted);
+            await getChildren(cchild, parr, tbsClone);
           }
         }
         // end of foreach processing
@@ -679,10 +728,18 @@ class MetaStatic {
           
           for (let scriptTag of meta.scriptTags) {
             if (scriptTag.hasAttribute('type')) {
-              if (scriptTag.getAttribute('type') === 'build') {
+              let scriptType = scriptTag.getAttribute('type');
+              if (scriptType === 'build') {
                 buildFn = scriptTag.textContent;
                 _this.log('execute build function');
                 eval('(function (Templates, MetaStatic, WordList) {' + buildFn + '}(templateDoms, _this, wordlist));');
+              }
+              if (scriptType === 'buildContent') {
+                buildFn = child.textContent;
+                eval('(function (Templates, MetaStatic, WordList) {' + buildFn + '}(templateDoms, _this, wordlist));');
+              }
+              if (scriptType === 'useTextContent') {
+                scriptEl.textContent += '\n' + child.textContent;
               }
             }
             else {
@@ -742,6 +799,49 @@ class MetaStatic {
     init = init + '}\n';
     scriptText = init + scriptText;
 
+    let preScript = `
+      let MetaStatic = {
+        listeners: new Map(),
+        on: function(type, callback) {
+          let handlers;
+          if (!this.listeners.has(type)) {
+            handlers = [callback];
+          }
+          else {
+            handlers = this.listeners.get(type);
+            handlers.push(callback);
+          }
+          this.listeners.set(type, handlers);
+        },
+        off: function(type) {
+          if (this.listeners.has(type)) {
+            this.listeners.delete(type);
+          }
+        },
+        emit: function(type, data) {
+          if (this.listeners.has(type)) {
+            let handlers = this.listeners.get(type);
+            for (let handler of handlers) {
+              handler.call(this, data);
+            }
+          }
+        },
+        createElement(tagName, attributes, textContent) {
+          let el = document.createElement(tagName);
+          for (let name in attributes) {
+            el.setAttribute(name, attributes[name]);
+          }
+          if (textContent && textContent !== '') el.textContent = textContent;
+          return el;
+        },
+        appendElement(tagName, attributes, textContent, parent) {
+          let el = this.createElement(tagName, attributes, textContent);
+          parent.appendChild(el);
+          return el;
+        }
+      };
+    `;
+    scriptText = preScript + scriptText;
     scriptText = scriptText + "\ndocument.addEventListener('DOMContentLoaded', function() {init();});";
 
     scriptText = '(function () {\n' + scriptText + '\n})();'
@@ -787,6 +887,20 @@ class MetaStatic {
       }
       stag.parentNode.removeChild(stag);
     }
+
+    let pTags = document.documentElement.querySelectorAll('#sb-custom');
+    for (let pTag of pTags) {
+      let pcs = pTag.textContent.split(' ');
+      let el = document.createElement(pcs[0]);
+      for (let i = 1; i < pcs.length; i++) {
+        let attr = pcs[i];
+        let pcs2 = attr.split('=');
+        el.setAttribute(pcs2[0], pcs2[1]);
+      }
+      pTag.after(el);
+      pTag.parentNode.removeChild(pTag);
+    }
+
 
     // remove white space if configured
     //  then output generated static page

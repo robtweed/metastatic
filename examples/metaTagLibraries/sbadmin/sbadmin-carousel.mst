@@ -1,5 +1,5 @@
-<template slot="contentpage" :id="<uid">
-  <div class="carousel carousel-dark slide" id="carousel-:id">
+<template slot="contentpage" :id="<uid" :autoplay="^autoplay|false" :interval="^interval|5000">
+  <div class="carousel carousel-dark slide" id="carousel-:id" autoplay=":autoplay" data-bs-interval=":interval">
     <div class="carousel-inner">
       <slot name="carouselcontent" />
     </div>
@@ -13,3 +13,14 @@
     </button>
   </div>
 </template>
+
+<script type="build">
+  let el = Templates[0].querySelector('div');
+  if (el.getAttribute('autoplay') === 'true') {
+    el.setAttribute('data-bs-ride', 'carousel');
+  }
+  else {
+    el.removeAttribute('data-bs-interval');
+  }
+  el.removeAttribute('autoplay');
+</script>

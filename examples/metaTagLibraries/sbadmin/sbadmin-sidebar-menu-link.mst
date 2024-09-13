@@ -1,0 +1,8 @@
+<template slot="menu" :text="^text" :href="^href" :iconname="^iconname" :icontype="^icontype|solid" :d-none="=>':iconname'===''&& 'd-none'" :icon="^iconName|triangle-exclamation">
+  <a class="nav-link sidebar-menu-item" href=":href">
+    <div class="sb-nav-link-icon :d-none">
+      <i class="fa-:icontype fa-:icon"></i>
+    </div>
+    <span>:text</span>
+  </a>
+</template>

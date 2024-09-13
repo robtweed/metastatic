@@ -1,0 +1,5 @@
+<template slot="footercontent" :src="^src" :width="^width|100%" :height="^height|100%">
+  <div class="inline">
+    <img src=":src" width=":width" height=":height">
+  </div>
+</template>

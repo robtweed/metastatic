@@ -1,5 +1,5 @@
-<template slot="contentpage" :width="^width|100%" :title="^title" :text="^text">
-  <div class="card text-dark bg-light" style="width: :width; margin: auto">
+<template slot="contentpage" :width="^width|100%" :title="^title" :text="^text" :uid="<uid">
+  <div class="card text-dark bg-light" style="width: :width; margin: auto" ms-el-id=":uid">
     <h5 class="card-header">:title</h5>
     <div class="card-body">
       <div class="card-text">:text</div>
@@ -14,5 +14,8 @@
     fileRef = fileRef.split('.')[1];
     let div = Templates[0].querySelector('div');
     div.setAttribute('ms-file', fileRef);
+    let titleEl = div.querySelector('h5');
+    if (titleEl.textContent === '') div.removeChild(titleEl);
   }  
 </script>
+

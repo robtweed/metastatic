@@ -1,0 +1,81 @@
+<template slot="menu" :text="^text" :iconname="^iconname" :icontype="^icontype|solid" :uid="<uid" :d-none="=>':iconname'===''&& 'd-none'" :icon="^iconName|triangle-exclamation" :url="^url" :method="^method|GET" :type="^contentType|text/plain">
+  <a class="nav-link sidebar-menu-item" ms-el-id=":uid" id="menu-item-:uid" href="#" onload="addFetchHandler(':uid', ':url', ':method', ':type')">
+    <div class="sb-nav-link-icon :d-none">
+      <i class="fa-:icontype fa-:icon"></i>
+    </div>
+    <span>:text</span>
+  </a>
+</template>
+
+<template slot="content" :uid="<uid">
+  <div class="content-page collapse multi-collapse" id="content-page-:uid">
+    <div style="opacity: 0;">_</div>
+    <div id="fetch-content-:uid"></div>
+  </div>
+</template>
+
+<script>
+
+function addFetchHandler(id, url, method, type) {
+  let fn = async function(event) {
+    let error;
+    let response;
+    let res;
+    try {
+      response = await fetch(url, {
+        method: method,
+        headers: {
+         'Content-type': type,
+        }
+      });
+    }
+    catch(err) {
+      console.log('error!');
+      console.log(err);
+      error = err;
+    }
+
+    if (error) {
+      res = error;
+    }
+    else {
+      if (response.status === 200) {
+        res = await response.text();
+        console.log('response: ');
+        console.log(res);
+      }
+      else {
+        res = 'URL ' + url + ' Not Found';
+      }
+    }
+    document.getElementById('fetch-content-' + id).textContent = res;
+
+    // switch content page display and active menu item
+
+    let divTags = document.getElementsByClassName('content-page');
+    for (let divTag of divTags) {
+      divTag.classList.remove('show');
+    }
+    document.getElementById('content-page-' + id).classList.add('show');
+
+    let aTags = document.getElementsByClassName('sidebar-menu-item');
+    for (let aTag of aTags) {
+      aTag.classList.remove('active');
+    }
+    let aTag = event.target;
+    if (aTag.localName !== 'a') {
+      aTag = aTag.parentNode;
+      if (aTag.localName !== 'a') aTag = aTag.parentNode;
+    }
+    aTag.classList.add('active');
+    let w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    if (w < 992) {
+      document.body.classList.remove('sb-sidenav-toggled');
+    }
+  };
+  addHandler(id, 'click', fn);
+}
+
+
+
+</script>

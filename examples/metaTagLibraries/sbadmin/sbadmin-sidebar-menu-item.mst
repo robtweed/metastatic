@@ -75,6 +75,9 @@ function switchPage(e, id) {
     hashHistory.push(id);
     if (typeof showOrHideBackBtn !== 'undefined') showOrHideBackBtn();
   }
+  MetaStatic.emit('contentPageSelected', {
+    element: document.getElementById('content-page-' + id)
+  });
 }
 
 

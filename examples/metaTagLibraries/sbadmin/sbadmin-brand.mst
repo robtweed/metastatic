@@ -9,11 +9,14 @@
  :right="=>':position'==='right'&& 'margin-left: auto;'"
  :height="^height|52"
  :opacity="^opacity|0.2"
+ :textstyle="^textstyle"
  :style="^style"
- :textleft="^textleft|3rem"
+ :textleft="^textleft|3rem;"
+ :uid="<uid"
 >
-  <span style="color: :textcolor; font-weight: bold; white-space: nowrap; position: absolute; left: :textleft;">:text</span>
+  <span ms-el-id=":uid" style="color: :textcolor; font-weight: bold; white-space: nowrap; position: absolute; left: :textleft z-index: 100; :textstyle">:text</span>
   <img src=":src" style=":center :left :right height: :heightpx; z-index: 0; opacity: :opacity; :style" /> 
 </template>
+
 
 
