@@ -24,7 +24,7 @@
  |  limitations under the License.                                           |
  ----------------------------------------------------------------------------
 
- 2 September 2024
+ 16 September 2024
 
  */
 
@@ -535,7 +535,13 @@ class MetaStatic {
               }
             }
             sortArr(fileArr);
-            arr = fileArr;
+            let direction = child.getAttribute('direction');
+            if (direction && direction === 'reverse') {
+              arr = fileArr.reverse();
+            }
+            else {
+              arr = fileArr;
+            }
           }
 
           let ix = -1;

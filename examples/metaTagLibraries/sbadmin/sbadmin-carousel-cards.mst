@@ -1,6 +1,6 @@
-<template :namespace="^namespace" :prefix="^filenameprefix" :width="^cardwidth|85%" :autoplay="^autoplay|false" :interval="^interval|5000">
+<template :namespace="^namespace" :prefix="^filenameprefix" :width="^cardwidth|85%" :autoplay="^autoplay|false" :interval="^interval|5000" :direction="^direction">
   <sbadmin-carousel autoplay=":autoplay" interval=":interval">
-    <foreach type="filename" namespace=":namespace" prefix=":prefix" >
+    <foreach type="filename" namespace=":namespace" prefix=":prefix" direction=":direction">
       <sbadmin-carousel-item file="<iterator" index="<index" active="=><index===0 && 'active'">
         <sbadmin-card-content slot="carouselitem" width=":width" title="markdown::namespace.<iterator#header" text="markdown::namespace.<iterator#body" />
       </sbadmin-carousel-item>
